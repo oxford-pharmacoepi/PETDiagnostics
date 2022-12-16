@@ -36,13 +36,12 @@ cdm<-mockPregnancy(motherTable = NULL,
                           pregnancy_size = 100,
                           fetus_size = 110,
                           seed = 1)
-# use the motherTable and/or the babyTable depending on your data
-motherTable <- cdm$motherTable
-babyTable <- cdm$babyTable
 
 # this is what the table(s) look like
-head(motherTable)
-head(babyTable)
+# use the motherTable and/or the babyTable depending on your data
+head(cdm$motherTable)
+head(cdm$babyTable)
+
 ```
 
 ## Execute the diagnostic checks of your table(s)
@@ -52,7 +51,7 @@ head(babyTable)
 ``` r
 resultList <- executeChecks (
                           motherTable = cdm$motherTable,               #if not available, put NULL
-                          babyTable = cdm$babyTableL,                  #if not available, put NULL
+                          babyTable = cdm$babyTable,                   #if not available, put NULL
                           checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
                                      "fetusid"),                       
                           minCellCount = 5,
