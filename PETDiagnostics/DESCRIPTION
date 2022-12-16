@@ -2,9 +2,9 @@ Package: PETDiagnostics
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Theresa", "Burkard", , "theresa.burkard@ndorms.ox.ac.uk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-1313-4473"))
+Description: The package performs checks to assess feasibility of data sources to perform studies on pregnancy according to the pregnancy extension tables in OHDSI.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
