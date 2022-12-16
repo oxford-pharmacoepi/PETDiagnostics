@@ -6,38 +6,68 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of PETDiagnostics is to …
+## Package overview
+
+The goal of PETDiagnostics is to assess feasibility of data sources to perform observational studies on pregnancy related topics using the pregnancy extension tables in OHDSI.
 
 ## Installation
 
 You can install the development version of PETDiagnostics like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+install.packages("remotes")
+remotes::install_github("darwin-eu/PETDiagnostics")
 ```
 
-## Example
+## Example usage
+### Create a reference to data in the OMOP CDM format 
+The IncidencePrevalence package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. Here we´ll generate an example reference with simulated data (to see how you would create a reference to your database please consult the CDMConnector package documentation).
 
-This is a basic example which shows you how to solve a common problem:
 
 ``` r
+library(CDMConnector)
+library(dplyr)
 library(PETDiagnostics)
-## basic example code
+
+# We first need to create a mock database with a cdm reference
+# this function creates a motherTable and a babyTable
+cdm<-mockPregnancy(motherTable = NULL,
+                          babyTable = NULL,
+                          pregnancy_size = 100,
+                          fetus_size = 110,
+                          seed = 1)
+# use the motherTable and/or the babyTable depending on your data
+motherTable <- cdm$motherTable
+babyTable <- cdm$babyTable
+
+# this is what the table(s) look like
+head(motherTable)
+head(babyTable)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
+## Execute the diagnostic checks of your table(s)
+### if both tables are available, all checks are possible
+### if only the motherTable is available, the "fetusid" check is not possible
+### if only the babyTable is available, only the "overview" and "missing" check is possible
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+resultList <- executeChecks (
+                          motherTable = cdm$motherTable,               #if not available, put NULL
+                          babyTable = cdm$babyTableL,                  #if not available, put NULL
+                          checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
+                                     "fetusid"),                       
+                          minCellCount = 5,
+                          verbose = FALSE)
 ```
+
+
+## Exporting results
+### resultList is the named list with results
+### databaseId is the database identifier
+### outputFolder is the folder to write to
+``` r
+writeResultToDisk <- function(resultList = resultList, databaseId, outputFolder)
+```
+
 
 You’ll still need to render `README.Rmd` regularly, to keep `README.md`
 up-to-date. `devtools::build_readme()` is handy for this. You could also
