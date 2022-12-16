@@ -13,7 +13,8 @@ The goal of PETDiagnostics is to assess feasibility of data sources to perform p
 You can install the development version of PETDiagnostics like so:
 
 ``` r
-
+install.packages("remotes")
+remotes::install_github("oxford-pharmacoepi/PETDiagnostics")
 ```
 
 ## Example
