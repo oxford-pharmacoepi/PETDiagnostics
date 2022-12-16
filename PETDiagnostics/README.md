@@ -6,14 +6,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of PETDiagnostics is to …
+The goal of PETDiagnostics is to assess feasibility of data sources to perform pregnancy studies according to the pregnancy extension tables in OHDSI.
 
 ## Installation
 
 You can install the development version of PETDiagnostics like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+
 ```
 
 ## Example
