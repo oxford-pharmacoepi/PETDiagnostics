@@ -28,7 +28,7 @@ summariseGestationalAge <- function(
                      different_gestationalAge = sum(.data$n, na.rm = T),
 
                      match_gestationalAge = sum(.data$n == 0, na.rm = T),
-
+# there should not be NAs
                      missing_information = sum(is.na(.data$n)),
 
                      endBeforeStart = sum(.data$endBeforeStart, na.rm =T),

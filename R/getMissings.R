@@ -20,7 +20,7 @@ getMissings <- function(
            prop_missing[i] <- round(n_missing[i]/nrow(workTable),3)*100
 
   }
-
+# all the required variables do not have missings, they have "0", whereas non-required variables have NAs
 
   n_missing_long <-  tibble::as_tibble(reshape2::melt(n_missing, variable.names="variable",value.name = "count"))
   prop_missing_long <- tibble::as_tibble(reshape2::melt(prop_missing, variable.names="variable",value.name = "proportionInPercentage"))
