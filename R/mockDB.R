@@ -220,7 +220,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     c <- tibble::tibble(.rows = fetus_size)
 
-    for(i in 1:length(arguments)){
+    for(i in 1:seq_along(arguments)){
 
       c[[arguments[i]]] <- LowHighSampling(4188539,4188540,fetus_size)
 

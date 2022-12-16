@@ -37,7 +37,6 @@ executeChecks <- function(#cdm,
 
 
 
-  missingSummary <- NULL
   if ("missing" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Missing of all variables", start)
@@ -79,7 +78,7 @@ executeChecks <- function(#cdm,
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
 # pregnancy_single is a required variable
-    if ("pregnancy_number_fetuses" %in% colnames(motherTable) & "pregnancy_number_liveborn" %in% colnames(motherTable)) {
+    if ("pregnancy_number_fetuses" %in% colnames(motherTable) && "pregnancy_number_liveborn" %in% colnames(motherTable)) {
    fetusesLivebornNumber <- tibble::as_tibble(checkFetusesLiveborn(motherTable)) %>% dplyr::collect()
     }
   }
@@ -90,7 +89,7 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
-    if (!is.null(motherTable) & "fetus_id" %in% colnames(babyTable)) {
+    if (!is.null(motherTable) && "fetus_id" %in% colnames(babyTable)) {
 
    fetusIdMatch <- checkFetusId(motherTable,babyTable) %>% dplyr::collect()
       }
@@ -104,7 +103,7 @@ executeChecks <- function(#cdm,
 
 
 
-  if (!is.null(motherTable) & !is.null(babyTable)) {
+  if (!is.null(motherTable) && !is.null(babyTable)) {
 
   result <- list("PETOverviewMother" = PETOverviewMother,
                  "PETOverviewBaby" = PETOverviewBaby,
