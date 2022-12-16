@@ -125,7 +125,8 @@ executeChecks <- function(#cdm,
 
   }   else  if  (!is.null(babyTable)) {
 
-    result <- list("PETOverviewBaby" = PETOverviewBaby)
+    result <- list("PETOverviewBaby" = PETOverviewBaby,
+                   "missingSummaryBaby" = missingSummaryBaby)
 
   }
 
