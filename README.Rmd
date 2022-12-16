@@ -35,9 +35,10 @@ remotes::install_github("darwin-eu/PETDiagnostics")
 The PETDiagnostics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. Here we´ll generate an example reference with simulated data (to see how you would create a reference to your database please consult the CDMConnector package documentation).
 
 ```{r example}
+library(PETDiagnostics)
 library(CDMConnector)
 library(dplyr)
-library(PETDiagnostics)
+
 
 # We first need to create a mock database with a cdm reference
 # this function creates a motherTable and a babyTable
@@ -55,13 +56,14 @@ head(cdm$babyTable)
 
 ## Execute the diagnostic checks of your table(s)
 # if both tables are available, all checks are possible
-# if only the motherTable is available, the "fetusid" check is not possible
-# if only the babyTable is available, only the "overview" and "missing" check is possible
+# if only the motherTable is available, the "fetusid" check is not possible, put babyTable = NULL
+# if only the babyTable is available, only the "overview" and "missing" check is possible, put motherTable = NULL
 
-``` r
+
+```{r}
 resultList <- executeChecks (
-                          motherTable = cdm$motherTable,               #if not available, put NULL
-                          babyTable = cdm$babyTable,                   #if not available, put NULL
+                          motherTable = cdm$motherTable,               
+                          babyTable = cdm$babyTable,                  
                           checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
                                      "fetusid"),                       
                           minCellCount = 5,
@@ -72,6 +74,6 @@ resultList <- executeChecks (
 # databaseId is the database identifier
 # outputFolder is the folder to write to
 
-``` r
+```{r}
 writeResultToDisk <- function(resultList = resultList, databaseId, outputFolder)
 ```
