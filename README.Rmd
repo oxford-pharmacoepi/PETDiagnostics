@@ -26,7 +26,7 @@ You can install the development version of PETDiagnostics like so:
 
 ``` r
 install.packages("remotes")
-remotes::install_github("darwin-eu/PETDiagnostics")
+remotes::install_github("oxford-pharmacoepi/PETDiagnostics")
 ```
 
 ## Example
