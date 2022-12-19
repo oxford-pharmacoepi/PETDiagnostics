@@ -1,3 +1,15 @@
+#' Title
+#'
+#' @param motherTable
+#' @param babyTable
+#' @param checks
+#' @param minCellCount
+#' @param verbose
+#'
+#' @return all the individual result tables with data obscured if need be
+#' @export
+#'
+#' @examples
 executeChecks <- function(#cdm,
                           motherTable = NULL,
                           babyTable = NULL,
