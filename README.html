@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>PETDiagnostics</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/github.min.css">
+<script src="https://cdn.jsdelivr.net/combine/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js,npm/@xiee/utils/js/load-highlight.js" async></script>
+
+
+
+<style type="text/css">
+body, td {
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 13px;
+}
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+}
+tt, code, pre {
+  font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+a:visited { color: #80007f; }
+pre, img { max-width: 100%; }
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+code[class] { background-color: #F8F8F8; }
+code.language-undefined { background-color: inherit; }
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color:#666;
+  margin:0;
+  padding-left: 1em;
+  border-left: 0.5em #eee solid;
+}
+hr { border: 1px #ddd dashed; }
+
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+  }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  a, a:visited { text-decoration: underline; }
+  hr {
+    visibility: hidden;
+    page-break-before: always;
+  }
+  pre, blockquote {
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<h1>PETDiagnostics</h1>
+<!-- badges: start -->
+<!-- badges: end -->
+<p>The goal of PETDiagnostics is to assess feasibility of data sources to perform observational studies on pregnancy related topics using the pregnancy extension tables in OHDSI.</p>
+<h2>Installation</h2>
+<p>You can install the development version of PETDiagnostics like so:</p>
+<pre><code class="language-r">install.packages(&quot;remotes&quot;)
+remotes::install_github(&quot;oxford-pharmacoepi/PETDiagnostics&quot;)
+</code></pre>
+<h2>Example</h2>
+<h1>Create a reference to data in the OMOP CDM format</h1>
+<p>The PETDiagnostics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. Here we´ll generate an example reference with simulated data (to see how you would create a reference to your database please consult the CDMConnector package documentation).</p>
+<pre><code class="language-r">library(PETDiagnostics)
+library(CDMConnector)
+#&gt; Warning: package 'CDMConnector' was built under R version 4.2.2
+library(dplyr)
+#&gt; Warning: package 'dplyr' was built under R version 4.2.2
+#&gt; 
+#&gt; Attaching package: 'dplyr'
+#&gt; The following objects are masked from 'package:stats':
+#&gt; 
+#&gt;     filter, lag
+#&gt; The following objects are masked from 'package:base':
+#&gt; 
+#&gt;     intersect, setdiff, setequal, union
+
+
+# We first need to create a mock database with a cdm reference
+# this function creates a motherTable and a babyTable
+cdm&lt;-mockPregnancy(motherTable = NULL,
+                          babyTable = NULL,
+                          pregnancy_size = 100,
+                          fetus_size = 110,
+                          seed = 1)
+#&gt; Error in mockPregnancy(motherTable = NULL, babyTable = NULL, pregnancy_size = 100, : could not find function &quot;mockPregnancy&quot;
+
+# this is what the table(s) look like
+# use the motherTable and/or the babyTable depending on your data
+head(cdm$motherTable)
+#&gt; Error in head(cdm$motherTable): object 'cdm' not found
+head(cdm$babyTable)
+#&gt; Error in head(cdm$babyTable): object 'cdm' not found
+</code></pre>
+<h2>Execute the diagnostic checks of your table(s)</h2>
+<h1>if both tables are available, all checks are possible</h1>
+<h1>if only the motherTable is available, the “fetusid” check is not possible, put babyTable = NULL</h1>
+<h1>if only the babyTable is available, only the “overview” and “missing” check is possible, put motherTable = NULL</h1>
+<pre><code class="language-r">resultList &lt;- executeChecks (
+                          motherTable = cdm$motherTable,               
+                          babyTable = cdm$babyTable,                  
+                          checks = c(&quot;overview&quot;, &quot;missing&quot;, &quot;gestationalAge&quot;, &quot;outcomeMode&quot;, &quot;fetusesLiveborn&quot;,
+                                     &quot;fetusid&quot;),                       
+                          minCellCount = 5,
+                          verbose = FALSE)
+#&gt; Error in executeChecks(motherTable = cdm$motherTable, babyTable = cdm$babyTable, : could not find function &quot;executeChecks&quot;
+</code></pre>
+<h2>Exporting results</h2>
+<h1>resultList is the named list with results</h1>
+<h1>databaseId is the database identifier</h1>
+<h1>outputFolder is the folder to write to</h1>
+<pre><code class="language-r">writeResultToDisk &lt;- function(resultList = resultList, databaseId, outputFolder)
+#&gt; Error: &lt;text&gt;:2:0: unexpected end of input
+#&gt; 1: writeResultToDisk &lt;- function(resultList = resultList, databaseId, outputFolder)
+#&gt;    ^
+</code></pre>
+
+
+<script src="https://cdn.jsdelivr.net/combine/npm/@xiee/utils/js/center-img.min.js" async></script>
+</body>
+
+</html>
