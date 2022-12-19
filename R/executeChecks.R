@@ -1,3 +1,15 @@
+#' Title
+#'
+#' @param motherTable input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL
+#' @param babyTable input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL
+#' @param checks chose the checks you want to perform, not all checks are possible depending on which tables are available
+#' @param minCellCount chose a number below you want to obscure counts, 0 is not obscured
+#' @param verbose will give you the information the package is performing at that moment
+#'
+#' @return all the individual result tables with data obscured if need be
+#' @export
+#'
+#' @examples
 executeChecks <- function(#cdm,
                           motherTable = NULL,
                           babyTable = NULL,

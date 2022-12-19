@@ -24,6 +24,7 @@ Imports:
     lubridate,
     magrittr,
     reshape2,
+    rlang,
     tibble,
     zip
 VignetteBuilder: knitr
