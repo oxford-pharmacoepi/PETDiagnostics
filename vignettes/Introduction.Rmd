@@ -16,4 +16,63 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(PETDiagnostics)
+library(CDMConnector)
+library(dplyr)
+```
+
+First, connect to the database.
+#question on whether to use the mock of not (wait Ed)
+
+```{r}
+cdm <-  PETDiagnostics:::getEunomiaCdm()
+```
+
+We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check.
+
+
+```{r eval=FALSE}
+executeChecks (
+  motherTable = cdm$motherTable,  
+  babyTable = cdm$babyTable,                  
+  checks = c("overview", "missing", "gestationalAge", "outcomeMode","fetusesLiveborn","fetusid"),                       
+  minCellCount = 5,
+  verbose = FALSE)
+```
+
+The`cdm` is the database reference of the OMOP CDM using the `CDMConnector` package.    
+The `motherTable` is the `motherTable` in the CDM.
+The `babyTable` is the `babyTable` in the CDM.
+`checks` allows to select the checks to be executed, by default, all the checks will be run.
+The `minCellCount` is minimum number of events to report, numbers lower than this will be obscured. The number zero will not be obscured
+
+
+```{r executeChecks}
+resultList<-executeChecks()
+```
+
+We can then check what results available from ´executeChecks()´ by
+```{r}
+names(resultList)
+```
+
+Let's take a look at the results. the missingSummaryMother contains all the variables, their count of missings, and the proportion in relation to all pregnancies recorded in the motherTable.
+
+
+```{r,  message=FALSE, warning=FALSE }  
+datatable(resultList$missingSummaryMother,
+  rownames = FALSE
+)
+```
+
+
+After running the checks, we can write the CSV files into a zip file to disk using the `writeResultToDisk()` function. 
+```{r eval=FALSE}
+writeResultToDisk(all_checks,
+                  databaseId = "your_database_id", 
+                  outputFolder = "output_folder")
+```
+
+
+```{r, echo=FALSE}
+  DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
 ```

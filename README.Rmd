@@ -64,8 +64,7 @@ head(cdm$babyTable)
 resultList <- executeChecks (
                           motherTable = cdm$motherTable,               
                           babyTable = cdm$babyTable,                  
-                          checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
-                                     "fetusid"),                       
+                          checks = c("overview", "missing", "gestationalAge", "outcomeMode","fetusesLiveborn","fetusid"),                       
                           minCellCount = 5,
                           verbose = FALSE)
 ```
