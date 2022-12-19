@@ -25,7 +25,12 @@ The goal of PETDiagnostics is to ...
 You can install the development version of PETDiagnostics like so:
 
 ``` r
+<<<<<<< Updated upstream
 # FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+=======
+install.packages("remotes")
+remotes::install_github("oxford-pharmacoepi/PETDiagnostics")
+>>>>>>> Stashed changes
 ```
 
 ## Example
