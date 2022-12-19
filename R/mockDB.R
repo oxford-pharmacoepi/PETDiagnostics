@@ -100,7 +100,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     b <- tibble::tibble(.rows = pregnancy_size)
 
-    for(i in 1:length(arguments)){
+    for(i in 1:seq_along(length(arguments))){
 
       b[[arguments[i]]] <- LowHighSampling(0,10,pregnancy_size)
 
@@ -136,7 +136,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     a <- tibble::tibble(.rows = pregnancy_size)
 
-    for(i in 1:length(arguments)){
+    for(i in 1:seq_along(length(arguments))){
 
       a[[arguments[i]]] <- LowHighSampling(4188539,4188540,pregnancy_size)
 
@@ -220,7 +220,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     c <- tibble::tibble(.rows = fetus_size)
 
-    for(i in 1:seq_along(arguments)){
+    for(i in 1:seq_along(length(arguments))){
 
       c[[arguments[i]]] <- LowHighSampling(4188539,4188540,fetus_size)
 
@@ -275,22 +275,3 @@ mockPregnancy <- function(motherTable = NULL,
   return(cdm)
 }
 
-#to run the program with mock data, use these commands below
-
-# cdm <- mockPregnancy(motherTable = NULL,
-#                           babyTable = NULL,
-#                           pregnancy_size = 100,
-#                           fetus_size = 110,
-#                           seed = 1)
-#
-# #join the tables if both are present and make them into tibbles
-# #if only one is present put that into a tibble as well
-#
-#
-# if(!is.null(cdm$motherTable)) {
-#   motherTable <-  cdm$motherTable }
-# if(!is.null(cdm$babyTable)){
-#   babyTable <- cdm$babyTable }
-
-
-# workTable <- motherTable
