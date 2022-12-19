@@ -1,4 +1,16 @@
 
+#' Title
+#'
+#' @param motherTable
+#' @param babyTable
+#' @param pregnancy_size
+#' @param fetus_size
+#' @param seed
+#'
+#' @return a mock cdm reference motherTable and babyTable
+#' @export
+#'
+#' @examples
 mockPregnancy <- function(motherTable = NULL,
                           babyTable = NULL,
                           pregnancy_size = 100,
