@@ -1,0 +1,22 @@
+---
+title: "Summary"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Summary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PETDiagnostics)
+library(dplyr)
+```
+
+#see DrugExposureDiagnostics/vignettes/Summary_of_checks.Rmd
