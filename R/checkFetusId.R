@@ -1,3 +1,12 @@
+#' Title
+#'
+#' @param motherTable is the motherTable
+#' @param babyTable is the babyTable
+#'
+#' @return returns a tale with the fetuses checks
+#' @export
+#'
+#' @examples
 checkFetusId <- function(
     motherTable ,
     babyTable

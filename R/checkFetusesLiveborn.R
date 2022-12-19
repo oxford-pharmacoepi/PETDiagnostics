@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param workTable is the motherTable or babyTable
+#'
+#' @return returns a table with the checks on fetuses and liveborns
+#' @export
+#'
+#' @examples
 checkFetusesLiveborn <- function(
     workTable
 ) {

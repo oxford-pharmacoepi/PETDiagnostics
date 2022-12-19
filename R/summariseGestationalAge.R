@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param workTable is the motherTable or babyTable
+#'
+#' @return returns a table with the dates checks
+#' @export
+#'
+#' @examples
 summariseGestationalAge <- function(
     workTable
 )

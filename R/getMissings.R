@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param workTable is the motherTable or babyTable
+#'
+#' @return returns a table with all the missings
+#' @export
+#'
+#' @examples
 getMissings <- function(
                         workTable
                         ) {
