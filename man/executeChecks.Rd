@@ -14,7 +14,15 @@ executeChecks(
 )
 }
 \arguments{
-\item{verbose}{}
+\item{motherTable}{input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL}
+
+\item{babyTable}{input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL}
+
+\item{checks}{chose the checks you want to perform, not all checks are possible depending on which tables are available}
+
+\item{minCellCount}{chose a number below you want to obscure counts, 0 is not obscured}
+
+\item{verbose}{will give you the information the package is performing at that moment}
 }
 \value{
 all the individual result tables with data obscured if need be

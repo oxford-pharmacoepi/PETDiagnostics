@@ -13,7 +13,15 @@ mockPregnancy(
 )
 }
 \arguments{
-\item{seed}{}
+\item{motherTable}{creates a table according to the motherTable of the pregnancy extension Table in OHDSI}
+
+\item{babyTable}{creates a table according to the babyTable of the pregnancy extension Table in OHDSI}
+
+\item{pregnancy_size}{chose the number of pregnancies}
+
+\item{fetus_size}{chose the number of fetuses, has to be equal or larger than number of pregnancies}
+
+\item{seed}{chose a numer, like 1 for example}
 }
 \value{
 a mock cdm reference motherTable and babyTable
