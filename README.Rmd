@@ -30,7 +30,7 @@ remotes::install_github("oxford-pharmacoepi/PETDiagnostics")
 ```
 
 ## Example
-# Create a reference to data in the OMOP CDM format
+### Create a reference to data in the OMOP CDM format
 
 The PETDiagnostics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. Here we´ll generate an example reference with simulated data (to see how you would create a reference to your database please consult the CDMConnector package documentation).
 
@@ -55,9 +55,9 @@ head(cdm$babyTable)
 ```
 
 ## Execute the diagnostic checks of your table(s)
-# if both tables are available, all checks are possible
-# if only the motherTable is available, the "fetusid" check is not possible, put babyTable = NULL
-# if only the babyTable is available, only the "overview" and "missing" check is possible, put motherTable = NULL
+### if both tables are available, all checks are possible
+### if only the motherTable is available, the "fetusid" check is not possible, put babyTable = NULL
+### if only the babyTable is available, only the "overview" and "missing" check is possible, put motherTable = NULL
 
 
 ```{r}
@@ -69,10 +69,14 @@ resultList <- executeChecks (
                           verbose = FALSE)
 ```
 ## Exporting results
-# resultList is the named list with results
-# databaseId is the database identifier
-# outputFolder is the folder to write to
+### resultList is the named list with results
+### databaseId is the database identifier
+### outputFolder is the folder to write to
 
 ```{r}
-writeResultToDisk <- function(resultList = resultList, databaseId, outputFolder)
+writeResultToDisk (resultList = resultList, databaseId = "mock", outputFolder = tempdir())
+```
+
+```{r, echo=FALSE}
+  DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
 ```
