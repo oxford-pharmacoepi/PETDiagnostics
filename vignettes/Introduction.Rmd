@@ -18,13 +18,18 @@ knitr::opts_chunk$set(
 library(PETDiagnostics)
 library(CDMConnector)
 library(dplyr)
+library(DT)
 ```
 
 First, connect to the database.
 #question on whether to use the mock of not (wait Ed)
 
 ```{r}
-cdm <-  PETDiagnostics:::getEunomiaCdm()
+cdm <-  PETDiagnostics:::mockPregnancy(motherTable = NULL,
+                          babyTable = NULL,
+                          pregnancy_size = 100,
+                          fetus_size = 110,
+                          seed = 1)
 ```
 
 We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check.
@@ -47,7 +52,8 @@ The `minCellCount` is minimum number of events to report, numbers lower than thi
 
 
 ```{r executeChecks}
-resultList<-executeChecks()
+resultList<-executeChecks(motherTable = cdm$motherTable,               
+                          babyTable = cdm$babyTable)
 ```
 
 We can then check what results available from ´executeChecks()´ by
@@ -58,8 +64,8 @@ names(resultList)
 Let's take a look at the results. the missingSummaryMother contains all the variables, their count of missings, and the proportion in relation to all pregnancies recorded in the motherTable.
 
 
-```{r,  message=FALSE, warning=FALSE }  
-datatable(resultList$missingSummaryMother,
+```{r,  message=FALSE }  
+DT::datatable(resultList$missingSummaryMother,
   rownames = FALSE
 )
 ```
@@ -67,9 +73,9 @@ datatable(resultList$missingSummaryMother,
 
 After running the checks, we can write the CSV files into a zip file to disk using the `writeResultToDisk()` function. 
 ```{r eval=FALSE}
-writeResultToDisk(all_checks,
+writeResultToDisk(resultList=resultList,
                   databaseId = "your_database_id", 
-                  outputFolder = "output_folder")
+                  outputFolder = tempdir())
 ```
 
 
