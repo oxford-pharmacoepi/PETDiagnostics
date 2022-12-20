@@ -19,4 +19,101 @@ library(PETDiagnostics)
 library(dplyr)
 ```
 
-#see DrugExposureDiagnostics/vignettes/Summary_of_checks.Rmd
+# Build the tables
+```{r}
+cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
+                          babyTable = NULL,
+                          pregnancy_size = 100,
+                          fetus_size = 110,
+                          seed = 1)
+```
+
+## How many women and pregnancies are there?
+
+```{r}
+PETOverviewMother <- getOverview(cdm$motherTable) 
+DT::datatable(PETOverviewMother)
+```
+
+## How many pregnancies and fetuses are there?
+```{r}
+PETOverviewBaby <- getOverview(cdm$babyTable) 
+DT::datatable(PETOverviewBaby)
+```
+
+## How many missing values are there in the motherTable?
+The first 8 variables (until pregnancy_single) should not have any missings because they are required variables, i.e. any unknown value is mapped to zero, any observations with missing values are not considered
+  
+```{r}
+missingSummaryMother <- getMissings(cdm$motherTable) 
+DT::datatable(missingSummaryMother)
+```
+
+## How many missing values are there in the babyTable?
+  
+The first 2 variables (until fetus_id) should not have any missings because they are required variables, i.e. any unknown value is mapped to zero, any observations with missing values are not considered
+  
+```{r}
+missingSummaryBaby <- getMissings(cdm$babyTable) 
+DT::datatable(missingSummaryBaby)
+```
+
+
+## How do dates and gestational age add up in the motherTable?
+  
+###  "different gestational age" means that it is not the difference between pregnancy end date and start date
+###  "match gestational age" means that it is exactly the difference between pregnancy end date and start date
+###  "missing information" counts the missings in either gestational age, pregnancy end or start date (there shold not be any missings because it is a required variable)
+###  "end before start" counts the occasions in which the pregnancy end date happened on or before the start date
+###  "end after start" counts the occasions in which the pregnancy end date happened after the start date
+  
+```{r}
+gestationalAgeMatch <- summariseGestationalAge(cdm$motherTable)
+DT::datatable(gestationalAgeMatch)
+```
+
+
+
+## How do outcome and mode of delivery add up in the motherTable?
+  
+### "no match" means that a elective termination or miscarriage has a vaginal or c-section delivery
+### a "match" means that a livebirth or stillbirth has a vaginal or c-section delivery
+### "missing information" counts the missing information in either pregnancy outcome or mode of delivery (there should not be any missings)
+
+```{r}
+outcomeModeMatch <- checkOutcomeMode(cdm$motherTable)
+DT::datatable(outcomeModeMatch)
+```
+## How do number of fetuses and liveborns add up in the motherTable?
+  
+### "relative number wrong"  means the number of fetuses is smaller than the number of liveborn 
+### "relative number right"  means the number of fetuses is equal or larger than the number of liveborn 
+### "missing relative number" counts the missing information in either pregnancy number of fetuses and liveborns
+### "multiple wrong"  means that the variable pregnancy single does not add up with the pregnancy number fetus variable 
+### "multiple right"  means that the variable pregnancy single adds up with the pregnancy number fetus variable 
+### "missing multiple" counts the missing information in either pregnancy single or pregnancy number fetus
+
+```{r}
+fetusesLivebornNumber <- checkFetusesLiveborn(cdm$motherTable)
+DT::datatable(fetusesLivebornNumber)
+```
+## How do number of fetuses and liveborns add up in the motherTable?
+  
+### "single_not_align_with_noOfFetusId"  means the variable pregnancy single does not align with the number of fetuses in the babyTable
+### "single_align_with_noOfFetusId"  means the variable pregnancy single is YES and the number of fetuses in the babyTable is 1
+### "missing_single" counts the missing information in pregnancy single or pregnancy number fetus
+### "noOfFetus_not_align_with_noOfFetusId"  means the variable pregnancy number fetus does not align with the number of fetuses in the babyTable 
+### "noOfFetus_align_with_noOfFetusId"  means the variable pregnancy number fetus align with the number of fetuses in the babyTable
+### "missing_noOfFetus" counts the missing information in pregnancy number fetus
+
+```{r}
+fetusIdMatch <- checkFetusId(cdm$motherTable,cdm$babyTable)
+DT::datatable(fetusIdMatch)
+```
+
+
+
+
+```{r, echo=FALSE}
+  DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
+```

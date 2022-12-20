@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param workTable is the motherTable
+#'
+#' @return returns a table with the information of differences in outcome mode and delivery data
+#' @export
+#'
+#' @examples
 checkOutcomeMode <- function(
     workTable
 ) {

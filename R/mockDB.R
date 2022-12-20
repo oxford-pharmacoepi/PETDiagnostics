@@ -112,7 +112,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     b <- tibble::tibble(.rows = pregnancy_size)
 
-    for(i in 1:seq_along(length(arguments))){
+    for(i in 1:length(arguments)){
 
       b[[arguments[i]]] <- LowHighSampling(0,10,pregnancy_size)
 
@@ -148,7 +148,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     a <- tibble::tibble(.rows = pregnancy_size)
 
-    for(i in 1:seq_along(length(arguments))){
+    for(i in 1:length(arguments)){
 
       a[[arguments[i]]] <- LowHighSampling(4188539,4188540,pregnancy_size)
 
@@ -232,7 +232,7 @@ mockPregnancy <- function(motherTable = NULL,
 
     c <- tibble::tibble(.rows = fetus_size)
 
-    for(i in 1:seq_along(length(arguments))){
+    for(i in 1:length(arguments)){
 
       c[[arguments[i]]] <- LowHighSampling(4188539,4188540,fetus_size)
 
