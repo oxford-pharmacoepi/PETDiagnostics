@@ -25,8 +25,11 @@ summariseGestationalAge <- function(
 
 
     records <- records %>% dplyr::mutate(
-      n = dplyr::if_else(.data$gestational_length_in_day ==
+      n = dplyr::if_else((!is.na(.data$gestational_length_in_day) &
+                           !is.na(.data$pregnancy_start_date) &
+                           !is.na(.data$pregnancy_end_date)), dplyr::if_else(.data$gestational_length_in_day ==
                            !!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day"), 0, 1,missing = NULL),
+      NA,missing=NULL),
       endBeforeStart = dplyr::if_else((.data$pregnancy_start_date>=.data$pregnancy_end_date),1,0,missing = NULL),
       endAfterStart = dplyr::if_else((.data$pregnancy_start_date<.data$pregnancy_end_date),1,0,missing = NULL)) %>% dplyr::collect()
 

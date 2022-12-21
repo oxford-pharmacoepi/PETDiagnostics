@@ -24,8 +24,10 @@ Imports:
     glue,
     lubridate,
     magrittr,
+    misty,
     reshape2,
     rlang,
+    stats,
     tibble,
     zip
 VignetteBuilder: knitr

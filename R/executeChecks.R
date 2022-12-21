@@ -13,8 +13,8 @@
 executeChecks <- function(#cdm,
                           motherTable = NULL,
                           babyTable = NULL,
-                          checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
-                                     "fetusid"),
+                          checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
+                                     "fetusid","weightDist","bitSet"),
                           minCellCount = 5,
                           verbose = FALSE) {
 
@@ -48,6 +48,17 @@ executeChecks <- function(#cdm,
   }
 
 
+  if ("annualOverview" %in% checks) {
+    if (verbose == TRUE) {
+      start <- printDurationAndMessage("Progress: total number of women, pregnancies (and fetuses) per year", start)
+    }
+    if (!is.null(motherTable)) {
+      AnnualPETOverviewMother <- NULL
+      AnnualPETOverviewMother <- getAnnualOverview(motherTable) %>% dplyr::collect()
+    }
+
+  }
+
 
   if ("missing" %in% checks) {
     if (verbose == TRUE) {
@@ -64,49 +75,107 @@ executeChecks <- function(#cdm,
   }
 
 
-  gestationalAgeMatch <-  NULL
+  if ("unknown" %in% checks) {
+    if (verbose == TRUE) {
+      start <- printDurationAndMessage("Progress: check unknowns of required variables", start)
+    }
+    if (!is.null(motherTable)) {
+      unknownSummaryMother <- NULL
+      unknownSummaryMother <- getUnknown(motherTable) %>% dplyr::collect()
+    }
+
+  }
+
+
   if ("gestationalAge" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Gestational Age", start)
     }
     if (!is.null(motherTable)) {
+  gestationalAgeMatch <-  NULL
   gestationalAgeMatch <- summariseGestationalAge(motherTable) %>% dplyr::collect()
     }
   }
 
-  outcomeModeMatch <-  NULL
+
+
+  if ("datesAgeDist" %in% checks) {
+    if (verbose == TRUE) {
+      start <- printDurationAndMessage("Progress: check values of dates and Gestational Age", start)
+    }
+    if (!is.null(motherTable)) {
+      valueDatesAgeDist <-  NULL
+      valueDatesAgeDist <- getValueDatesAgeDist(motherTable) %>% dplyr::collect()
+    }
+  }
+
+
+
   if ("outcomeMode" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Outcome and Mode of Delivery", start)
     }
     if (!is.null(motherTable)) {
+   outcomeModeMatch <-  NULL
    outcomeModeMatch <- checkOutcomeMode(motherTable) %>% dplyr::collect()
     }
   }
 
-  fetusesLivebornNumber <-  NULL
+
   if ("fetusesLiveborn" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
 # pregnancy_single is a required variable
     if ("pregnancy_number_fetuses" %in% colnames(motherTable) && "pregnancy_number_liveborn" %in% colnames(motherTable)) {
+      fetusesLivebornNumber <-  NULL
    fetusesLivebornNumber <- tibble::as_tibble(checkFetusesLiveborn(motherTable)) %>% dplyr::collect()
     }
   }
 
 
-  fetusIdMatch <- NULL
+
   if ("fetusid" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
-    if (!is.null(motherTable) && "fetus_id" %in% colnames(babyTable)) {
-
+    if (!is.null(motherTable) && !is.null(babyTable)) {
+      fetusIdMatch <- NULL
    fetusIdMatch <- checkFetusId(motherTable,babyTable) %>% dplyr::collect()
       }
 
   }
+
+  if ("weightDist" %in% checks) {
+    if (verbose == TRUE) {
+      start <- printDurationAndMessage("Progress: check values of birthweight", start)
+    }
+    if (!is.null(babyTable)) {
+      valueWeightDist <- NULL
+      valueWeightDist <- getValueWeightDist(babyTable) %>% dplyr::collect()
+    }
+
+  }
+
+
+
+
+  if ("bitSet" %in% checks) {
+    if (verbose == TRUE) {
+      start <- printDurationAndMessage("Progress: check missing/unknown data pattern", start)
+    }
+    if (!is.null(motherTable) && !is.null(babyTable)) {
+      bitSetOverviewAll <- NULL
+      bitSetOverviewAll  <- getBitSet(motherTable,babyTable) %>% dplyr::collect()
+    } else if (!is.null(motherTable)) {
+        bitSetOverviewMother <- NULL
+        bitSetOverviewMother  <- getBitSet(motherTable, babyTable = NULL) %>% dplyr::collect()
+      } else if (!is.null(babyTable)) {
+        bitSetOverviewBaby <- NULL
+        bitSetOverviewBaby  <- getBitSet(motherTable = NULL, babyTable) %>% dplyr::collect()
+      }
+    }
+
 
 
    if (verbose == TRUE) {
@@ -118,26 +187,38 @@ executeChecks <- function(#cdm,
   if (!is.null(motherTable) && !is.null(babyTable)) {
 
   result <- list("PETOverviewMother" = PETOverviewMother,
+                 "AnnualPETOverviewMother" = AnnualPETOverviewMother,
                  "PETOverviewBaby" = PETOverviewBaby,
                  "missingSummaryMother" = missingSummaryMother,
                  "missingSummaryBaby" = missingSummaryBaby,
+                 "unknownSummaryMother" = unknownSummaryMother,
                  "gestationalAgeMatch" = gestationalAgeMatch,
+                 "valueDatesAgeDist" =  valueDatesAgeDist,
                  "outcomeModeMatch" = outcomeModeMatch,
                  "fetusesLivebornNumber" = fetusesLivebornNumber,
-                 "fetusIdMatch" = fetusIdMatch)
+                 "fetusIdMatch" = fetusIdMatch,
+                 "valueWeightDist" = valueWeightDist,
+                 "bitSetOverviewAll" =  bitSetOverviewAll
+                 )
 
   } else if  (!is.null(motherTable)) {
 
     result <- list("PETOverviewMother" = PETOverviewMother,
+                   "AnnualPETOverviewMother" = AnnualPETOverviewMother,
                    "missingSummaryMother" = missingSummaryMother,
+                   "unknownSummaryMother" = unknownSummaryMother,
                    "gestationalAgeMatch" = gestationalAgeMatch,
+                   "valueDatesAgeDist" =  valueDatesAgeDist,
                    "outcomeModeMatch" = outcomeModeMatch,
-                   "fetusesLivebornNumber" = fetusesLivebornNumber)
+                   "fetusesLivebornNumber" = fetusesLivebornNumber,
+                   "bitSetOverviewMother" =  bitSetOverviewMother)
 
   }   else  if  (!is.null(babyTable)) {
 
     result <- list("PETOverviewBaby" = PETOverviewBaby,
-                   "missingSummaryBaby" = missingSummaryBaby)
+                   "missingSummaryBaby" = missingSummaryBaby,
+                   "valueWeightDist" = valueWeightDist,
+                   "bitSetOverviewBaby" =  bitSetOverviewBaby)
 
   }
 
