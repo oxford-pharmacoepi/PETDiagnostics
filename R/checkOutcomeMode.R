@@ -23,8 +23,9 @@ checkOutcomeMode <- function(
 
   #check if miscarriage or TOP has vaginal or c-section delivery
    records <- records %>% dplyr::mutate(
-    n = dplyr::if_else(((.data$pregnancy_outcome == 4067106 | .data$pregnancy_outcome == 4081422)
-                           & (.data$pregnancy_mode_delivery == 4125611 | .data$pregnancy_mode_delivery ==4015701)),1,0,missing = NULL)) %>%
+    n = dplyr::if_else(.data$pregnancy_outcome !=0 , dplyr::if_else(
+      (.data$pregnancy_outcome == 4067106 | .data$pregnancy_outcome == 4081422)
+                           & (.data$pregnancy_mode_delivery == 4125611 | .data$pregnancy_mode_delivery ==4015701),1,0,missing = NULL),NA,missing = NULL)) %>%
      dplyr::collect()
 
   records_n <- records %>%
@@ -33,7 +34,7 @@ checkOutcomeMode <- function(
 
                      match = sum(.data$n==0, na.rm = T),
 
-                     missing_information = sum(is.na(.data$n)),
+                     missingUnknown_information = sum(is.na(.data$n)),
 
                      )
   records_prop <- records_n %>%
@@ -43,7 +44,7 @@ checkOutcomeMode <- function(
 
       match = round(.data$match / nrow(tibble::as_tibble(workTable)),3)*100,
 
-      missing_information = round(.data$missing_information /nrow(tibble::as_tibble(workTable)),3)*100)
+      missingUnknown_information = round(.data$missingUnknown_information /nrow(tibble::as_tibble(workTable)),3)*100)
 
 
 records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))

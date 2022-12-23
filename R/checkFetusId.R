@@ -3,7 +3,7 @@
 #' @param motherTable is the motherTable
 #' @param babyTable is the babyTable
 #'
-#' @return returns a tale with the fetuses checks
+#' @return returns a table with the fetuses checks
 #' @export
 #'
 #' @examples
@@ -35,11 +35,14 @@ records<- recordshelp %>% dplyr::left_join((recordshelp %>% dplyr::group_by(.dat
 #add fetus count to pregnancy
 recordshelp <- NULL
 
+
 records<- records %>% dplyr::mutate(
 
-  single_not_align_with_noOfFetusId = dplyr::if_else((.data$n > 1  &  .data$pregnancy_single == 4188539) | (.data$n == 1  &  .data$pregnancy_single == 4188540),1,0,missing = NULL),
+  single_not_align_with_noOfFetusId = ifelse(.data$pregnancy_single !=0 ,dplyr::if_else(
+       (.data$n > 1  &  .data$pregnancy_single == 4188539) | (.data$n == 1  &  .data$pregnancy_single == 4188540),1,0,missing = NULL),NA),
 
-  single_align_with_noOfFetusId = dplyr::if_else((.data$n > 1  &  .data$pregnancy_single == 4188540) | (.data$n == 1  &  .data$pregnancy_single == 4188539) ,1,0,missing = NULL),
+  single_align_with_noOfFetusId = ifelse(.data$pregnancy_single !=0 , dplyr::if_else(
+    (.data$n > 1  &  .data$pregnancy_single == 4188540) | (.data$n == 1  &  .data$pregnancy_single == 4188539),1,0,missing = NULL),NA),
 
   noOfFetus_not_align_with_noOfFetusId = dplyr::if_else((.data$pregnancy_number_fetuses  != .data$n ),1,0,missing = NULL),
 
@@ -56,13 +59,13 @@ records_n <- records %>%
 
                    single_align_with_noOfFetusId = sum(.data$single_align_with_noOfFetusId, na.rm = T),
 
-                   missing_single = sum(is.na(.data$pregnancy_single)), #n cannot be missing
+                   missingUnknown_single = sum(is.na(.data$pregnancy_single)),
 
                    noOfFetus_not_align_with_noOfFetusId = sum(.data$noOfFetus_not_align_with_noOfFetusId, na.rm = T),
 
                    noOfFetus_align_with_noOfFetusId = sum(.data$noOfFetus_align_with_noOfFetusId, na.rm = T),
 
-                   missing_noOfFetus = sum(is.na(.data$pregnancy_number_fetuses)) #n cannot be missing
+                   missing_noOfFetus = sum(is.na(.data$pregnancy_number_fetuses))
 
 
   )
@@ -74,7 +77,7 @@ records_prop <- records_n %>%
 
     single_align_with_noOfFetusId = round(.data$single_align_with_noOfFetusId /nrow(tibble::as_tibble(motherTable)),3)*100,
 
-    missing_single = round(.data$missing_single /nrow(tibble::as_tibble(motherTable)),3)*100,
+    missingUnknown_single = round(.data$missingUnknown_single /nrow(tibble::as_tibble(motherTable)),3)*100,
 
     noOfFetus_not_align_with_noOfFetusId = round(.data$noOfFetus_not_align_with_noOfFetusId / nrow(tibble::as_tibble(motherTable)),3)*100,
 
