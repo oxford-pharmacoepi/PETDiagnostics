@@ -5,9 +5,9 @@ test_that("check working example 1) each count 2) adds up to total", {
     pregnancy_start_date = c(as.Date("2012-10-15"),as.Date("2013-07-22"),as.Date("2015-07-22"),as.Date("2010-01-12")),
     pregnancy_end_date = c(as.Date("2013-06-22"),as.Date("2014-02-07"),as.Date("2016-02-07"),as.Date("2010-03-02")),
     gestational_length_in_day = c(300, 200,201,49),
-    pregnancy_outcome = c(4092289,443213,NA,4081422),
+    pregnancy_outcome = c(4092289,443213,0,4081422),
     pregnancy_mode_delivery = c(4015701,4125611,4125611,4125611),
-    pregnancy_single = c(NA,4188540,4188540,4188539),
+    pregnancy_single = c(NA,4188540,4188539,4188539),
     pregnancy_marital_status = c(4338692,4338692,4338692,4053842),
     pregnancy_number_fetuses = c(NA,2,2,NA),
     pregnancy_number_liveborn = c(3,1,1,0),
@@ -53,8 +53,8 @@ test_that("check working example 1) each count 2) adds up to total", {
   expect_true(seeFetLive[1,2]==0)
   expect_true(seeFetLive[2,2]==2)
   expect_true(seeFetLive[3,2]==2)
-  expect_true(seeFetLive[4,2]==0)
-  expect_true(seeFetLive[5,2]==2)
+  expect_true(seeFetLive[4,2]==1)
+  expect_true(seeFetLive[5,2]==1)
   expect_true(seeFetLive[6,2]==2)
 
   #check that all counts add up to the Total

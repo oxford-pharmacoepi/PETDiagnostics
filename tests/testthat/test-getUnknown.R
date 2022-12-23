@@ -1,4 +1,6 @@
-test_that("check working example if only mother Table is provided", {
+
+
+test_that("check working example number of unknowns", {
   MT<- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     person_id = c("1","2","2","3"),
@@ -48,63 +50,17 @@ test_that("check working example if only mother Table is provided", {
 
   testData <- cdm$MT
 
-  seeMotherResults <- executeChecks (
-    motherTable = testData,
-    babyTable = NULL,
-    checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
-               "fetusid","weightDist","bitSet"),
-    minCellCount = 5,
-    verbose = FALSE)
+  seeOverview <- getUnknown(testData)
 
-  #see obscured results
-  expect_true(is.na(seeMotherResults[[1]][1,2]))
-  expect_true(seeMotherResults[[1]][1,3]==TRUE)
+  #see Overview
+  expect_true(seeOverview[1,2]==0)
+  expect_true(seeOverview[2,2]==0)
+  expect_true(seeOverview[3,2]==1)
+  expect_true(seeOverview[4,2]==0)
+  expect_true(seeOverview[5,2]==0)
 
-
-  DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
-})
-
-test_that("check working example if only baby Table is provided", {
-  BT <- tibble::tibble(
-    pregnancy_id = c("4","5","5","6"),
-    fetus_id = c("4","5","6","7"),
-    birth_outcome = c(4092289,443213,4092289,4081422),
-    birth_weight = c(6917,NA,2094, NA),
-    birth_con_malformation = c(4188540,4188540,NA,NA),
-    birth_SGA = c(NA,NA,4188540,NA),
-    birth_FGR = c(NA,4188540,NA,NA),
-    birth_APGAR = c(4188539,NA,NA,NA)
-  )
-
-  db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "BT",
-                      BT,
-                      overwrite = TRUE)
-  })
-
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_tables = c(),
-                                    cohort_tables = c(
-                                      "BT"
-                                    ))
-
-  testData <- cdm$BT
-
-  seeBabyResults <- executeChecks (
-    motherTable = NULL,
-    babyTable = testData,
-    checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
-               "fetusid","weightDist","bitSet"),
-    minCellCount = 5,
-    verbose = FALSE)
-
-  #see obscured results
-  expect_true(is.na(seeBabyResults[[1]][1,2]))
-  expect_true(seeBabyResults[[1]][1,3]==TRUE)
 
   DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
 
 })
+

@@ -56,15 +56,16 @@ head(cdm$babyTable)
 
 ## Execute the diagnostic checks of your table(s)
 ### if both tables are available, all checks are possible
-### if only the motherTable is available, the "fetusid" check is not possible, put babyTable = NULL
-### if only the babyTable is available, only the "overview" and "missing" check is possible, put motherTable = NULL
+### if only the motherTable is available, the "fetusid" and "weightDist" check is not possible, put babyTable = NULL
+### if only the babyTable is available, only the "overview", "missing", "weightDist", and "bitSet" check is possible, put motherTable = NULL
 
 
 ```{r}
 resultList <- executeChecks (
                           motherTable = cdm$motherTable,               
                           babyTable = cdm$babyTable,                  
-                          checks = c("overview", "missing", "gestationalAge", "outcomeMode","fetusesLiveborn","fetusid"),                       
+                          checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode",
+                                     "fetusesLiveborn","fetusid","weightDist","bitSet"),                       
                           minCellCount = 5,
                           verbose = FALSE)
 ```

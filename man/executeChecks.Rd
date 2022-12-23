@@ -7,8 +7,8 @@
 executeChecks(
   motherTable = NULL,
   babyTable = NULL,
-  checks = c("overview", "missing", "gestationalAge", "outcomeMode", "fetusesLiveborn",
-    "fetusid"),
+  checks = c("overview", "annualOverview", "missing", "unknown", "gestationalAge",
+    "datesAgeDist", "outcomeMode", "fetusesLiveborn", "fetusid", "weightDist", "bitSet"),
   minCellCount = 5,
   verbose = FALSE
 )

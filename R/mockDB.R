@@ -62,11 +62,12 @@ mockPregnancy <- function(motherTable = NULL,
         443213,
         4067106,
         4081422,
+        4095714,
         0
       ),
       pregnancy_size,
       replace = TRUE,
-      prob = c(0.7,0.1,0.1,0.05,0.05)
+      prob = c(0.65,0.1,0.1,0.05,0.05,0.05)
     ) #assign pregnancy outcome to each pregnancy
 
     pregnancy_mode_delivery <-  sample(
@@ -89,6 +90,7 @@ mockPregnancy <- function(motherTable = NULL,
         4053842,
         4338692,
         4242253,
+        4095714,
         NA
       ),
       pregnancy_size,
