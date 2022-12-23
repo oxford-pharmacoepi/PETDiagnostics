@@ -146,6 +146,7 @@ executeChecks <- function(#cdm,
 
   }
 
+
   if ("weightDist" %in% checks) {
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check values of birthweight", start)

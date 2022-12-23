@@ -10,7 +10,7 @@ getAnnualOverview(motherTable)
 \item{motherTable}{is the motherTable}
 }
 \value{
-returns a table with the number of annual pregnancies
+a table which shows the number of pregnancies per year
 }
 \description{
 Title

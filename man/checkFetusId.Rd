@@ -12,7 +12,7 @@ checkFetusId(motherTable, babyTable)
 \item{babyTable}{is the babyTable}
 }
 \value{
-returns a tale with the fetuses checks
+returns a table with the fetuses checks
 }
 \description{
 Title

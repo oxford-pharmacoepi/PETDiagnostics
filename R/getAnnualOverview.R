@@ -1,8 +1,9 @@
+
 #' Title
 #'
 #' @param motherTable is the motherTable
 #'
-#' @return returns a table with the number of annual pregnancies
+#' @return a table which shows the number of pregnancies per year
 #' @export
 #'
 #' @examples
