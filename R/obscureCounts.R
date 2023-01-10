@@ -15,7 +15,7 @@ obscureCounts <- function(table,
     table$result_obscured <- "FALSE"
 
     colNames <- colnames(table)
-    checkColNames <- colNames[!grepl("variable", colNames)]
+    checkColNames <- colNames[!grepl("variable|year", colNames)]
     toBeSubstituted <- colNames[grepl("count|proportionInPercentage", colNames)]
 
 
