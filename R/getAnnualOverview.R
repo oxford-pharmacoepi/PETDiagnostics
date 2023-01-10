@@ -30,7 +30,7 @@ getAnnualOverview <- function(
         year = format(.data$pregnancy_end_date, "%Y")
       )   %>% dplyr::group_by(.data$year)  %>%
       dplyr::summarise(
-       pregnancies = dplyr::n_distinct(.data$pregnancy_id)
+       count = dplyr::n_distinct(.data$pregnancy_id)
       )
 
   return(records)
