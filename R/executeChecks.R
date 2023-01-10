@@ -168,10 +168,12 @@ executeChecks <- function(#cdm,
     if (!is.null(motherTable) && !is.null(babyTable)) {
       bitSetOverviewAll <- NULL
       bitSetOverviewAll  <- getBitSet(motherTable,babyTable) %>% dplyr::collect()
-    } else if (!is.null(motherTable)) {
+    } 
+    if (!is.null(motherTable)) {
         bitSetOverviewMother <- NULL
         bitSetOverviewMother  <- getBitSet(motherTable, babyTable = NULL) %>% dplyr::collect()
-      } else if (!is.null(babyTable)) {
+      } 
+    if (!is.null(babyTable)) {
         bitSetOverviewBaby <- NULL
         bitSetOverviewBaby  <- getBitSet(motherTable = NULL, babyTable) %>% dplyr::collect()
       }
@@ -199,7 +201,9 @@ executeChecks <- function(#cdm,
                  "fetusesLivebornNumber" = fetusesLivebornNumber,
                  "fetusIdMatch" = fetusIdMatch,
                  "valueWeightDist" = valueWeightDist,
-                 "bitSetOverviewAll" =  bitSetOverviewAll
+                 "bitSetOverviewAll" =  bitSetOverviewAll,
+                 "bitSetOverviewMother" =  bitSetOverviewMother,
+                 "bitSetOverviewBaby" =  bitSetOverviewBaby
                  )
 
   } else if  (!is.null(motherTable)) {
