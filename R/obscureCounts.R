@@ -16,7 +16,7 @@ obscureCounts <- function(table,
 
     colNames <- colnames(table)
     checkColNames <- colNames[!grepl("variable|year", colNames)]
-    toBeSubstituted <- colNames[grepl("count|proportionInPercentage", colNames)]
+    toBeSubstituted <- colNames[grepl("count|proportionInPercentage|value", colNames)]
 
 
     # if any count in the specified columns is less than minCellCount but bigger than 0, replace the value with substitute
