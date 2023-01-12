@@ -22,7 +22,7 @@ library(DT)
 ```
 
 Here we use the mockdata for training purposes. 
-But ideally, you use your real data to create the cdm. 
+But ideally, you use your real data, so just connect to your database (if you are not already connected). 
 The idea would be to name these new cdm tables in the future motherTable and babyTable.
 
 ```{r}
