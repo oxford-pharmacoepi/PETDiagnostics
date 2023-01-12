@@ -21,7 +21,9 @@ library(dplyr)
 library(DT)
 ```
 
-First, connect to the database. #question on whether to use the mock of not (wait Ed)
+Here we use the mockdata for training purposes. 
+But ideally, you use your real data to create the cdm. 
+The idea would be to name these new cdm tables in the future motherTable and babyTable.
 
 ```{r}
 cdm <-  PETDiagnostics:::mockPregnancy(motherTable = NULL,
