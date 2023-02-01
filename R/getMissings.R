@@ -31,7 +31,7 @@ getMissings <- function(
 # all the required variables do not have missings, they have "0", whereas non-required variables have NAs
 
   n_missing_long <-  tibble::as_tibble(reshape2::melt(n_missing, variable.names="variable",value.name = "count"))
-  prop_missing_long <- tibble::as_tibble(reshape2::melt(prop_missing, variable.names="variable",value.name = "proportionInPercentage"))
+  prop_missing_long <- tibble::as_tibble(reshape2::melt(prop_missing, variable.names="variable",value.name = "Percentage"))
 
 
   summMissings <- n_missing_long %>% dplyr::left_join(prop_missing_long, by = "variable")  %>% dplyr::mutate(Total = nrow(workTable))

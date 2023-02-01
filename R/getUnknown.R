@@ -21,7 +21,7 @@ getUnknown <- function(
   n_unknown <- tibble::tibble(.rows=1)
   prop_unknown <- tibble::tibble(.rows=1)
 
-  checkCol <- c("pregnancy_start_date","pregnancy_end_date","pregnancy_outcome","pregnancy_mode_delivery","pregnancy_single")
+  checkCol <- c("pregnancy_id","person_id","pregnancy_start_date","pregnancy_end_date","gestational_length_in_day","pregnancy_outcome","pregnancy_mode_delivery","pregnancy_single")
 
   #loop through the required columns and count the zeros
   for (i in 1:length(checkCol)){
@@ -32,7 +32,7 @@ getUnknown <- function(
   }
 
   n_unknown_long <-  tibble::as_tibble(reshape2::melt(n_unknown, variable.names="variable",value.name = "count"))
-  prop_unknown_long <- tibble::as_tibble(reshape2::melt(prop_unknown, variable.names="variable",value.name = "proportionInPercentage"))
+  prop_unknown_long <- tibble::as_tibble(reshape2::melt(prop_unknown, variable.names="variable",value.name = "Percentage"))
 
 
   summUnknowns <- n_unknown_long %>% dplyr::left_join(prop_unknown_long, by = "variable")  %>% dplyr::mutate(Total = nrow(motherTable))

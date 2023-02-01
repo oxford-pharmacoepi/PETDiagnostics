@@ -39,39 +39,41 @@ checkFetusesLiveborn <- function(
 
   records_n <- records %>%
     dplyr::summarise(
-                     relativeNumberWrong = sum(.data$numberNotRight, na.rm = T),
-
-                     relativeNumberRight = sum(.data$numberNotRight == 0, na.rm = T),
-
-                     missing_relativeNumber = sum(is.na(.data$numberNotRight)),
-
                      multipleWrong = sum(.data$multipleWrong, na.rm = T),
 
                      multipleRight = sum(.data$multipleRight, na.rm = T),
 
                      missing_multiple = sum(as.integer(is.na((.data$pregnancy_number_fetuses) | is.na(.data$pregnancy_single)) |
-                                                  (is.na(.data$pregnancy_number_fetuses) & is.na(.data$pregnancy_single))))
+                                                  (is.na(.data$pregnancy_number_fetuses) & is.na(.data$pregnancy_single)))),
+
+                     relativeNumberWrong = sum(.data$numberNotRight, na.rm = T),
+
+                     relativeNumberRight = sum(.data$numberNotRight == 0, na.rm = T),
+
+                     missing_relativeNumber = sum(is.na(.data$numberNotRight))
 
        )
 
 
   records_prop <- records_n %>%
     dplyr::summarise(
-                     relativeNumberWrong = round(.data$relativeNumberWrong / nrow(tibble::as_tibble(workTable)),3)*100,
-
-                     relativeNumberRight = round(.data$relativeNumberRight / nrow(tibble::as_tibble(workTable)),3)*100,
-
-                     missing_relativeNumber = round(.data$missing_relativeNumber / nrow(tibble::as_tibble(workTable)),3)*100,
-
                      multipleWrong = round(.data$multipleWrong / nrow(tibble::as_tibble(workTable)),3)*100,
 
                      multipleRight = round(.data$multipleRight / nrow(tibble::as_tibble(workTable)),3)*100,
 
-                     missing_multiple = round(.data$missing_multiple / nrow(tibble::as_tibble(workTable)),3)*100
+                     missing_multiple = round(.data$missing_multiple / nrow(tibble::as_tibble(workTable)),3)*100,
+
+                     relativeNumberWrong = round(.data$relativeNumberWrong / nrow(tibble::as_tibble(workTable)),3)*100,
+
+                     relativeNumberRight = round(.data$relativeNumberRight / nrow(tibble::as_tibble(workTable)),3)*100,
+
+                     missing_relativeNumber = round(.data$missing_relativeNumber / nrow(tibble::as_tibble(workTable)),3)*100
+
+
     )
 
   records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-  records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "proportionInPercentage"))
+  records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
 
   records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
 

@@ -16,15 +16,15 @@ test_that("check working example 1) each count 2) counts add up to total", {
     prev_livebirth_number = c(8,8,9,1),
     prev_stillbirth_number = c(3,3,3,0),
     prev_miscar_number = c(1,1,1,0),
-    prev_TOP_number = c(0,0,0,1),
-    prev_TOP12_number = c(9,9,9,0),
-    pregnancy_BMI = c(51,48,48,30),
+    prev_top_number = c(0,0,0,1),
+    prev_top12_number = c(9,9,9,0),
+    pregnancy_bmi = c(51,48,48,30),
     pregnancy_folic = c(4188539,4188539,4188539,4188540),
-    pregnancy_TOPFA = c(4188539,4188539,4188539,4188540),
-    pregnancy_ART = c(4188539,4188539,4188539,4188540),
-    pregnancy_SMOK = c(4188539,4188539,4188539,4188540),
-    pregnacy_ALC = c(4188539,4188539,4188539,4188540),
-    pregnancy_SUBS = c(4188539,4188539,4188539,4188540),
+    pregnancy_topfa = c(4188539,4188539,4188539,4188540),
+    pregnancy_art = c(4188539,4188539,4188539,4188540),
+    pregnancy_smok = c(4188539,4188539,4188539,4188540),
+    pregnacy_alc = c(4188539,4188539,4188539,4188540),
+    pregnancy_subs = c(4188539,4188539,4188539,4188540),
     pregnancy_outcome_source_value = c(69617,34789,20934,23948),
     pregnancy_mode_delivery_source_value = c(69617,23423,23423,13204),
   )
@@ -36,9 +36,9 @@ test_that("check working example 1) each count 2) counts add up to total", {
     birth_outcome = c(4092289,443213,4092289,4081422),
     birth_weight = c(6917,NA,2094, NA),
     birth_con_malformation = c(4188540,4188540,NA,NA),
-    birth_SGA = c(NA,NA,4188540,NA),
-    birth_FGR = c(NA,4188540,NA,NA),
-    birth_APGAR = c(4188539,NA,NA,NA)
+    birth_sga = c(NA,NA,4188540,NA),
+    birth_fgr = c(NA,4188540,NA,NA),
+    birth_apgar = c(4188539,NA,NA,NA)
   )
 
 

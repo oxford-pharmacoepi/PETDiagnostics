@@ -7,7 +7,8 @@
 #'
 #' @examples
 summariseGestationalAge <- function(
-    workTable
+    workTable,
+    minGestAge_Days
 )
   {
 
@@ -27,11 +28,12 @@ summariseGestationalAge <- function(
     records <- records %>% dplyr::mutate(
       n = dplyr::if_else((!is.na(.data$gestational_length_in_day) &
                            !is.na(.data$pregnancy_start_date) &
-                           !is.na(.data$pregnancy_end_date)), dplyr::if_else(.data$gestational_length_in_day ==
-                           !!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day"), 0, 1,missing = NULL),
+                           !is.na(.data$pregnancy_end_date)), dplyr::if_else(dplyr::between(!!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day"),
+                                                                                     .data$gestational_length_in_day -7, .data$gestational_length_in_day +7),0, 1,missing = NULL),
       NA,missing=NULL),
-      endBeforeStart = dplyr::if_else((.data$pregnancy_start_date>=.data$pregnancy_end_date),1,0,missing = NULL),
-      endAfterStart = dplyr::if_else((.data$pregnancy_start_date<.data$pregnancy_end_date),1,0,missing = NULL)) %>% dplyr::collect()
+      endBeforeStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))>=.data$pregnancy_end_date),1,0,missing = NULL),
+      endAfterStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))<.data$pregnancy_end_date),1,0,missing = NULL)) %>%
+        dplyr::collect()
 
 
     records_n <- records %>%
@@ -42,9 +44,9 @@ summariseGestationalAge <- function(
 # there should not be NAs, there is no space for unknowns "zeros"
                      missing_information = sum(is.na(.data$n)),
 
-                     endBeforeStart = sum(.data$endBeforeStart, na.rm =T),
+                     endBeforeMinGestAge = sum(.data$endBeforeStart, na.rm =T),
 
-                     endAfterStart = sum(.data$endAfterStart, na.rm =T))
+                     endAfterMinGestAge = sum(.data$endAfterStart, na.rm =T))
 
 
     records_prop <- records_n %>%
@@ -55,14 +57,14 @@ summariseGestationalAge <- function(
 
                        missing_information = round(.data$missing_information / nrow(tibble::as_tibble(workTable)),3)*100,
 
-                       endBeforeStart = round(.data$endBeforeStart / nrow(tibble::as_tibble(workTable)),3)*100,
+                       endBeforeMinGestAge = round(.data$endBeforeMinGestAge / nrow(tibble::as_tibble(workTable)),3)*100,
 
-                       endAfterStart = round(.data$endAfterStart / nrow(tibble::as_tibble(workTable)),3)*100)
+                       endAfterMinGestAge = round(.data$endAfterMinGestAge / nrow(tibble::as_tibble(workTable)),3)*100)
 
 
 
     records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-    records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "proportionInPercentage"))
+    records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
 
     records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
 

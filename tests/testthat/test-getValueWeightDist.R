@@ -5,9 +5,9 @@ test_that("check working example birth weight distribution", {
     birth_outcome = c(4092289,443213,4092289,4081422),
     birth_weight = c(6917,NA,2094, NA),
     birth_con_malformation = c(4188540,4188540,NA,NA),
-    birth_SGA = c(NA,NA,4188540,NA),
-    birth_FGR = c(NA,4188540,NA,NA),
-    birth_APGAR = c(4188539,NA,NA,NA)
+    birth_sga = c(NA,NA,4188540,NA),
+    birth_fgr = c(NA,4188540,NA,NA),
+    birth_apgar = c(4188539,NA,NA,NA)
   )
 
 

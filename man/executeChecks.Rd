@@ -10,6 +10,7 @@ executeChecks(
   checks = c("overview", "annualOverview", "missing", "unknown", "gestationalAge",
     "datesAgeDist", "outcomeMode", "fetusesLiveborn", "fetusid", "weightDist", "bitSet"),
   minCellCount = 5,
+  minGestAge_Days = 21,
   verbose = FALSE
 )
 }

@@ -4,6 +4,7 @@
 #' @param babyTable input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL
 #' @param checks chose the checks you want to perform, not all checks are possible depending on which tables are available
 #' @param minCellCount chose a number below you want to obscure counts, 0 is not obscured
+#' @param minGestAge_Days chose a number below you think that the pregnancy entries were wrong / should not be there
 #' @param verbose will give you the information the package is performing at that moment
 #'
 #' @return all the individual result tables with data obscured if need be
@@ -16,6 +17,7 @@ executeChecks <- function(#cdm,
                           checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
                                      "fetusid","weightDist","bitSet"),
                           minCellCount = 5,
+                          minGestAge_Days = 21,
                           verbose = FALSE) {
 
   errorMessage <- checkmate::makeAssertCollection()
@@ -29,6 +31,7 @@ executeChecks <- function(#cdm,
   checkmate::assertTRUE(is.null(babyTable) || inherits(babyTable, 'tbl_dbi'), add = errorMessage)
 
   checkmate::assertTRUE(is.numeric(minCellCount) || is.null(minCellCount), add = errorMessage)
+  checkmate::assertTRUE(is.numeric(minGestAge_Days) || is.null(minGestAge_Days), add = errorMessage)
   checkLogical(verbose, messageStore = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
@@ -93,7 +96,7 @@ executeChecks <- function(#cdm,
     }
     if (!is.null(motherTable)) {
   gestationalAgeMatch <-  NULL
-  gestationalAgeMatch <- summariseGestationalAge(motherTable) %>% dplyr::collect()
+  gestationalAgeMatch <- summariseGestationalAge(motherTable,minGestAge_Days) %>% dplyr::collect()
     }
   }
 
@@ -168,11 +171,11 @@ executeChecks <- function(#cdm,
     if (!is.null(motherTable) && !is.null(babyTable)) {
       bitSetOverviewAll <- NULL
       bitSetOverviewAll  <- getBitSet(motherTable,babyTable) %>% dplyr::collect()
-    } 
+    }
     if (!is.null(motherTable)) {
         bitSetOverviewMother <- NULL
         bitSetOverviewMother  <- getBitSet(motherTable, babyTable = NULL) %>% dplyr::collect()
-      } 
+      }
     if (!is.null(babyTable)) {
         bitSetOverviewBaby <- NULL
         bitSetOverviewBaby  <- getBitSet(motherTable = NULL, babyTable) %>% dplyr::collect()

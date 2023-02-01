@@ -42,11 +42,12 @@ executeChecks (
   checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode",
                                      "fetusesLiveborn","fetusid","weightDist","bitSet"),                       
   minCellCount = 5,
+  minGestAge_Days = 21,
   verbose = FALSE)
 ```
 
 The`cdm` is the database reference of the OMOP CDM using the `CDMConnector` package.\
-The `motherTable` is the `motherTable` in the CDM. The `babyTable` is the `babyTable` in the CDM. `checks` allows to select the checks to be executed, by default, all the checks will be run. The `minCellCount` is minimum number of events to report, numbers lower than this will be obscured. The number zero will not be obscured
+The `motherTable` is the `motherTable` in the CDM. The `babyTable` is the `babyTable` in the CDM. `checks` allows to select the checks to be executed, by default, all the checks will be run. The `minCellCount` is minimum number of events to report, numbers lower than this will be obscured. The number zero will not be obscured´, `minGestAge_Days` implies the number of minimum number of gestational age that may be the minimum for pregnancies to be recorded. 
 
 ```{r executeChecks}
 resultList<-executeChecks(motherTable = cdm$motherTable,               

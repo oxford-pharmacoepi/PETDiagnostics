@@ -28,6 +28,9 @@ getBitSet <- function(
       dplyr::select(
         "pregnancy_number_fetuses",
         "pregnancy_single",
+        "pregnancy_start_date",
+        "pregnancy_end_date",
+        "gestational_length_in_day",
         "pregnancy_id",
         "pregnancy_outcome",
         "pregnancy_number_liveborn",
@@ -38,9 +41,9 @@ getBitSet <- function(
                                       "birth_outcome",
                                       "birth_weight",
                                       "birth_con_malformation",
-                                      "birth_SGA",
-                                      "birth_FGR",
-                                      "birth_APGAR")),by = "pregnancy_id")  %>%
+                                      "birth_sga",
+                                      "birth_fgr",
+                                      "birth_apgar")),by = "pregnancy_id")  %>%
       dplyr::collect()
 
     #set required variables with 0 to missing because missing data pattern function expect a missing
@@ -59,6 +62,9 @@ getBitSet <- function(
         dplyr::select(
           "pregnancy_number_fetuses",
           "pregnancy_single",
+          "pregnancy_start_date",
+          "pregnancy_end_date",
+          "gestational_length_in_day",
           "pregnancy_id",
           "pregnancy_outcome",
           "pregnancy_number_liveborn",
@@ -84,9 +90,9 @@ getBitSet <- function(
           "birth_outcome",
           "birth_weight",
           "birth_con_malformation",
-          "birth_SGA",
-          "birth_FGR",
-          "birth_APGAR"
+          "birth_sga",
+          "birth_fgr",
+          "birth_apgar"
         ) %>%
         dplyr::collect()
 

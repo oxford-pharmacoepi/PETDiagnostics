@@ -25,7 +25,7 @@ checkOutcomeMode <- function(
    records <- records %>% dplyr::mutate(
     n = dplyr::if_else(.data$pregnancy_outcome !=0 , dplyr::if_else(
       (.data$pregnancy_outcome == 4067106 | .data$pregnancy_outcome == 4081422)
-                           & (.data$pregnancy_mode_delivery == 4125611 | .data$pregnancy_mode_delivery ==4015701),1,0,missing = NULL),NA,missing = NULL)) %>%
+                           & (.data$pregnancy_mode_delivery ==4015701),1,0,missing = NULL),NA,missing = NULL)) %>%
      dplyr::collect()
 
   records_n <- records %>%
@@ -48,7 +48,7 @@ checkOutcomeMode <- function(
 
 
 records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "proportionInPercentage"))
+records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
 
 records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
 

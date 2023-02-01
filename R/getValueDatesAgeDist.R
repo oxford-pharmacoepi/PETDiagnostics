@@ -37,19 +37,64 @@ getValueDatesAgeDist <- function(
       "gestational_length_in_day"
     )  %>% dplyr::collect() %>% dplyr::summarise(
       min_gestationalAge_inDays = min(.data$gestational_length_in_day, na.rm=T),
+      q01_gestationalAge_inDays = stats::quantile(.data$gestational_length_in_day,0.01, na.rm = T),
       q05_gestationalAge_inDays = stats::quantile(.data$gestational_length_in_day,0.05, na.rm = T),
       q10_gestationalAge_inDays = stats::quantile(
         .data$gestational_length_in_day,
         0.10, na.rm = T
       ),
+      q15_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.15, na.rm = T
+      ),
+      q20_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.20, na.rm = T
+      ),
       q25_gestationalAge_inDays = stats::quantile(
         .data$gestational_length_in_day,
         0.25, na.rm = T
       ),
+      q30_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.30, na.rm = T
+      ),
+      q35_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.35, na.rm = T
+      ),
+      q40_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.40, na.rm = T
+      ),
+      q45_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.45, na.rm = T
+      ),
       median_gestationalAge_inDays = stats::median(.data$gestational_length_in_day, na.rm = T),
+      q55_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.55, na.rm = T
+      ),
+      q60_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.60, na.rm = T
+      ),
+      q70_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.70, na.rm = T
+      ),
       q75_gestationalAge_inDays = stats::quantile(
         .data$gestational_length_in_day,
         0.75, na.rm = T
+      ),
+      q80_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.80, na.rm = T
+      ),
+      q85_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.85, na.rm = T
       ),
       q90_gestationalAge_inDays = stats::quantile(
         .data$gestational_length_in_day,
@@ -58,6 +103,10 @@ getValueDatesAgeDist <- function(
       q95_gestationalAge_inDays = stats::quantile(
         .data$gestational_length_in_day,
         0.95, na.rm = T
+      ),
+      q99_gestationalAge_inDays = stats::quantile(
+        .data$gestational_length_in_day,
+        0.99, na.rm = T
       ),
       max_gestationalAge_inDays = max(.data$gestational_length_in_day, na.rm = T)
     )

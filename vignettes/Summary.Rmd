@@ -28,6 +28,19 @@ cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
                           seed = 1)
 ```
 
+# or use your own cdm connection
+## you will have to add the table to the cdm as follows:
+## replace the YOURSCHEMA to be your schema name, and the PREGNANCYTABLENAME to be your motherTable name
+## cdm$motherTable <- tbl(db,dbplyr::in_schema("YOURSCHEMA","PREGNANCYTABLENAME"))
+
+## Example : 
+## cdm <- CDMConnector::cdm_from_con(con = db,
+##                                  cdm_schema = cdm_database_schema,
+##                                  write_schema = results_database_schema)
+## cdm$motherTable <- tbl(db, sql("SELECT * FROM omop22t2_cmbd.pregnancy_episode"))
+
+
+
 ## How many women and pregnancies are there?
 
 ```{r}
@@ -84,7 +97,7 @@ DT::datatable(unknownSummaryMother)
 ###  "end after start" counts the occasions in which the pregnancy end date happened after the start date
   
 ```{r}
-gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$motherTable)
+gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$motherTable,minGestAge_Days = 21)
 DT::datatable(gestationalAgeMatch)
 ```
 

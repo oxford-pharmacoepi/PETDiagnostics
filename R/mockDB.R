@@ -30,9 +30,9 @@ mockPregnancy <- function(motherTable = NULL,
 
   if (is.null(motherTable)) {
     pregnancy_id <-
-      as.character(seq(1:pregnancy_size)) #generate number of unique pregnancy_id
+      (seq(1:pregnancy_size)) #generate number of unique pregnancy_id (integers)
     person_id <-
-      as.character(sample(seq(1:pregnancy_size),pregnancy_size, replace = TRUE)) #generate number of unique person id
+      (sample(seq(1:pregnancy_size),pregnancy_size, replace = TRUE)) #generate number of unique person id (integers)
 
 
     # generate pregnancy start date
@@ -110,7 +110,7 @@ mockPregnancy <- function(motherTable = NULL,
     # #assign number of previous terminations of pregnancy (above week 12) to each pregnancy
     arguments <- c("pregnancy_number_liveborn","prev_pregnancy_gravidity",
                    "prev_livebirth_number","prev_stillbirth_number","prev_miscar_number",
-                   "prev_TOP_number","prev_TOP12_number")
+                   "prev_top_number","prev_top12_number")
 
     b <- tibble::tibble(.rows = pregnancy_size)
 
@@ -132,7 +132,7 @@ mockPregnancy <- function(motherTable = NULL,
     ) #assign previous parity to each pregnancy
 
 
-    pregnancy_BMI <- sample(15:90,pregnancy_size,
+    pregnancy_bmi <- sample(15:90,pregnancy_size,
                                    replace = TRUE)
     #assign Body mass index value to each pregnancy
 
@@ -144,9 +144,9 @@ mockPregnancy <- function(motherTable = NULL,
     #assign whether the mother was smoking during this pregnancy
     #assign whether the mother was consuming alcohol during this pregnancy
     #assign whether the mother was using illicit drugs during this pregnancy
-    arguments <- c("pregnancy_folic","pregnancy_TOPFA","pregnancy_ART",
-                   "pregnancy_SMOK","pregnacy_ALC",
-                   "pregnancy_SUBS")
+    arguments <- c("pregnancy_folic","pregnancy_topfa","pregnancy_art",
+                   "pregnancy_smok","pregnacy_alc",
+                   "pregnancy_subs")
 
     a <- tibble::tibble(.rows = pregnancy_size)
 
@@ -182,7 +182,7 @@ mockPregnancy <- function(motherTable = NULL,
         pregnancy_number_fetuses = pregnancy_number_fetuses,
         b,
         prev_pregnancy_parity = prev_pregnancy_parity,
-        pregnancy_BMI = pregnancy_BMI,
+        pregnancy_bmi = pregnancy_bmi,
         pregnancy_outcome_source_value = pregnancy_outcome_source_value,
         pregnancy_mode_delivery_source_value = pregnancy_mode_delivery_source_value,
         a))
@@ -229,7 +229,7 @@ mockPregnancy <- function(motherTable = NULL,
     #assign whether the baby was born with a congenital malformation
     #assign whether the baby was small for gestational age
     #assign whether there was fetal growth gestation
-    arguments <- c("birth_con_malformation","birth_SGA","birth_FGR"
+    arguments <- c("birth_con_malformation","birth_sga","birth_fgr"
                     )
 
     c <- tibble::tibble(.rows = fetus_size)
@@ -242,7 +242,7 @@ mockPregnancy <- function(motherTable = NULL,
 
 
 
-    birth_APGAR <- LowHighSampling(0,10,fetus_size)
+    birth_apgar <- LowHighSampling(0,10,fetus_size)
     #assign 5-minute APGAR score from 0 to 10 to the fetus
 
     # putting into the babytable
@@ -253,7 +253,7 @@ mockPregnancy <- function(motherTable = NULL,
         birth_outcome = birth_outcome,
         birth_weight = birth_weight,
         c,
-        birth_APGAR = birth_APGAR))
+        birth_apgar = birth_apgar))
 
     #add some random missingness
 

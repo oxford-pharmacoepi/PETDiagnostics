@@ -89,7 +89,7 @@ records_prop <- records_n %>%
 
 
 records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "proportionInPercentage"))
+records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
 
 records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(motherTable)))
 

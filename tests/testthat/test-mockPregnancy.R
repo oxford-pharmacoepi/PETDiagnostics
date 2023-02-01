@@ -27,10 +27,10 @@ test_that("check presence of columns in motherTable", {
   ColsDbNames <- c("pregnancy_id","person_id","pregnancy_start_date","pregnancy_end_date",
                     "gestational_length_in_day","pregnancy_outcome","pregnancy_mode_delivery","pregnancy_single",
                     "pregnancy_marital_status","pregnancy_number_fetuses","pregnancy_number_liveborn","prev_pregnancy_gravidity",
-                    "prev_livebirth_number","prev_stillbirth_number","prev_miscar_number","prev_TOP_number","prev_TOP12_number",
-                    "prev_pregnancy_parity","pregnancy_BMI","pregnancy_outcome_source_value","pregnancy_mode_delivery_source_value",
-                    "pregnancy_mode_delivery_source_value","pregnancy_folic","pregnancy_TOPFA",
-                    "pregnancy_ART","pregnancy_SMOK","pregnacy_ALC","pregnancy_SUBS")
+                    "prev_livebirth_number","prev_stillbirth_number","prev_miscar_number","prev_top_number","prev_top12_number",
+                    "prev_pregnancy_parity","pregnancy_bmi","pregnancy_outcome_source_value","pregnancy_mode_delivery_source_value",
+                    "pregnancy_mode_delivery_source_value","pregnancy_folic","pregnancy_topfa",
+                    "pregnancy_art","pregnancy_smok","pregnacy_alc","pregnancy_subs")
   ColsNamesCheck <- all(ColsDbNames %in%
                              names(db$motherTable %>%
                                      utils::head(1) %>%
@@ -46,7 +46,7 @@ test_that("check presence of columns in babyTable", {
   db <- mockPregnancy()
 
   ColsDbNames <- c("pregnancy_id","fetus_id","birth_outcome","birth_weight","birth_con_malformation",
-                   "birth_SGA","birth_FGR","birth_APGAR")
+                   "birth_sga","birth_fgr","birth_apgar")
   ColsNamesCheck <- all(ColsDbNames %in%
                           names(db$babyTable %>%
                                   utils::head(1) %>%
