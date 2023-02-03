@@ -27,13 +27,13 @@ checkFetusesLiveborn <- function(
   #check if number of fetuses is equal or larger to number of liveborn
   #check if single / multiple pregnancy adds up with fetus number
   records <- records %>% dplyr::mutate(
-    numberNotRight = dplyr::if_else((.data$pregnancy_number_fetuses) >= (.data$pregnancy_number_liveborn),0,1,missing = NULL),
+    numberNotRight = dplyr::if_else((.data$pregnancy_number_fetuses) >= (.data$pregnancy_number_liveborn),0,1),
 
     multipleWrong = dplyr::if_else((.data$pregnancy_number_fetuses > 1 &  .data$pregnancy_single == 4188539) |
-                                        (.data$pregnancy_number_fetuses == 1 &  .data$pregnancy_single == 4188540),1,0,missing = NULL),
+                                        (.data$pregnancy_number_fetuses == 1 &  .data$pregnancy_single == 4188540),1,0),
 
     multipleRight = dplyr::if_else((.data$pregnancy_number_fetuses >1 &  .data$pregnancy_single == 4188540 )|
-                                     (.data$pregnancy_number_fetuses == 1 &  .data$pregnancy_single == 4188539),1,0,missing = NULL)) %>%
+                                     (.data$pregnancy_number_fetuses == 1 &  .data$pregnancy_single == 4188539),1,0)) %>%
     dplyr::collect()
 
 
