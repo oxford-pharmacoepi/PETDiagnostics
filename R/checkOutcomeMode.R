@@ -25,7 +25,7 @@ checkOutcomeMode <- function(
    records <- records %>% dplyr::mutate(
     n = dplyr::if_else(.data$pregnancy_outcome !=0 , dplyr::if_else(
       (.data$pregnancy_outcome == 4067106 | .data$pregnancy_outcome == 4081422)
-                           & (.data$pregnancy_mode_delivery ==4015701),1,0,missing = NULL),NA,missing = NULL)) %>%
+                           & (.data$pregnancy_mode_delivery ==4015701),1,0),NA)) %>%
      dplyr::collect()
 
   records_n <- records %>%
