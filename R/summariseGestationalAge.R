@@ -29,10 +29,10 @@ summariseGestationalAge <- function(
       n = dplyr::if_else((!is.na(.data$gestational_length_in_day) &
                            !is.na(.data$pregnancy_start_date) &
                            !is.na(.data$pregnancy_end_date)), dplyr::if_else(dplyr::between(!!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day"),
-                                                                                     .data$gestational_length_in_day -7, .data$gestational_length_in_day +7),0, 1,missing = NULL),
+                                                                                     .data$gestational_length_in_day -7, .data$gestational_length_in_day +7),0, 1),
       NA,missing=NULL),
-      endBeforeStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))>=.data$pregnancy_end_date),1,0,missing = NULL),
-      endAfterStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))<.data$pregnancy_end_date),1,0,missing = NULL)) %>%
+      endBeforeStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))>=.data$pregnancy_end_date),1,0),
+      endAfterStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))<.data$pregnancy_end_date),1,0)) %>%
         dplyr::collect()
 
 
