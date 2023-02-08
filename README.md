@@ -59,18 +59,18 @@ head(cdm$motherTable)
 #> # Source:   SQL [6 x 27]
 #> # Database: DuckDB 0.5.1 [tburkard@Windows 10 x64:R 4.2.1/:memory:]
 #>   pregna…¹ perso…² pregnanc…³ pregnanc…⁴ gesta…⁵ pregn…⁶ pregn…⁷ pregn…⁸ pregn…⁹
-#>   <chr>    <chr>   <date>     <date>       <dbl>   <dbl>   <dbl>   <int>   <dbl>
-#> 1 1        68      2010-12-05 2011-02-01      58 4092289 4015701 4188539 4095714
-#> 2 2        39      2004-09-01 2005-02-21     173 4081422       0 4188540 4053842
-#> 3 3        1       2019-10-03 2020-01-19     108 4092289       0 4188540 4242253
-#> 4 4        34      2001-05-15 2002-01-08     238  443213       0 4188539 4095714
-#> 5 5        87      2010-05-15 2011-01-14     244 4092289 4125611 4188540 4095714
-#> 6 6        43      2018-03-21 2018-08-13     145       0       0 4188539 4338692
+#>      <int>   <int> <date>     <date>       <dbl>   <dbl>   <dbl>   <int>   <dbl>
+#> 1        1      68 2010-12-05 2011-02-01      58 4092289 4015701 4188539 4095714
+#> 2        2      39 2004-09-01 2005-02-21     173 4081422       0 4188540 4053842
+#> 3        3       1 2019-10-03 2020-01-19     108 4092289       0 4188540 4242253
+#> 4        4      34 2001-05-15 2002-01-08     238  443213       0 4188539 4095714
+#> 5        5      87 2010-05-15 2011-01-14     244 4092289 4125611 4188540 4095714
+#> 6        6      43 2018-03-21 2018-08-13     145       0       0 4188539 4338692
 #> # … with 18 more variables: pregnancy_number_fetuses <int>,
 #> #   pregnancy_number_liveborn <int>, prev_pregnancy_gravidity <int>,
 #> #   prev_livebirth_number <int>, prev_stillbirth_number <int>,
-#> #   prev_miscar_number <int>, prev_TOP_number <int>, prev_TOP12_number <int>,
-#> #   prev_pregnancy_parity <dbl>, pregnancy_BMI <int>,
+#> #   prev_miscar_number <int>, prev_top_number <int>, prev_top12_number <int>,
+#> #   prev_pregnancy_parity <dbl>, pregnancy_bmi <int>,
 #> #   pregnancy_outcome_source_value <chr>,
 #> #   pregnancy_mode_delivery_source_value <chr>, pregnancy_folic <int>, …
 head(cdm$babyTable)
@@ -85,7 +85,7 @@ head(cdm$babyTable)
 #> 5 5            5              4092289       3716 4188540 4188539 4188539       8
 #> 6 6            6               443213       4201 4188540 4188540 4188539       7
 #> # … with abbreviated variable names ¹​birth_weight, ²​birth_con_malformation,
-#> #   ³​birth_SGA, ⁴​birth_FGR, ⁵​birth_APGAR
+#> #   ³​birth_sga, ⁴​birth_fgr, ⁵​birth_apgar
 ```
 
 ## Execute the diagnostic checks of your table(s)
@@ -103,6 +103,7 @@ resultList <- executeChecks (
                           checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode",
                                      "fetusesLiveborn","fetusid","weightDist","bitSet"),                       
                           minCellCount = 5,
+                          minGestAge_Days = 21,
                           verbose = FALSE)
 #> No id variables; using all as measure variables
 #> No id variables; using all as measure variables
