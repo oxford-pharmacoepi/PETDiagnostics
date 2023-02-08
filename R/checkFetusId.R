@@ -39,14 +39,14 @@ recordshelp <- NULL
 records<- records %>% dplyr::mutate(
 
   single_not_align_with_noOfFetusId = ifelse(.data$pregnancy_single !=0 ,dplyr::if_else(
-       (.data$n > 1  &  .data$pregnancy_single == 4188539) | (.data$n == 1  &  .data$pregnancy_single == 4188540),1,0,missing = NULL),NA),
+       (.data$n > 1  &  .data$pregnancy_single == 4188539) | (.data$n == 1  &  .data$pregnancy_single == 4188540),1,0),NA),
 
   single_align_with_noOfFetusId = ifelse(.data$pregnancy_single !=0 , dplyr::if_else(
-    (.data$n > 1  &  .data$pregnancy_single == 4188540) | (.data$n == 1  &  .data$pregnancy_single == 4188539),1,0,missing = NULL),NA),
+    (.data$n > 1  &  .data$pregnancy_single == 4188540) | (.data$n == 1  &  .data$pregnancy_single == 4188539),1,0),NA),
 
-  noOfFetus_not_align_with_noOfFetusId = dplyr::if_else((.data$pregnancy_number_fetuses  != .data$n ),1,0,missing = NULL),
+  noOfFetus_not_align_with_noOfFetusId = dplyr::if_else((.data$pregnancy_number_fetuses  != .data$n ),1,0),
 
-  noOfFetus_align_with_noOfFetusId = dplyr::if_else((.data$pregnancy_number_fetuses  == .data$n ),1,0,missing = NULL),
+  noOfFetus_align_with_noOfFetusId = dplyr::if_else((.data$pregnancy_number_fetuses  == .data$n ),1,0),
 
   pregnancy_id = .data$pregnancy_id,
   .keep=c("used"))  %>%
