@@ -4,10 +4,12 @@
 \alias{summariseGestationalAge}
 \title{Title}
 \usage{
-summariseGestationalAge(workTable)
+summariseGestationalAge(workTable, minGestAge_Days)
 }
 \arguments{
 \item{workTable}{is the motherTable or babyTable}
+
+\item{minGestAge_Days}{is minimum number of days of gestational age for which we test whether the end was before (start + minGestAge_Days)}
 }
 \value{
 returns a table with the dates checks

@@ -34,6 +34,7 @@ cdm <-  PETDiagnostics:::mockPregnancy(motherTable = NULL,
 ```
 
 We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check.
+You can also chose only individual checks to run.
 
 ```{r eval=FALSE}
 executeChecks (

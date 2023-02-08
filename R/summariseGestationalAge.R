@@ -1,6 +1,7 @@
 #' Title
 #'
 #' @param workTable is the motherTable or babyTable
+#' @param minGestAge_Days is minimum number of days of gestational age for which we test whether the end was before (start + minGestAge_Days)
 #'
 #' @return returns a table with the dates checks
 #' @export

@@ -23,6 +23,8 @@ executeChecks(
 
 \item{minCellCount}{chose a number below you want to obscure counts, 0 is not obscured}
 
+\item{minGestAge_Days}{chose a number below you think that the pregnancy entries were wrong / should not be there}
+
 \item{verbose}{will give you the information the package is performing at that moment}
 }
 \value{
