@@ -21,7 +21,7 @@ library(DT)
 ```
 
 # Build the tables
-# or use your own cdm connection, in which case the table needs to added to the cdm
+# or use your own cdm connection, in which case the table needs to be added to the cdm (on how to do this, see the run_this.R script)
 ```{r}
 cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
                           babyTable = NULL,
