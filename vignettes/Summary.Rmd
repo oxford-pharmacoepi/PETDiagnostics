@@ -21,6 +21,7 @@ library(DT)
 ```
 
 # Build the tables
+# or use your own cdm connection, in which case the table needs to be added to the cdm (on how to do this, see the run_this.R script)
 ```{r}
 cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
                           babyTable = NULL,
@@ -28,19 +29,6 @@ cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
                           fetus_size = 110,
                           seed = 1)
 ```
-
-# or use your own cdm connection
-## you will have to add the table to the cdm as follows:
-## replace the YOURSCHEMA to be your schema name, and the PREGNANCYTABLENAME to be your motherTable name
-## cdm$motherTable <- tbl(db,dbplyr::in_schema("YOURSCHEMA","PREGNANCYTABLENAME"))
-
-## Example : 
-## cdm <- CDMConnector::cdm_from_con(con = db,
-##                                  cdm_schema = cdm_database_schema,
-##                                  write_schema = results_database_schema)
-## cdm$motherTable <- tbl(db, sql("SELECT * FROM omop22t2_cmbd.pregnancy_episode"))
-
-
 
 ## How many women and pregnancies are there?
 
@@ -91,11 +79,11 @@ DT::datatable(unknownSummaryMother)
 
 ## How do dates and gestational age add up in the motherTable?
   
-###  "different gestational age" means that it is not the difference between pregnancy end date and start date
-###  "match gestational age" means that it is exactly the difference between pregnancy end date and start date
+###  "different gestational age" means that the difference between pregnancy end date and start date is larger than 7 days
+###  "match gestational age" means that it the difference between pregnancy end date and start date is equal or smaller than 7 days
 ###  "missing information" counts the missings in either gestational age, pregnancy end or start date (there shold not be any missings because it is a required variable)
-###  "end before start" counts the occasions in which the pregnancy end date happened on or before the start date
-###  "end after start" counts the occasions in which the pregnancy end date happened after the start date
+###  "end before start" counts the occasions in which the pregnancy end date happened on or before the start date plus the minimum of pre-defined gestational age
+###  "end after start" counts the occasions in which the pregnancy end date happened after the start date plus the minimum of pre-defined gestational age
   
 ```{r}
 gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$motherTable,minGestAge_Days = 21)
