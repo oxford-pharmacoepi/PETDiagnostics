@@ -39,8 +39,7 @@ concept_sets <- list(
   renal_impairment = cs(descendants(4030518)),
   pre_eclampsia = cs(descendants(c(443700, 439393, 141084))),
   gestational_diabetes = cs(descendants(c(4024659, 43020791, 438480))),
-  pregnancy_induced_hypertension = cs(descendants(4167493)),
-  gibleed =  cs(descendants(192671))
+  pregnancy_induced_hypertension = cs(descendants(4167493))
 )
 
 
@@ -701,6 +700,8 @@ table5 <- cbind(as_tibble(age),
                 as_tibble(antiepileptics_during_pregnancy),
                 as_tibble(nsaids_before_pregnancy),
                 as_tibble(nsaids_during_pregnancy),
+                as_tibble(obstr_resp_dis_rx_before_pregnancy),
+                as_tibble(obstr_resp_dis_rx_during_pregnancy),
                 as_tibble(anxiety_before_pregnancy),
                 as_tibble(anxiety_during_pregnancy),
                 as_tibble(asthma_before_pregnancy),
@@ -715,8 +716,6 @@ table5 <- cbind(as_tibble(age),
                 as_tibble(gestational_diabetes_during_pregnancy),
                 as_tibble(hypertension_before_pregnancy),
                 as_tibble(hypertension_during_pregnancy),
-                as_tibble(obstr_resp_dis_rx_before_pregnancy),
-                as_tibble(obstr_resp_dis_rx_during_pregnancy),
                 as_tibble(pre_eclampsia_before_pregnancy),
                 as_tibble(pre_eclampsia_during_pregnancy),
                 as_tibble(pregnancy_induced_hypertension_before_pregnancy),
