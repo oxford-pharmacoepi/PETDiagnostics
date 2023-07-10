@@ -6,7 +6,7 @@
 #' @param pregnancy_size chose the number of pregnancies
 #' @param fetus_size chose the number of fetuses, has to be equal or larger than number of pregnancies
 #' @param seed chose a numer, like 1 for example
-#'
+#' @param dbdir put the path to the eunomia db duckdb dataset
 #' @return a mock cdm reference motherTable and babyTable
 #' @export
 #'
@@ -15,7 +15,8 @@ mockPregnancy <- function(motherTable = NULL,
                           babyTable = NULL,
                           pregnancy_size = 100,
                           fetus_size = 110,
-                          seed = 1) {
+                          seed = 1,
+                          dbdir) {
 
   #checks
   errorMessage <- checkmate::makeAssertCollection()
@@ -264,27 +265,28 @@ mockPregnancy <- function(motherTable = NULL,
 
 
   # into in-memory database
-  db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+
+  ## there is a function to call the download of Eunomia dataset
+  # CDMConnector::downloadEunomiaData()
+  # put your file path to the eunomia dataset
+
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir=dbdir)
 
 
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "motherTable",
+    DBI::dbWriteTable(con, "motherTable",
                       motherTable,
                       overwrite = TRUE)
-  })
 
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "babyTable",
+    DBI::dbWriteTable(con, "babyTable",
                       babyTable,
                       overwrite = TRUE)
-  })
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_tables = c(),
-                                    cohort_tables = c(
-                                      "motherTable",
-                                      "babyTable"
-                                    ))
+  cdm <- CDMConnector::cdm_from_con(con,
+                                    cdm_schema = "main",
+                                    write_schema = "main")
+
+  cdm$babytable <- dplyr::tbl(con, "babyTable")
+  cdm$mothertable <- dplyr::tbl(con, "motherTable")
 
   return(cdm)
 }
