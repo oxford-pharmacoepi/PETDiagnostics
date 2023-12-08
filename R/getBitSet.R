@@ -1,30 +1,34 @@
 #' Title
 #'
-#' @param motherTable is the motherTable
-#' @param babyTable is the babyTable
+#' @param mothertable is the mothertable
+#' @param babytable is the babytable
 #'
 #' @return returns a table with the pattern of missing data
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' getBitSet(cdm$mothertable,cdm$babytable)
+#' }
 getBitSet <- function(
-    motherTable = NULL,
-    babyTable = NULL
+    mothertable = NULL,
+    babytable = NULL
 ) {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(is.null(motherTable) || inherits(motherTable, 'tbl_dbi'), add = errorMessage)
-  checkmate::assertTRUE(is.null(babyTable) || inherits(babyTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(is.null(mothertable) || inherits(mothertable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(is.null(babytable) || inherits(babytable, 'tbl_dbi'), add = errorMessage)
 
   checkmate::reportAssertions(collection = errorMessage)
 
 
 
-  if (!is.null(motherTable) && !is.null(babyTable)) {
+  if (!is.null(mothertable) && !is.null(babytable)) {
 
-        recordshelp <- motherTable %>%
+        recordshelp <- mothertable %>%
       dplyr::select(
         "pregnancy_number_fetuses",
         "pregnancy_single",
@@ -36,7 +40,7 @@ getBitSet <- function(
         "pregnancy_number_liveborn",
         "pregnancy_mode_delivery"
       ) %>%
-      dplyr::left_join((dplyr::select(babyTable,"fetus_id",
+      dplyr::left_join((dplyr::select(babytable,"fetus_id",
                                       "pregnancy_id",
                                       "birth_outcome",
                                       "birth_weight",
@@ -56,9 +60,9 @@ getBitSet <- function(
     recordshelp <- NULL
 
   } else {
-    if (!is.null(motherTable)){
+    if (!is.null(mothertable)){
 
-      recordshelp <- motherTable %>%
+      recordshelp <- mothertable %>%
         dplyr::select(
           "pregnancy_number_fetuses",
           "pregnancy_single",
@@ -81,9 +85,9 @@ getBitSet <- function(
       recordshelp <- NULL
 
     }
-    if (!is.null(babyTable)){
+    if (!is.null(babytable)){
 
-      recordshelp <- babyTable %>%
+      recordshelp <- babytable %>%
         dplyr::select(
           "fetus_id",
           "pregnancy_id",

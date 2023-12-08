@@ -4,14 +4,20 @@
 \alias{checkFetusesLiveborn}
 \title{Title}
 \usage{
-checkFetusesLiveborn(workTable)
+checkFetusesLiveborn(worktable)
 }
 \arguments{
-\item{workTable}{is the motherTable or babyTable}
+\item{worktable}{is the motherTable}
 }
 \value{
 returns a table with the checks on fetuses and liveborns
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+checkFetusesLiveborn(cdm$mothertable)
+}
 }

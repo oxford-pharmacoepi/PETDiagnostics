@@ -4,16 +4,22 @@
 \alias{checkFetusId}
 \title{Title}
 \usage{
-checkFetusId(motherTable, babyTable)
+checkFetusId(mothertable, babytable)
 }
 \arguments{
-\item{motherTable}{is the motherTable}
+\item{mothertable}{is the mothertable}
 
-\item{babyTable}{is the babyTable}
+\item{babytable}{is the babytable}
 }
 \value{
 returns a table with the fetuses checks
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+checkFetusId(cdm$mothertable,cdm$babytable)
+}
 }

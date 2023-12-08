@@ -1,31 +1,35 @@
 #' Title
 #'
-#' @param motherTable is the motherTable
-#' @param babyTable is the babyTable
+#' @param mothertable is the mothertable
+#' @param babytable is the babytable
 #'
 #' @return returns a table with the fetuses checks
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' checkFetusId(cdm$mothertable,cdm$babytable)
+#' }
 checkFetusId <- function(
-    motherTable ,
-    babyTable
+    mothertable ,
+    babytable
 ) {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(motherTable, 'tbl_dbi'), add = errorMessage)
-  checkmate::assertTRUE(inherits(babyTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(mothertable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(babytable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
 
-recordshelp <- motherTable %>%
+recordshelp <- mothertable %>%
   dplyr::select(
     "pregnancy_number_fetuses",
     "pregnancy_single",
     "pregnancy_id") %>%
-  dplyr::left_join((dplyr::select(babyTable,"fetus_id","pregnancy_id")),by = "pregnancy_id")
+  dplyr::left_join((dplyr::select(babytable,"fetus_id","pregnancy_id")),by = "pregnancy_id")
 
 
 #check if there are several fetus id if pregnancy is multiple
@@ -73,25 +77,28 @@ records_n <- records %>%
 records_prop <- records_n %>%
   dplyr::summarise(
 
-    single_not_align_with_noOfFetusId = round(.data$single_not_align_with_noOfFetusId /nrow(tibble::as_tibble(motherTable)),3)*100,
+    single_not_align_with_noOfFetusId = round(.data$single_not_align_with_noOfFetusId /nrow(tibble::as_tibble(mothertable)),3)*100,
 
-    single_align_with_noOfFetusId = round(.data$single_align_with_noOfFetusId /nrow(tibble::as_tibble(motherTable)),3)*100,
+    single_align_with_noOfFetusId = round(.data$single_align_with_noOfFetusId /nrow(tibble::as_tibble(mothertable)),3)*100,
 
-    missingUnknown_single = round(.data$missingUnknown_single /nrow(tibble::as_tibble(motherTable)),3)*100,
+    missingUnknown_single = round(.data$missingUnknown_single /nrow(tibble::as_tibble(mothertable)),3)*100,
 
-    noOfFetus_not_align_with_noOfFetusId = round(.data$noOfFetus_not_align_with_noOfFetusId / nrow(tibble::as_tibble(motherTable)),3)*100,
+    noOfFetus_not_align_with_noOfFetusId = round(.data$noOfFetus_not_align_with_noOfFetusId / nrow(tibble::as_tibble(mothertable)),3)*100,
 
-    noOfFetus_align_with_noOfFetusId = round(.data$noOfFetus_align_with_noOfFetusId / nrow(tibble::as_tibble(motherTable)),3)*100,
+    noOfFetus_align_with_noOfFetusId = round(.data$noOfFetus_align_with_noOfFetusId / nrow(tibble::as_tibble(mothertable)),3)*100,
 
-    missing_noOfFetus = round(.data$missing_noOfFetus /nrow(tibble::as_tibble(motherTable)),3)*100,
+    missing_noOfFetus = round(.data$missing_noOfFetus /nrow(tibble::as_tibble(mothertable)),3)*100,
 
-  )
+  ) %>% tidyr::pivot_longer(cols = everything()) %>%
+  dplyr::rename(variable = name,
+         percentage = value)
 
 
-records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
+records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+  dplyr::rename(variable = name,
+                count = value)
 
-records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(motherTable)))
+records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(mothertable)))
 
 
 records <-  NULL

@@ -4,14 +4,20 @@
 \alias{getMissings}
 \title{Title}
 \usage{
-getMissings(workTable)
+getMissings(worktable)
 }
 \arguments{
-\item{workTable}{is the motherTable or babyTable}
+\item{worktable}{is the mothertable or babytable}
 }
 \value{
 returns a table with all the missings
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getMissings(cdm$babytable)
+}
 }

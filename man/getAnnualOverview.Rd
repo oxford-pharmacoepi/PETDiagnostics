@@ -4,14 +4,20 @@
 \alias{getAnnualOverview}
 \title{Title}
 \usage{
-getAnnualOverview(motherTable)
+getAnnualOverview(mothertable)
 }
 \arguments{
-\item{motherTable}{is the motherTable}
+\item{mothertable}{is the mothertable}
 }
 \value{
 a table which shows the number of pregnancies per year
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getAnnualOverview(cdm$mothertable)
+}
 }

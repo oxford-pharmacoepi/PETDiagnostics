@@ -4,14 +4,20 @@
 \alias{getUnknown}
 \title{Title}
 \usage{
-getUnknown(motherTable)
+getUnknown(mothertable)
 }
 \arguments{
-\item{motherTable}{is the motherTable}
+\item{mothertable}{is the mothertable}
 }
 \value{
-returns a table with all the zero counts of required variables in the motherTable
+returns a table with all the zero counts of required variables in the mothertable
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getUnknown(cdm$mothertable)
+}
 }

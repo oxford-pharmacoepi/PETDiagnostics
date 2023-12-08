@@ -5,8 +5,8 @@
 \title{Title}
 \usage{
 executeChecks(
-  motherTable = NULL,
-  babyTable = NULL,
+  mothertable = NULL,
+  babytable = NULL,
   checks = c("overview", "annualOverview", "missing", "unknown", "gestationalAge",
     "datesAgeDist", "outcomeMode", "fetusesLiveborn", "fetusid", "weightDist", "bitSet"),
   minCellCount = 5,
@@ -15,9 +15,9 @@ executeChecks(
 )
 }
 \arguments{
-\item{motherTable}{input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL}
+\item{mothertable}{input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL}
 
-\item{babyTable}{input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL}
+\item{babytable}{input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL}
 
 \item{checks}{chose the checks you want to perform, not all checks are possible depending on which tables are available}
 
@@ -32,4 +32,10 @@ all the individual result tables with data obscured if need be
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+executeChecks(cdm$mothertable,cdm$babytable)
+}
 }

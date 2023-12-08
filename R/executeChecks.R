@@ -1,7 +1,7 @@
 #' Title
 #'
-#' @param motherTable input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL
-#' @param babyTable input a table according to the motherTable of the pregnancy extension Table in OHDSI, can be NULL
+#' @param mothertable input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL
+#' @param babytable input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL
 #' @param checks chose the checks you want to perform, not all checks are possible depending on which tables are available
 #' @param minCellCount chose a number below you want to obscure counts, 0 is not obscured
 #' @param minGestAge_Days chose a number below you think that the pregnancy entries were wrong / should not be there
@@ -11,9 +11,13 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' executeChecks(cdm$mothertable,cdm$babytable)
+#' }
 executeChecks <- function(#cdm,
-                          motherTable = NULL,
-                          babyTable = NULL,
+                          mothertable = NULL,
+                          babytable = NULL,
                           checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
                                      "fetusid","weightDist","bitSet"),
                           minCellCount = 5,
@@ -23,12 +27,12 @@ executeChecks <- function(#cdm,
   errorMessage <- checkmate::makeAssertCollection()
   # only as soon as these are part of the cdm
   # checkDbType(cdm = cdm, type = "cdm_reference", messageStore = errorMessage)
-  # checkTableExists(cdm = cdm, tableName = motherTable,
+  # checkTableExists(cdm = cdm, tableName = mothertable,
   #                  messageStore = errorMessage)
-  # checkTableExists(cdm = cdm, tableName = babyTable,
+  # checkTableExists(cdm = cdm, tableName = babytable,
   #                  messageStore = errorMessage)
-  checkmate::assertTRUE(is.null(motherTable) || inherits(motherTable, 'tbl_dbi'), add = errorMessage)
-  checkmate::assertTRUE(is.null(babyTable) || inherits(babyTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(is.null(mothertable) || inherits(mothertable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(is.null(babytable) || inherits(babytable, 'tbl_dbi'), add = errorMessage)
 
   checkmate::assertTRUE(is.numeric(minCellCount) || is.null(minCellCount), add = errorMessage)
   checkmate::assertTRUE(is.numeric(minGestAge_Days) || is.null(minGestAge_Days), add = errorMessage)
@@ -42,13 +46,13 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: total number of women, pregnancies (and fetuses)", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-      PETOverviewMother <- getOverview(motherTable) %>% dplyr::collect()
+      PETOverviewMother <- getOverview(mothertable) %>% dplyr::collect()
     }
-    if (!is.null(babyTable)) {
+    if (!is.null(babytable)) {
 
-      PETOverviewBaby <- getOverview(babyTable) %>% dplyr::collect()
+      PETOverviewBaby <- getOverview(babytable) %>% dplyr::collect()
     }
   }
 
@@ -59,9 +63,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: total number of women, pregnancies (and fetuses) per year", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-      AnnualPETOverviewMother <- getAnnualOverview(motherTable) %>% dplyr::collect()
+      AnnualPETOverviewMother <- getAnnualOverview(mothertable) %>% dplyr::collect()
     }
 
   }
@@ -73,13 +77,13 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Missing of all variables", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-    missingSummaryMother <- getMissings(motherTable) %>% dplyr::collect()
+    missingSummaryMother <- getMissings(mothertable) %>% dplyr::collect()
     }
-  if (!is.null(babyTable)) {
+  if (!is.null(babytable)) {
 
-    missingSummaryBaby <- getMissings(babyTable) %>% dplyr::collect()
+    missingSummaryBaby <- getMissings(babytable) %>% dplyr::collect()
   }
   }
 
@@ -90,9 +94,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check unknowns of required variables", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-      unknownSummaryMother <- getUnknown(motherTable) %>% dplyr::collect()
+      unknownSummaryMother <- getUnknown(mothertable) %>% dplyr::collect()
     }
 
   }
@@ -104,9 +108,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Gestational Age", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-  gestationalAgeMatch <- summariseGestationalAge(motherTable,minGestAge_Days) %>% dplyr::collect()
+  gestationalAgeMatch <- summariseGestationalAge(mothertable,minGestAge_Days) %>% dplyr::collect()
     }
   }
 
@@ -118,9 +122,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check values of dates and Gestational Age", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-      valueDatesAgeDist <- getValueDatesAgeDist(motherTable) %>% dplyr::collect()
+      valueDatesAgeDist <- getValueDatesAgeDist(mothertable) %>% dplyr::collect()
     }
   }
 
@@ -132,9 +136,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check Outcome and Mode of Delivery", start)
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-   outcomeModeMatch <- checkOutcomeMode(motherTable) %>% dplyr::collect()
+   outcomeModeMatch <- checkOutcomeMode(mothertable) %>% dplyr::collect()
     }
   }
 
@@ -146,9 +150,9 @@ executeChecks <- function(#cdm,
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
 # pregnancy_single is a required variable
-    if ("pregnancy_number_fetuses" %in% colnames(motherTable) && "pregnancy_number_liveborn" %in% colnames(motherTable)) {
+    if ("pregnancy_number_fetuses" %in% colnames(mothertable) && "pregnancy_number_liveborn" %in% colnames(mothertable)) {
 
-   fetusesLivebornNumber <- tibble::as_tibble(checkFetusesLiveborn(motherTable)) %>% dplyr::collect()
+   fetusesLivebornNumber <- tibble::as_tibble(checkFetusesLiveborn(mothertable)) %>% dplyr::collect()
     }
   }
 
@@ -160,9 +164,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check number of fetuses versus liveborn", start)
     }
-    if (!is.null(motherTable) && !is.null(babyTable)) {
+    if (!is.null(mothertable) && !is.null(babytable)) {
 
-   fetusIdMatch <- checkFetusId(motherTable,babyTable) %>% dplyr::collect()
+   fetusIdMatch <- checkFetusId(mothertable,babytable) %>% dplyr::collect()
       }
 
   }
@@ -174,9 +178,9 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check values of birthweight", start)
     }
-    if (!is.null(babyTable)) {
+    if (!is.null(babytable)) {
 
-      valueWeightDist <- getValueWeightDist(babyTable) %>% dplyr::collect()
+      valueWeightDist <- getValueWeightDist(babytable) %>% dplyr::collect()
     }
 
   }
@@ -190,17 +194,17 @@ executeChecks <- function(#cdm,
     if (verbose == TRUE) {
       start <- printDurationAndMessage("Progress: check missing/unknown data pattern", start)
     }
-    if (!is.null(motherTable) && !is.null(babyTable)) {
+    if (!is.null(mothertable) && !is.null(babytable)) {
 
-      bitSetOverviewAll  <- getBitSet(motherTable,babyTable) %>% dplyr::collect()
+      bitSetOverviewAll  <- getBitSet(mothertable,babytable) %>% dplyr::collect()
     }
-    if (!is.null(motherTable)) {
+    if (!is.null(mothertable)) {
 
-        bitSetOverviewMother  <- getBitSet(motherTable, babyTable = NULL) %>% dplyr::collect()
+        bitSetOverviewMother  <- getBitSet(mothertable, babytable = NULL) %>% dplyr::collect()
       }
-    if (!is.null(babyTable)) {
+    if (!is.null(babytable)) {
 
-        bitSetOverviewBaby  <- getBitSet(motherTable = NULL, babyTable) %>% dplyr::collect()
+        bitSetOverviewBaby  <- getBitSet(mothertable = NULL, babytable) %>% dplyr::collect()
       }
     }
 
@@ -212,7 +216,7 @@ executeChecks <- function(#cdm,
 
 
 
-  if (!is.null(motherTable) && !is.null(babyTable)) {
+  if (!is.null(mothertable) && !is.null(babytable)) {
 
   result <- list("PETOverviewMother" = PETOverviewMother,
                  "AnnualPETOverviewMother" = AnnualPETOverviewMother,
@@ -231,7 +235,7 @@ executeChecks <- function(#cdm,
                  "bitSetOverviewBaby" =  bitSetOverviewBaby
                  )
 
-  } else if  (!is.null(motherTable)) {
+  } else if  (!is.null(mothertable)) {
 
     result <- list("PETOverviewMother" = PETOverviewMother,
                    "AnnualPETOverviewMother" = AnnualPETOverviewMother,
@@ -243,7 +247,7 @@ executeChecks <- function(#cdm,
                    "fetusesLivebornNumber" = fetusesLivebornNumber,
                    "bitSetOverviewMother" =  bitSetOverviewMother)
 
-  }   else  if  (!is.null(babyTable)) {
+  }   else  if  (!is.null(babytable)) {
 
     result <- list("PETOverviewBaby" = PETOverviewBaby,
                    "missingSummaryBaby" = missingSummaryBaby,
@@ -279,8 +283,11 @@ executeChecks <- function(#cdm,
 #' @export
 #'
 #' @examples
-#'
-#'
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' resultList <- executeChecks(cdm$mothertable,cdm$babytable)
+#' writeResultToDisk(resultList = resultList, databaseId = "test", outputFolder= here::here())
+#' }
 writeResultToDisk <- function(resultList, databaseId, outputFolder) {
   if (!dir.exists(outputFolder)) {
     dir.create(outputFolder)

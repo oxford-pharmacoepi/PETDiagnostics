@@ -31,26 +31,46 @@ test_that("check working example if only mother Table is provided", {
 
 
 
+  # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
+  DBI::dbWriteTable(db, "person",
+                    MT,
+                    overwrite = TRUE)
 
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "MT",
-                      MT,
-                      overwrite = TRUE)
-  })
+  # add other tables required for snapshot
+
+  cdmSource <- dplyr::tibble(
+    cdm_source_name = "test_database",
+    cdm_source_abbreviation = NA,
+    cdm_holder = NA,
+    source_description = NA,
+    source_documentation_reference = NA,
+    cdm_etl_reference = NA,
+    source_release_date = NA,
+    cdm_release_date = NA,
+    cdm_version = NA,
+    vocabulary_version = NA
+  )
+
+  DBI::dbWriteTable(db, "cdm_source",
+                    cdmSource,
+                    overwrite = TRUE
+  )
+
 
   cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_tables = c(),
-                                    cohort_tables = c(
-                                      "MT"
-                                    ))
+                                    write_schema = "main",
+  )
+
+  cdm$MT <- cdm$person
+
 
   testData <- cdm$MT
 
   seeMotherResults <- executeChecks (
-    motherTable = testData,
-    babyTable = NULL,
+    mothertable = testData,
+    babytable = NULL,
     checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
                "fetusid","weightDist","bitSet"),
     minCellCount = 5,
@@ -77,26 +97,48 @@ test_that("check working example if only baby Table is provided", {
     birth_apgar = c(4188539,NA,NA,NA)
   )
 
+  # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
 
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "BT",
-                      BT,
-                      overwrite = TRUE)
-  })
+  DBI::dbWriteTable(db, "observation_period",
+                    BT,
+                    overwrite = TRUE)
+
+  # add other tables required for snapshot
+
+  cdmSource <- dplyr::tibble(
+    cdm_source_name = "test_database",
+    cdm_source_abbreviation = NA,
+    cdm_holder = NA,
+    source_description = NA,
+    source_documentation_reference = NA,
+    cdm_etl_reference = NA,
+    source_release_date = NA,
+    cdm_release_date = NA,
+    cdm_version = NA,
+    vocabulary_version = NA
+  )
+
+  DBI::dbWriteTable(db, "cdm_source",
+                    cdmSource,
+                    overwrite = TRUE
+  )
+
 
   cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_tables = c(),
-                                    cohort_tables = c(
-                                      "BT"
-                                    ))
+                                    write_schema = "main",
+  )
+
+
+  cdm$BT <- cdm$observation_period
+
 
   testData <- cdm$BT
 
   seeBabyResults <- executeChecks (
-    motherTable = NULL,
-    babyTable = testData,
+    mothertable = NULL,
+    babytable = testData,
     checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn",
                "fetusid","weightDist","bitSet"),
     minCellCount = 5,

@@ -32,21 +32,40 @@ test_that("check working example annual number of pregnancies", {
   )
 
 
-
+  # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
+  DBI::dbWriteTable(db, "person",
+                    MT,
+                    overwrite = TRUE)
 
-  DBI::dbWithTransaction(db, {
-    DBI::dbWriteTable(db, "MT",
-                      MT,
-                      overwrite = TRUE)
-  })
+
+  # add other tables required for snapshot
+
+  cdmSource <- dplyr::tibble(
+    cdm_source_name = "test_database",
+    cdm_source_abbreviation = NA,
+    cdm_holder = NA,
+    source_description = NA,
+    source_documentation_reference = NA,
+    cdm_etl_reference = NA,
+    source_release_date = NA,
+    cdm_release_date = NA,
+    cdm_version = NA,
+    vocabulary_version = NA
+  )
+
+  DBI::dbWriteTable(db, "cdm_source",
+                    cdmSource,
+                    overwrite = TRUE
+  )
+
 
   cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_tables = c(),
-                                    cohort_tables = c(
-                                      "MT"
-                                    ))
+                                    write_schema = "main",
+  )
+
+  cdm$MT <- cdm$person
 
   testData <- cdm$MT
 

@@ -6,6 +6,10 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' getOverview(cdm$babytable)
+#' }
 getOverview <- function(
     workTable
 )
@@ -29,9 +33,9 @@ getOverview <- function(
         dplyr::summarise(
           pregnancies = dplyr::n_distinct(.data$pregnancy_id),
           fetuses = dplyr::n_distinct(.data$fetus_id)
-        ) %>% dplyr::collect()
-
-      records <- tibble::as_tibble(reshape2::melt(records,variable.names="variable",value.name = "count"))
+        ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = everything()) %>%
+        dplyr::rename(variable = name,
+                      count = value)
 
 
   } else {
@@ -45,9 +49,9 @@ getOverview <- function(
       dplyr::summarise(
         women = dplyr::n_distinct(.data$person_id),
         pregnancies = dplyr::n_distinct(.data$pregnancy_id)
-      ) %>% dplyr::collect()
-
-    records <- tibble::as_tibble(reshape2::melt(records,variable.names="variable",value.name = "count"))
+      ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = everything()) %>%
+      dplyr::rename(variable = name,
+                    count = value)
 
   }
 

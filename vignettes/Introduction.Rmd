@@ -23,11 +23,11 @@ library(DT)
 
 Here we use the mockdata for training purposes. 
 But ideally, you use your real data, so just connect to your database (if you are not already connected). 
-The idea would be to name these new cdm tables in the future motherTable and babyTable.
+The idea would be to name these new cdm tables in the future mothertable and babytable.
 
 ```{r}
-cdm <-  PETDiagnostics:::mockPregnancy(motherTable = NULL,
-                          babyTable = NULL,
+cdm <-  PETDiagnostics::mockPregnancy(mothertable = NULL,
+                          babytable = NULL,
                           pregnancy_size = 100,
                           fetus_size = 110,
                           seed = 1)
@@ -37,9 +37,9 @@ We can run all available checks at the same time using the ´executeChecks()´ f
 You can also chose only individual checks to run.
 
 ```{r eval=FALSE}
-executeChecks (
-  motherTable = cdm$motherTable,  
-  babyTable = cdm$babyTable,                  
+PETDiagnostics::executeChecks (
+  mothertable = cdm$mothertable,  
+  babytable = cdm$babytable,                  
   checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode",
                                      "fetusesLiveborn","fetusid","weightDist","bitSet"),                       
   minCellCount = 5,
@@ -48,11 +48,11 @@ executeChecks (
 ```
 
 The`cdm` is the database reference of the OMOP CDM using the `CDMConnector` package.\
-The `motherTable` is the `motherTable` in the CDM. The `babyTable` is the `babyTable` in the CDM. `checks` allows to select the checks to be executed, by default, all the checks will be run. The `minCellCount` is minimum number of events to report, numbers lower than this will be obscured. The number zero will not be obscured´, `minGestAge_Days` implies the number of minimum number of gestational age that may be the minimum for pregnancies to be recorded. 
+The `mothertable` is the `mothertable` in the CDM. The `babytable` is the `babytable` in the CDM. `checks` allows to select the checks to be executed, by default, all the checks will be run. The `minCellCount` is minimum number of events to report, numbers lower than this will be obscured. The number zero will not be obscured´, `minGestAge_Days` implies the number of minimum number of gestational age that may be the minimum for pregnancies to be recorded. 
 
 ```{r executeChecks}
-resultList<-executeChecks(motherTable = cdm$motherTable,               
-                          babyTable = cdm$babyTable)
+resultList<-PETDiagnostics::executeChecks(mothertable = cdm$mothertable,               
+                          babytable = cdm$babytable)
 ```
 
 We can then check what results available from ´executeChecks()´ by
@@ -61,7 +61,7 @@ We can then check what results available from ´executeChecks()´ by
 names(resultList)
 ```
 
-Let's take a look at the results. the missingSummaryMother contains all the variables, their count of missings, and the proportion in relation to all pregnancies recorded in the motherTable.
+Let's take a look at the results. the missingSummaryMother contains all the variables, their count of missings, and the proportion in relation to all pregnancies recorded in the mothertable.
 
 ```{r,  message=FALSE }
 DT::datatable(resultList$missingSummaryMother,
@@ -72,7 +72,7 @@ DT::datatable(resultList$missingSummaryMother,
 After running the checks, we can write the CSV files into a zip file to disk using the `writeResultToDisk()` function.
 
 ```{r eval=FALSE}
-writeResultToDisk(resultList=resultList,
+PETDiagnostics::writeResultToDisk(resultList=resultList,
                   databaseId = "your_database_id", 
                   outputFolder = tempdir())
 ```

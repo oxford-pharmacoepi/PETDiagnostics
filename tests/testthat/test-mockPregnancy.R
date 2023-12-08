@@ -9,9 +9,9 @@ test_that("check working example with defaults", {
   cdmCheck <- inherits(db, "cdm_reference")
   expect_true(cdmCheck)
 
-  expect_true(nrow(db$motherTable %>%
+  expect_true(nrow(db$mothertable %>%
                      dplyr::collect()) >= 1)
-  expect_true(nrow(db$babyTable %>%
+  expect_true(nrow(db$babytable %>%
                      dplyr::collect()) >= 1)
 
 
@@ -21,7 +21,7 @@ test_that("check working example with defaults", {
 
 
 
-test_that("check presence of columns in motherTable", {
+test_that("check presence of columns in mothertable", {
   db <- mockPregnancy()
 
   ColsDbNames <- c("pregnancy_id","person_id","pregnancy_start_date","pregnancy_end_date",
@@ -32,7 +32,7 @@ test_that("check presence of columns in motherTable", {
                     "pregnancy_mode_delivery_source_value","pregnancy_folic","pregnancy_topfa",
                     "pregnancy_art","pregnancy_smok","pregnacy_alc","pregnancy_subs")
   ColsNamesCheck <- all(ColsDbNames %in%
-                             names(db$motherTable %>%
+                             names(db$mothertable %>%
                                      utils::head(1) %>%
                                      dplyr::collect() ))
   expect_true(ColsNamesCheck)
@@ -42,13 +42,13 @@ test_that("check presence of columns in motherTable", {
 
 })
 
-test_that("check presence of columns in babyTable", {
+test_that("check presence of columns in babytable", {
   db <- mockPregnancy()
 
   ColsDbNames <- c("pregnancy_id","fetus_id","birth_outcome","birth_weight","birth_con_malformation",
                    "birth_sga","birth_fgr","birth_apgar")
   ColsNamesCheck <- all(ColsDbNames %in%
-                          names(db$babyTable %>%
+                          names(db$babytable %>%
                                   utils::head(1) %>%
                                   dplyr::collect() ))
   expect_true(ColsNamesCheck)
@@ -62,10 +62,10 @@ test_that("check presence of columns in babyTable", {
 
 
 
-test_that("check working example pregnancy size and motherTable length", {
+test_that("check working example pregnancy size and mothertable length", {
   db <- mockPregnancy(pregnancy_size = 100)
 
-expect_true(nrow(db$motherTable %>%
+expect_true(nrow(db$mothertable %>%
                      dplyr::collect()) == 100)
 
 
@@ -75,10 +75,10 @@ expect_true(nrow(db$motherTable %>%
 
 
 
-test_that("check working example fetus size and babyTable length", {
+test_that("check working example fetus size and babytable length", {
   db <- mockPregnancy(fetus_size = 110)
 
-  expect_true(nrow(db$babyTable %>%
+  expect_true(nrow(db$babytable %>%
                      dplyr::collect()) == 110)
 
 
@@ -89,10 +89,10 @@ test_that("check working example fetus size and babyTable length", {
 
 test_that("check expect_error", {
 
-  expect_error(mockPregnancy(motherTable = "x",
+  expect_error(mockPregnancy(mothertable = "x",
                              ))
 
-  expect_error(mockPregnancy(babyTable = "x"
+  expect_error(mockPregnancy(babytable = "x"
                              ))
 
     expect_error(mockPregnancy(pregnancy_size = "x"

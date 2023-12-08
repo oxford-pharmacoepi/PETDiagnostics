@@ -1,22 +1,26 @@
 #' Title
 #'
-#' @param workTable is the motherTable
+#' @param worktable is the mothertable
 #'
 #' @return returns a table with the information of differences in outcome mode and delivery data
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' checkOutcomeMode(cdm$mothertable)
+#' }
 checkOutcomeMode <- function(
-    workTable
+    worktable
 ) {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(workTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(worktable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
-  records <- workTable %>%
+  records <- worktable %>%
     dplyr::select(
      "pregnancy_outcome",
      "pregnancy_mode_delivery")
@@ -40,17 +44,21 @@ checkOutcomeMode <- function(
   records_prop <- records_n %>%
     dplyr::summarise(
 
-      no_match = round(.data$no_match / nrow(tibble::as_tibble(workTable)),3)*100,
+      no_match = round(.data$no_match / nrow(tibble::as_tibble(worktable)),3)*100,
 
-      match = round(.data$match / nrow(tibble::as_tibble(workTable)),3)*100,
+      match = round(.data$match / nrow(tibble::as_tibble(worktable)),3)*100,
 
-      missingUnknown_information = round(.data$missingUnknown_information /nrow(tibble::as_tibble(workTable)),3)*100)
+      missingUnknown_information = round(.data$missingUnknown_information /nrow(tibble::as_tibble(worktable)),3)*100) %>%
+    tidyr::pivot_longer(cols = everything()) %>%
+    dplyr::rename(variable = name,
+                  percentage = value)
 
 
-records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
+  records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+    dplyr::rename(variable = name,
+                  count = value)
 
-records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
+records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(worktable)))
 
 
 records <-  NULL

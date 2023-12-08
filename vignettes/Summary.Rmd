@@ -17,67 +17,71 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(PETDiagnostics)
 library(dplyr)
+library(CDMConnector)
+library(dbplyr)
 library(DT)
 ```
 
 # Build the tables
+
+
 # or use your own cdm connection, in which case the table needs to be added to the cdm (on how to do this, see the run_this.R script)
 ```{r}
-cdm <-  PETDiagnostics::mockPregnancy(motherTable = NULL,
-                          babyTable = NULL,
+cdm <-  PETDiagnostics::mockPregnancy(mothertable = NULL,
+                          babytable = NULL,
                           pregnancy_size = 100,
                           fetus_size = 110,
-                          seed = 1)
+                          seed = 1) 
 ```
 
 ## How many women and pregnancies are there?
 
 ```{r}
-PETOverviewMother <- PETDiagnostics::getOverview(cdm$motherTable) 
+PETOverviewMother <- PETDiagnostics::getOverview(cdm$mothertable) 
 DT::datatable(PETOverviewMother)
 ```
 
 
 ## How many pregnancies and fetuses are there?
 ```{r}
-PETOverviewBaby <- PETDiagnostics::getOverview(cdm$babyTable) 
+PETOverviewBaby <- PETDiagnostics::getOverview(cdm$babytable) 
 DT::datatable(PETOverviewBaby)
 ```
 
 
 ## How many pregnancies are there per year?
 ```{r}
-AnnualPETOverviewMother <- PETDiagnostics::getAnnualOverview(cdm$motherTable)
+AnnualPETOverviewMother <- PETDiagnostics::getAnnualOverview(cdm$mothertable)
 DT::datatable(AnnualPETOverviewMother)
 ```
 
-## How many missing values are there in the motherTable?
+## How many missing values are there in the mothertable?
 The first 8 variables (until pregnancy_single) should not have any missings because they are required variables, i.e. any unknown value is mapped to zero, any observations with missing values are not considered
   
 ```{r}
-missingSummaryMother <- PETDiagnostics::getMissings(cdm$motherTable) 
+missingSummaryMother <- PETDiagnostics::getMissings(cdm$mothertable) 
 DT::datatable(missingSummaryMother)
 ```
 
-## How many missing values are there in the babyTable?
+## How many missing values are there in the babytable?
   
 The first 2 variables (until fetus_id) should not have any missings because they are required variables, i.e. any unknown value is mapped to zero, any observations with missing values are not considered
   
 ```{r}
-missingSummaryBaby <- PETDiagnostics::getMissings(cdm$babyTable) 
+missingSummaryBaby <- PETDiagnostics::getMissings(cdm$babytable) 
 DT::datatable(missingSummaryBaby)
 ```
 
-## How many unknown values are there in the motherTable?
+## How many unknown values are there in the mothertable?
 
 ```{r}
-unknownSummaryMother <- PETDiagnostics::getUnknown(cdm$motherTable)
+unknownSummaryMother <- PETDiagnostics::getUnknown(cdm$mothertable)
 DT::datatable(unknownSummaryMother)
 ```
 
 
 
-## How do dates and gestational age add up in the motherTable?
+## How do dates and gestational age add up in the mothertable?
   
 ###  "different gestational age" means that the difference between pregnancy end date and start date is larger than 7 days
 ###  "match gestational age" means that it the difference between pregnancy end date and start date is equal or smaller than 7 days
@@ -86,29 +90,29 @@ DT::datatable(unknownSummaryMother)
 ###  "end after start" counts the occasions in which the pregnancy end date happened after the start date plus the minimum of pre-defined gestational age
   
 ```{r}
-gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$motherTable,minGestAge_Days = 21)
+gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$mothertable,minGestAge_Days = 21)
 DT::datatable(gestationalAgeMatch)
 ```
 
 ## What is the minimum and maximum of pregnancy start and end dates as well as the distribution of gestational age ?
 
 ```{r}
-valueDatesAgeDist <- PETDiagnostics::getValueDatesAgeDist(cdm$motherTable)
+valueDatesAgeDist <- PETDiagnostics::getValueDatesAgeDist(cdm$mothertable)
 DT::datatable(valueDatesAgeDist)
 ```
 
 
-## How do outcome and mode of delivery add up in the motherTable?
+## How do outcome and mode of delivery add up in the mothertable?
   
 ### "no match" means that a elective termination or miscarriage has a vaginal or c-section delivery
 ### a "match" means that a livebirth, stillbirth, or mixed outcome has a vaginal or c-section delivery
 ### "missing/unknown information" counts the missing/unknown information in either pregnancy outcome or mode of delivery (there should not be any missings)
 
 ```{r}
-outcomeModeMatch <- PETDiagnostics::checkOutcomeMode(cdm$motherTable)
+outcomeModeMatch <- PETDiagnostics::checkOutcomeMode(cdm$mothertable)
 DT::datatable(outcomeModeMatch)
 ```
-## How do number of fetuses and liveborns add up in the motherTable?
+## How do number of fetuses and liveborns add up in the mothertable?
   
 ### "relative number wrong"  means the number of fetuses is smaller than the number of liveborn 
 ### "relative number right"  means the number of fetuses is equal or larger than the number of liveborn 
@@ -118,51 +122,51 @@ DT::datatable(outcomeModeMatch)
 ### "missing multiple" counts the missing information in either pregnancy single or pregnancy number fetus
 
 ```{r}
-fetusesLivebornNumber <- PETDiagnostics::checkFetusesLiveborn(cdm$motherTable)
+fetusesLivebornNumber <- PETDiagnostics::checkFetusesLiveborn(cdm$mothertable)
 DT::datatable(fetusesLivebornNumber)
 ```
-## How do number of fetuses and liveborns add up in the motherTable?
+## How do number of fetuses and liveborns add up in the mothertable?
   
-### "single_not_align_with_noOfFetusId"  means the variable pregnancy single does not align with the number of fetuses in the babyTable
-### "single_align_with_noOfFetusId"  means the variable pregnancy single is YES and the number of fetuses in the babyTable is 1
+### "single_not_align_with_noOfFetusId"  means the variable pregnancy single does not align with the number of fetuses in the babytable
+### "single_align_with_noOfFetusId"  means the variable pregnancy single is YES and the number of fetuses in the babytable is 1
 ### "missing_single" counts the missing/unknown information in pregnancy single or pregnancy number fetus
-### "noOfFetus_not_align_with_noOfFetusId"  means the variable pregnancy number fetus does not align with the number of fetuses in the babyTable 
-### "noOfFetus_align_with_noOfFetusId"  means the variable pregnancy number fetus align with the number of fetuses in the babyTable
+### "noOfFetus_not_align_with_noOfFetusId"  means the variable pregnancy number fetus does not align with the number of fetuses in the babytable 
+### "noOfFetus_align_with_noOfFetusId"  means the variable pregnancy number fetus align with the number of fetuses in the babytable
 ### "missing_noOfFetus" counts the missing information in pregnancy number fetus
 
 ```{r}
-fetusIdMatch <- PETDiagnostics::checkFetusId(cdm$motherTable,cdm$babyTable)
+fetusIdMatch <- PETDiagnostics::checkFetusId(cdm$mothertable,cdm$babytable)
 DT::datatable(fetusIdMatch)
 ```
 
 
-## How do number of fetuses and liveborns add up in the motherTable?
+## How do number of fetuses and liveborns add up in the mothertable?
 
 ```{r}
-valueWeightDist <- PETDiagnostics::getValueWeightDist(cdm$babyTable) 
+valueWeightDist <- PETDiagnostics::getValueWeightDist(cdm$babytable) 
 DT::datatable(valueWeightDist)
 ```
 
-## How does the missing/unknown data pattern of both tables, the motherTable and the babyTable look like?
+## How does the missing/unknown data pattern of both tables, the mothertable and the babytable look like?
 
 ```{r}
-bitSetOverviewAll  <- PETDiagnostics::getBitSet(cdm$motherTable,cdm$babyTable)
+bitSetOverviewAll  <- PETDiagnostics::getBitSet(cdm$mothertable,cdm$babytable)
 DT::datatable(bitSetOverviewAll)
 ```
 
 
-## How does the missing/unknown data pattern of the motherTable look like?
+## How does the missing/unknown data pattern of the mothertable look like?
 
 ```{r}
-bitSetOverviewMother  <- PETDiagnostics::getBitSet(cdm$motherTable,babyTable=NULL)
+bitSetOverviewMother  <- PETDiagnostics::getBitSet(cdm$mothertable,babytable=NULL)
 DT::datatable(bitSetOverviewMother)
 ```
 
 
-## How does the missing/unknown data pattern of the babyTable look like?
+## How does the missing/unknown data pattern of the babytable look like?
 
 ```{r}
-bitSetOverviewBaby  <- PETDiagnostics::getBitSet(motherTable=NULL,cdm$babyTable)
+bitSetOverviewBaby  <- PETDiagnostics::getBitSet(mothertable=NULL,cdm$babytable)
 DT::datatable(bitSetOverviewBaby)
 ```
 

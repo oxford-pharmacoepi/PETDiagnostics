@@ -1,14 +1,18 @@
 #' Title
 #'
-#' @param workTable is the motherTable or babyTable
+#' @param worktable is the mothertable
 #' @param minGestAge_Days is minimum number of days of gestational age for which we test whether the end was before (start + minGestAge_Days)
 #'
 #' @return returns a table with the dates checks
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' summariseGestationalAge(cdm$mothertable, minGestAge_Days = 28)
+#' }
 summariseGestationalAge <- function(
-    workTable,
+    worktable,
     minGestAge_Days
 )
   {
@@ -16,10 +20,10 @@ summariseGestationalAge <- function(
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(workTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(worktable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
-  records <- workTable %>%
+  records <- worktable %>%
     dplyr::select(
       "gestational_length_in_day",
       "pregnancy_start_date",
@@ -52,22 +56,27 @@ summariseGestationalAge <- function(
 
     records_prop <- records_n %>%
       dplyr::summarise(
-                       different_gestationalAge = round(.data$different_gestationalAge / nrow(tibble::as_tibble(workTable)),3)*100,
+                       different_gestationalAge = round(.data$different_gestationalAge / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                       match_gestationalAge = round(.data$match_gestationalAge / nrow(tibble::as_tibble(workTable)),3)*100,
+                       match_gestationalAge = round(.data$match_gestationalAge / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                       missing_information = round(.data$missing_information / nrow(tibble::as_tibble(workTable)),3)*100,
+                       missing_information = round(.data$missing_information / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                       endBeforeMinGestAge = round(.data$endBeforeMinGestAge / nrow(tibble::as_tibble(workTable)),3)*100,
+                       endBeforeMinGestAge = round(.data$endBeforeMinGestAge / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                       endAfterMinGestAge = round(.data$endAfterMinGestAge / nrow(tibble::as_tibble(workTable)),3)*100)
+                       endAfterMinGestAge = round(.data$endAfterMinGestAge / nrow(tibble::as_tibble(worktable)),3)*100) %>%
+      tidyr::pivot_longer(cols = everything()) %>%
+      dplyr::rename(variable = name,
+                    percentage = value)
 
 
 
-    records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-    records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
+    records_n <-  records_n %>%
+      tidyr::pivot_longer(cols = everything()) %>%
+      dplyr::rename(variable = name,
+                    count = value)
 
-    records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
+    records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(worktable)))
 
 
     records <-  NULL

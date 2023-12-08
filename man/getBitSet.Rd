@@ -4,16 +4,22 @@
 \alias{getBitSet}
 \title{Title}
 \usage{
-getBitSet(motherTable = NULL, babyTable = NULL)
+getBitSet(mothertable = NULL, babytable = NULL)
 }
 \arguments{
-\item{motherTable}{is the motherTable}
+\item{mothertable}{is the mothertable}
 
-\item{babyTable}{is the babyTable}
+\item{babytable}{is the babytable}
 }
 \value{
 returns a table with the pattern of missing data
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getBitSet(cdm$mothertable,cdm$babytable)
+}
 }

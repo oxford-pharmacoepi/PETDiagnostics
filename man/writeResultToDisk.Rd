@@ -16,3 +16,10 @@ writeResultToDisk(resultList, databaseId, outputFolder)
 \description{
 Write diagnostics results to a zip file on disk in given output folder.
 }
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+resultList <- executeChecks(cdm$mothertable,cdm$babytable)
+writeResultToDisk(resultList = resultList, databaseId = "test", outputFolder= here::here())
+}
+}

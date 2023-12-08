@@ -1,23 +1,27 @@
 #' Title
 #'
-#' @param workTable is the motherTable or babyTable
+#' @param worktable is the motherTable
 #'
 #' @return returns a table with the checks on fetuses and liveborns
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' checkFetusesLiveborn(cdm$mothertable)
+#' }
 checkFetusesLiveborn <- function(
-    workTable
+    worktable
 ) {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(workTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(worktable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
 
-  records <- workTable %>%
+  records <- worktable %>%
     dplyr::select(
       "pregnancy_number_fetuses",
       "pregnancy_number_liveborn",
@@ -57,25 +61,29 @@ checkFetusesLiveborn <- function(
 
   records_prop <- records_n %>%
     dplyr::summarise(
-                     multipleWrong = round(.data$multipleWrong / nrow(tibble::as_tibble(workTable)),3)*100,
+                     multipleWrong = round(.data$multipleWrong / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                     multipleRight = round(.data$multipleRight / nrow(tibble::as_tibble(workTable)),3)*100,
+                     multipleRight = round(.data$multipleRight / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                     missing_multiple = round(.data$missing_multiple / nrow(tibble::as_tibble(workTable)),3)*100,
+                     missing_multiple = round(.data$missing_multiple / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                     relativeNumberWrong = round(.data$relativeNumberWrong / nrow(tibble::as_tibble(workTable)),3)*100,
+                     relativeNumberWrong = round(.data$relativeNumberWrong / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                     relativeNumberRight = round(.data$relativeNumberRight / nrow(tibble::as_tibble(workTable)),3)*100,
+                     relativeNumberRight = round(.data$relativeNumberRight / nrow(tibble::as_tibble(worktable)),3)*100,
 
-                     missing_relativeNumber = round(.data$missing_relativeNumber / nrow(tibble::as_tibble(workTable)),3)*100
+                     missing_relativeNumber = round(.data$missing_relativeNumber / nrow(tibble::as_tibble(worktable)),3)*100
 
 
-    )
+    ) %>% tidyr::pivot_longer(cols = everything()) %>%
+    dplyr::rename(variable = name,
+                  percentage = value)
 
-  records_n <- tibble::as_tibble(reshape2::melt(records_n,variable.names="variable",value.name = "count"))
-  records_prop <- tibble::as_tibble(reshape2::melt(records_prop,variable.names="variable",value.name = "Percentage"))
 
-  records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(workTable)))
+records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+    dplyr::rename(variable = name,
+                  count = value)
+
+records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(worktable)))
 
 
   records <-  NULL

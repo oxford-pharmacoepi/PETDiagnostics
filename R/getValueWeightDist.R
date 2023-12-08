@@ -1,23 +1,27 @@
 #' Title
 #'
-#' @param babyTable is the babyTable
+#' @param babytable is the babytable
 #'
 #' @return returns values of birthweight
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' getValueWeightDist(cdm$babytable)
+#' }
 getValueWeightDist <- function(
-      babyTable
+      babytable
 ) {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(babyTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(babytable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
 
-  records <- babyTable  %>% dplyr::collect()   %>% dplyr::select(
+  records <- babytable  %>% dplyr::collect()   %>% dplyr::select(
       "birth_weight"
       ) %>% dplyr::summarise(
       min_birth_weight_in_gram = min(.data$birth_weight, na.rm=T),
@@ -47,10 +51,10 @@ getValueWeightDist <- function(
         0.95, na.rm = T
       ),
       max_birth_weight_in_gram = max(.data$birth_weight, na.rm = T)
-    )
+    ) %>% tidyr::pivot_longer(cols = everything()) %>%
+    dplyr::rename(variable = name,
+                  value = value)
 
-
-  records <- tibble::as_tibble(reshape2::melt(records,variable.names="variable",value.name = "value"))
 
   return(records)
 }

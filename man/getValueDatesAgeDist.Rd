@@ -4,14 +4,20 @@
 \alias{getValueDatesAgeDist}
 \title{Title}
 \usage{
-getValueDatesAgeDist(motherTable)
+getValueDatesAgeDist(mothertable)
 }
 \arguments{
-\item{motherTable}{is the motherTable}
+\item{mothertable}{is the mothertable}
 }
 \value{
 returns a table with the distrubtion of pregnancy starte date, end date, and gestational Age
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getValueDatesAgeDist(cdm$mothertable)
+}
 }

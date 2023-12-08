@@ -4,10 +4,10 @@
 \alias{summariseGestationalAge}
 \title{Title}
 \usage{
-summariseGestationalAge(workTable, minGestAge_Days)
+summariseGestationalAge(worktable, minGestAge_Days)
 }
 \arguments{
-\item{workTable}{is the motherTable or babyTable}
+\item{worktable}{is the mothertable}
 
 \item{minGestAge_Days}{is minimum number of days of gestational age for which we test whether the end was before (start + minGestAge_Days)}
 }
@@ -16,4 +16,10 @@ returns a table with the dates checks
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+summariseGestationalAge(cdm$mothertable, minGestAge_Days = 28)
+}
 }

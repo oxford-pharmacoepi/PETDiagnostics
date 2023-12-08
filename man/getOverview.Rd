@@ -15,3 +15,9 @@ returns a table with the overview
 \description{
 Title
 }
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getOverview(cdm$babytable)
+}
+}

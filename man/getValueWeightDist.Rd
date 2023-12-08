@@ -4,14 +4,20 @@
 \alias{getValueWeightDist}
 \title{Title}
 \usage{
-getValueWeightDist(babyTable)
+getValueWeightDist(babytable)
 }
 \arguments{
-\item{babyTable}{is the babyTable}
+\item{babytable}{is the babytable}
 }
 \value{
 returns values of birthweight
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+getValueWeightDist(cdm$babytable)
+}
 }

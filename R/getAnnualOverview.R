@@ -1,25 +1,29 @@
 
 #' Title
 #'
-#' @param motherTable is the motherTable
+#' @param mothertable is the mothertable
 #'
 #' @return a table which shows the number of pregnancies per year
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' cdm <- mockPregnancy()
+#' getAnnualOverview(cdm$mothertable)
+#' }
 getAnnualOverview <- function(
-    motherTable
+    mothertable
 )
 {
 
   # checks
   errorMessage <- checkmate::makeAssertCollection()
   #checkDbType(cdm = cdm, messageStore = errorMessage)
-  checkmate::assertTRUE(inherits(motherTable, 'tbl_dbi'), add = errorMessage)
+  checkmate::assertTRUE(inherits(mothertable, 'tbl_dbi'), add = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
 
-    records <- motherTable %>%
+    records <- mothertable %>%
       dplyr::select(
         "pregnancy_id",
         "pregnancy_end_date"

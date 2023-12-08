@@ -4,14 +4,20 @@
 \alias{checkOutcomeMode}
 \title{Title}
 \usage{
-checkOutcomeMode(workTable)
+checkOutcomeMode(worktable)
 }
 \arguments{
-\item{workTable}{is the motherTable}
+\item{worktable}{is the mothertable}
 }
 \value{
 returns a table with the information of differences in outcome mode and delivery data
 }
 \description{
 Title
+}
+\examples{
+\donttest{
+cdm <- mockPregnancy()
+checkOutcomeMode(cdm$mothertable)
+}
 }
