@@ -33,10 +33,6 @@ test_that("check working example 1) each count 2) adds up to total", {
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
-
   # add other tables required for snapshot
 
   cdmSource <- dplyr::tibble(
@@ -62,7 +58,14 @@ test_that("check working example 1) each count 2) adds up to total", {
                                     write_schema = "main",
   )
 
-  cdm$MT <- cdm$person
+  write_schema = "main"
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
 
   testData <- cdm$MT
 

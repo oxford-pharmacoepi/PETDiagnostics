@@ -280,14 +280,6 @@ mockPregnancy <- function(mothertable = NULL,
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-  DBI::dbWriteTable(db, "person",
-                    mothertable,
-                    overwrite = TRUE)
-
-  DBI::dbWriteTable(db, "observation_period",
-                    babytable,
-                    overwrite = TRUE)
-
   # add other tables required for snapshot
   cdmSource <- dplyr::tibble(
     cdm_source_name = "test_database",
@@ -308,13 +300,24 @@ mockPregnancy <- function(mothertable = NULL,
     )
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    write_schema = "main",
-                                    )
 
-  cdm$mothertable <- cdm$person
-  cdm$babytable <- cdm$observation_period
+    cdm <- CDMConnector::cdm_from_con(db,
+                                      write_schema = "main",
+    )
 
+    write_schema = "main"
+
+    DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mothertable"),
+                      mothertable,
+                      overwrite = TRUE)
+
+
+    DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "babytable"),
+                      babytable,
+                      overwrite = TRUE)
+
+    cdm$babytable <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "babytable"))
+    cdm$mothertable <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mothertable"))
 
   return(cdm)
 }

@@ -32,15 +32,8 @@ test_that("check working example 1) missing 2) Total equals fetus size", {
   )
 
 
-
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
 
   # add other tables required for snapshot
 
@@ -67,8 +60,13 @@ test_that("check working example 1) missing 2) Total equals fetus size", {
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$MT <- cdm$person
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
 
  testData <- cdm$MT
 
@@ -98,11 +96,6 @@ test_that("check working example 1) each count 2) Total equals pregnancy size", 
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-
-  DBI::dbWriteTable(db, "observation_period",
-                    BT,
-                    overwrite = TRUE)
-
   # add other tables required for snapshot
 
   cdmSource <- dplyr::tibble(
@@ -128,8 +121,13 @@ test_that("check working example 1) each count 2) Total equals pregnancy size", 
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$BT <- cdm$observation_period
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "BT"),
+                    BT,
+                    overwrite = TRUE)
+
+  cdm$BT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "BT"))
 
   testData <- cdm$BT
 

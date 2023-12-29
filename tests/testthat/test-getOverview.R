@@ -32,15 +32,8 @@ test_that("check working example number or rows equal number of pregnancies", {
   )
 
 
-
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
 
   # add other tables required for snapshot
 
@@ -67,8 +60,14 @@ test_that("check working example number or rows equal number of pregnancies", {
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$MT <- cdm$person
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+    cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
+
   testData <- cdm$MT
 
   seeOverview <- getOverview(testData)
@@ -92,14 +91,8 @@ test_that("check working example number or rows equal number of fetuses", {
     birth_apgar = c(4188539,NA,NA,NA)
   )
 
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-
-  DBI::dbWriteTable(db, "observation_period",
-                    BT,
-                    overwrite = TRUE)
 
   # add other tables required for snapshot
 
@@ -126,8 +119,13 @@ test_that("check working example number or rows equal number of fetuses", {
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$BT <- cdm$observation_period
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "BT"),
+                    BT,
+                    overwrite = TRUE)
+
+  cdm$BT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "BT"))
 
   testData <- cdm$BT
 

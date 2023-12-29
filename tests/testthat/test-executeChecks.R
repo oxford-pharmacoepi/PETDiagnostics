@@ -30,13 +30,8 @@ test_that("check working example if only mother Table is provided", {
   )
 
 
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
 
   # add other tables required for snapshot
 
@@ -63,7 +58,13 @@ test_that("check working example if only mother Table is provided", {
                                     write_schema = "main",
   )
 
-  cdm$MT <- cdm$person
+  write_schema = "main"
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
 
 
   testData <- cdm$MT
@@ -100,11 +101,6 @@ test_that("check working example if only baby Table is provided", {
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-
-  DBI::dbWriteTable(db, "observation_period",
-                    BT,
-                    overwrite = TRUE)
-
   # add other tables required for snapshot
 
   cdmSource <- dplyr::tibble(
@@ -130,8 +126,14 @@ test_that("check working example if only baby Table is provided", {
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$BT <- cdm$observation_period
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "BT"),
+                    BT,
+                    overwrite = TRUE)
+
+  cdm$BT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "BT"))
 
 
   testData <- cdm$BT

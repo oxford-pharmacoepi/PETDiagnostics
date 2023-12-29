@@ -48,14 +48,6 @@ test_that("check working example of bit set creation with both tables", {
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
-
-  DBI::dbWriteTable(db, "observation_period",
-                    BT,
-                    overwrite = TRUE)
-
   # add other tables required for snapshot
 
   cdmSource <- dplyr::tibble(
@@ -81,8 +73,20 @@ test_that("check working example of bit set creation with both tables", {
                                     write_schema = "main",
   )
 
-  cdm$MT <- cdm$person
-  cdm$BT <- cdm$observation_period
+  write_schema = "main"
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "BT"),
+                    BT,
+                    overwrite = TRUE)
+
+  cdm$BT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "BT"))
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
+
 
   seeBitSet <- getBitSet(cdm$MT,cdm$BT)
 

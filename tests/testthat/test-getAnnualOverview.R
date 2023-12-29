@@ -31,14 +31,8 @@ test_that("check working example annual number of pregnancies", {
     pregnancy_mode_delivery_source_value = c(69617,23423,23423,13204),
   )
 
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
-
 
   # add other tables required for snapshot
 
@@ -65,7 +59,13 @@ test_that("check working example annual number of pregnancies", {
                                     write_schema = "main",
   )
 
-  cdm$MT <- cdm$person
+  write_schema = "main"
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
 
   testData <- cdm$MT
 

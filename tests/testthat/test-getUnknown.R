@@ -32,14 +32,8 @@ test_that("check working example number of unknowns", {
   )
 
 
-
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
 
   # add other tables required for snapshot
 
@@ -66,8 +60,13 @@ test_that("check working example number of unknowns", {
                                     write_schema = "main",
   )
 
+  write_schema = "main"
 
-  cdm$MT <- cdm$person
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
+                    MT,
+                    overwrite = TRUE)
+
+  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
 
   testData <- cdm$MT
 
