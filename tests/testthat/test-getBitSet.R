@@ -1,7 +1,7 @@
 
 
 test_that("check working example of bit set creation with both tables", {
-  MT<- tibble::tibble(
+  mt <- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     person_id = c("1","2","2","3"),
     pregnancy_start_date = c(as.Date("2012-10-15"),as.Date("2013-07-22"),as.Date("2015-07-22"),as.Date("2010-01-12")),
@@ -32,7 +32,7 @@ test_that("check working example of bit set creation with both tables", {
   )
 
 
-  BT <- tibble::tibble(
+  bt <- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     fetus_id = c("4","5","6","7"),
     birth_outcome = c(4092289,443213,4092289,4081422),
@@ -50,7 +50,7 @@ test_that("check working example of bit set creation with both tables", {
 
   # add other tables required for snapshot
 
-  cdmSource <- dplyr::tibble(
+  cdm_source <- dplyr::tibble(
     cdm_source_name = "test_database",
     cdm_source_abbreviation = NA,
     cdm_holder = NA,
@@ -63,32 +63,58 @@ test_that("check working example of bit set creation with both tables", {
     vocabulary_version = NA
   )
 
-  DBI::dbWriteTable(db, "cdm_source",
-                    cdmSource,
-                    overwrite = TRUE
+  person <- dplyr::tibble(
+    person_id = 1,
+    gender_concept_id = 1,
+    year_of_birth = 1,
+    race_concept_id = 1,
+    ethnicity_concept_id = 1
+  )
+
+  observation_period <- dplyr::tibble(
+    person_id = 1,
+    observation_period_id = 1,
+    observation_period_start_date = as.Date(2002-01-01),
+    observation_period_end_date = as.Date(2002-01-01),
+    period_type_concept_id = 1
   )
 
 
+  DBI::dbWriteTable(db, "cdm_source",
+                    cdm_source,
+                    overwrite = TRUE
+  )
+
+  DBI::dbWriteTable(db, "person",
+                    person,
+                    overwrite = TRUE)
+
+  DBI::dbWriteTable(db, "observation_period",
+                    observation_period,
+                    overwrite = TRUE)
+
+
   cdm <- CDMConnector::cdm_from_con(db,
+                                    cdm_schema = "main",
                                     write_schema = "main",
   )
 
   write_schema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "MT"),
-                    MT,
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+                    mt,
                     overwrite = TRUE)
 
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "BT"),
-                    BT,
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "bt"),
+                    bt,
                     overwrite = TRUE)
 
-  cdm$BT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "BT"))
-  cdm$MT <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "MT"))
+  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "bt"))
+  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
 
 
-  seeBitSet <- getBitSet(cdm$MT,cdm$BT)
+  seeBitSet <- getBitSet(cdm$mt,cdm$bt)
 
 ## nothing fails
   expect_true(class(seeBitSet[[1]])=="numeric")
@@ -100,7 +126,7 @@ test_that("check working example of bit set creation with both tables", {
 
 
 test_that("check working example of bit set creation with mother table only", {
-  MT<- tibble::tibble(
+  mt <- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     person_id = c("1","2","2","3"),
     pregnancy_start_date = c(as.Date("2012-10-15"),as.Date("2013-07-22"),as.Date("2015-07-22"),as.Date("2010-01-12")),
@@ -134,13 +160,7 @@ test_that("check working example of bit set creation with mother table only", {
   # into in-memory database
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-  DBI::dbWriteTable(db, "person",
-                    MT,
-                    overwrite = TRUE)
-
-  # add other tables required for snapshot
-
-  cdmSource <- dplyr::tibble(
+  cdm_source <- dplyr::tibble(
     cdm_source_name = "test_database",
     cdm_source_abbreviation = NA,
     cdm_holder = NA,
@@ -153,19 +173,51 @@ test_that("check working example of bit set creation with mother table only", {
     vocabulary_version = NA
   )
 
+  person <- dplyr::tibble(
+    person_id = 1,
+    gender_concept_id = 1,
+    year_of_birth = 1,
+    race_concept_id = 1,
+    ethnicity_concept_id = 1
+  )
+
+  observation_period <- dplyr::tibble(
+    person_id = 1,
+    observation_period_id = 1,
+    observation_period_start_date = as.Date(2002-01-01),
+    observation_period_end_date = as.Date(2002-01-01),
+    period_type_concept_id = 1
+  )
+
+
   DBI::dbWriteTable(db, "cdm_source",
-                    cdmSource,
+                    cdm_source,
                     overwrite = TRUE
   )
 
+  DBI::dbWriteTable(db, "person",
+                    person,
+                    overwrite = TRUE)
+
+  DBI::dbWriteTable(db, "observation_period",
+                    observation_period,
+                    overwrite = TRUE)
+
 
   cdm <- CDMConnector::cdm_from_con(db,
+                                    cdm_schema = "main",
                                     write_schema = "main",
   )
 
-  cdm$MT <- cdm$person
+  write_schema = "main"
 
-  seeBitSet <- getBitSet(cdm$MT , babytable = NULL)
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+                    mt,
+                    overwrite = TRUE)
+
+  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
+
+  seeBitSet <- getBitSet(cdm$mt , babytable = NULL)
 
   ## nothing fails
   expect_true(class(seeBitSet[[1]])=="numeric")
@@ -180,7 +232,7 @@ test_that("check working example of bit set creation with mother table only", {
 
 test_that("check working example of bit set creation with baby table only", {
 
-  BT <- tibble::tibble(
+  bt <- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     fetus_id = c("4","5","6","7"),
     birth_outcome = c(4092289,443213,4092289,4081422),
@@ -197,13 +249,7 @@ test_that("check working example of bit set creation with baby table only", {
   db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
 
-  DBI::dbWriteTable(db, "observation_period",
-                    BT,
-                    overwrite = TRUE)
-
-  # add other tables required for snapshot
-
-  cdmSource <- dplyr::tibble(
+  cdm_source <- dplyr::tibble(
     cdm_source_name = "test_database",
     cdm_source_abbreviation = NA,
     cdm_holder = NA,
@@ -216,20 +262,52 @@ test_that("check working example of bit set creation with baby table only", {
     vocabulary_version = NA
   )
 
+  person <- dplyr::tibble(
+    person_id = 1,
+    gender_concept_id = 1,
+    year_of_birth = 1,
+    race_concept_id = 1,
+    ethnicity_concept_id = 1
+  )
+
+  observation_period <- dplyr::tibble(
+    person_id = 1,
+    observation_period_id = 1,
+    observation_period_start_date = as.Date(2002-01-01),
+    observation_period_end_date = as.Date(2002-01-01),
+    period_type_concept_id = 1
+  )
+
+
   DBI::dbWriteTable(db, "cdm_source",
-                    cdmSource,
+                    cdm_source,
                     overwrite = TRUE
   )
 
+  DBI::dbWriteTable(db, "person",
+                    person,
+                    overwrite = TRUE)
+
+  DBI::dbWriteTable(db, "observation_period",
+                    observation_period,
+                    overwrite = TRUE)
+
 
   cdm <- CDMConnector::cdm_from_con(db,
+                                    cdm_schema = "main",
                                     write_schema = "main",
   )
 
-  cdm$BT <- cdm$observation_period
+  write_schema = "main"
+
+  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "bt"),
+                    bt,
+                    overwrite = TRUE)
+
+  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "bt"))
 
 
-  seeBitSet <- getBitSet(mothertable = NULL,cdm$BT)
+  seeBitSet <- getBitSet(mothertable = NULL,cdm$bt)
 
   ## nothing fails
   expect_true(class(seeBitSet[[1]])=="numeric")

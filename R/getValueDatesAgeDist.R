@@ -31,7 +31,7 @@ getValueDatesAgeDist <- function(
       max_start = max(.data$pregnancy_start_date, na.rm = T),
       min_end = min(.data$pregnancy_end_date, na.rm=T),
       max_end = max(.data$pregnancy_end_date, na.rm = T)
-    ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = everything()) %>%
+    ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   value = value)
 
@@ -114,7 +114,7 @@ getValueDatesAgeDist <- function(
         0.99, na.rm = T
       ),
       max_gestationalAge_inDays = max(.data$gestational_length_in_day, na.rm = T)
-    ) %>% tidyr::pivot_longer(cols = everything()) %>%
+    ) %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   value = value)
 

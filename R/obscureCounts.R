@@ -25,8 +25,8 @@ obscureCounts <- function(table,
     if (!is.null(checkColNames)) {
       table <- table %>%
         dplyr::rowwise() %>%
-        dplyr::mutate(result_obscured = any(dplyr::across(all_of(checkColNames), ~ (. < minCellCount & . > 0)))) %>%
-        dplyr::mutate_at(dplyr::vars(all_of(toBeSubstituted)), ~ ifelse(result_obscured, substitute, .))
+        dplyr::mutate(result_obscured = any(dplyr::across(tidyr::all_of(checkColNames), ~ (. < minCellCount & . > 0)))) %>%
+        dplyr::mutate_at(dplyr::vars(tidyr::all_of(toBeSubstituted)), ~ ifelse(result_obscured, substitute, .))
     }
   }
 

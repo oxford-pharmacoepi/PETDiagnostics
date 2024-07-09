@@ -27,56 +27,71 @@ summariseGestationalAge <- function(
     dplyr::select(
       "gestational_length_in_day",
       "pregnancy_start_date",
-      "pregnancy_end_date")
+      "pregnancy_end_date") %>%
+    dplyr::mutate(pregnancy_start_date = as.Date(.data$pregnancy_start_date),
+                  pregnancy_end_date = as.Date(.data$pregnancy_end_date))
 
 
-    records <- records %>% dplyr::mutate(
-      n = dplyr::if_else((!is.na(.data$gestational_length_in_day) &
-                           !is.na(.data$pregnancy_start_date) &
-                           !is.na(.data$pregnancy_end_date)), dplyr::if_else(dplyr::between(!!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day"),
-                                                                                     .data$gestational_length_in_day -7, .data$gestational_length_in_day +7),0, 1),
-      NA),
-      endBeforeStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))>=.data$pregnancy_end_date),1,0),
-      endAfterStart = dplyr::if_else(((!!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day"))<.data$pregnancy_end_date),1,0)) %>%
-        dplyr::collect()
+  records <- records %>%
+    dplyr::mutate(
+      n = dplyr::case_when(
+        !is.na(.data$gestational_length_in_day) &
+          !is.na(.data$pregnancy_start_date) &
+          !is.na(.data$pregnancy_end_date) ~
+          dplyr::if_else(
+            !!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day") >= .data$gestational_length_in_day - 7 &
+              !!CDMConnector::datediff("pregnancy_start_date", "pregnancy_end_date", interval = "day") <= .data$gestational_length_in_day + 7,
+            1,
+            0
+          ),
+        TRUE ~ NA_real_
+      ),
+      endBeforeStart = dplyr::if_else(
+        !!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day") >= .data$pregnancy_end_date,
+        1,
+        0
+      ),
+      endAfterStart = dplyr::if_else(
+        !!CDMConnector::dateadd("pregnancy_start_date", minGestAge_Days, interval = "day") < .data$pregnancy_end_date,
+        1,
+        0
+      )
+    )
 
-
-    records_n <- records %>%
+  records_n <- records %>%
     dplyr::summarise(
-                     different_gestationalAge = sum(.data$n, na.rm = T),
-
-                     match_gestationalAge = sum(.data$n == 0, na.rm = T),
-
-                     missing_information = sum(is.na(.data$n)),
-
-                     endBeforeMinGestAge = sum(.data$endBeforeStart, na.rm =T),
-
-                     endAfterMinGestAge = sum(.data$endAfterStart, na.rm =T))
+      different_gestationalAge = sum(.data$n, na.rm = TRUE),
+      match_gestationalAge = sum(ifelse(.data$n == 0, 1, 0), na.rm = TRUE),
+      missing_information = sum(ifelse(is.na(.data$n), 1, 0), na.rm = TRUE),
+      endBeforeMinGestAge = sum(.data$endBeforeStart, na.rm = TRUE),
+      endAfterMinGestAge = sum(.data$endAfterStart, na.rm = TRUE)
+    )
 
 
-    records_prop <- records_n %>%
-      dplyr::summarise(
-                       different_gestationalAge = round(.data$different_gestationalAge / nrow(tibble::as_tibble(worktable)),3)*100,
+  total_records <- nrow(tibble::as_tibble(records))
 
-                       match_gestationalAge = round(.data$match_gestationalAge / nrow(tibble::as_tibble(worktable)),3)*100,
+  records_prop <- records_n %>%
+    dplyr::mutate(
+      different_gestationalAge = round(.data$different_gestationalAge / total_records, 3) * 100,
+      match_gestationalAge = round(.data$match_gestationalAge / total_records, 3) * 100,
+      missing_information = round(.data$missing_information / total_records, 3) * 100,
+      endBeforeMinGestAge = round(.data$endBeforeMinGestAge / total_records, 3) * 100,
+      endAfterMinGestAge = round(.data$endAfterMinGestAge / total_records, 3) * 100
+    ) %>%
+    tidyr::pivot_longer(
+      cols = tidyr::everything(),
+      names_to = "variable",
+      values_to = "percentage"
+    )
 
-                       missing_information = round(.data$missing_information / nrow(tibble::as_tibble(worktable)),3)*100,
+    records_n <-  records_n  %>%
+      tidyr::pivot_longer(
+        cols = tidyr::everything(),
+        names_to = "variable",
+        values_to = "count"
+      )
 
-                       endBeforeMinGestAge = round(.data$endBeforeMinGestAge / nrow(tibble::as_tibble(worktable)),3)*100,
-
-                       endAfterMinGestAge = round(.data$endAfterMinGestAge / nrow(tibble::as_tibble(worktable)),3)*100) %>%
-      tidyr::pivot_longer(cols = everything()) %>%
-      dplyr::rename(variable = name,
-                    percentage = value)
-
-
-
-    records_n <-  records_n %>%
-      tidyr::pivot_longer(cols = everything()) %>%
-      dplyr::rename(variable = name,
-                    count = value)
-
-    records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(Total = nrow(tibble::as_tibble(worktable)))
+    records_long <- records_n %>% dplyr::left_join(records_prop, by = "variable")  %>% dplyr::mutate(total = total_records)
 
 
     records <-  NULL

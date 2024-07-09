@@ -34,10 +34,10 @@ getMissings <- function(
   }
 # all the required variables do not have missings, they have "0", whereas non-required variables have NAs
 
-  n_missing_long <-  n_missing %>% tidyr::pivot_longer(cols = everything()) %>%
+  n_missing_long <-  n_missing %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   count = value)
-  prop_missing_long <-  prop_missing %>% tidyr::pivot_longer(cols = everything()) %>%
+  prop_missing_long <-  prop_missing %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   percentage = value)
 
