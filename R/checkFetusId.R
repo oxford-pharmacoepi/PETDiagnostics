@@ -89,12 +89,12 @@ records_prop <- records_n %>%
 
     missing_noOfFetus = round(.data$missing_noOfFetus /nrow(tibble::as_tibble(mothertable)),3)*100,
 
-  ) %>% tidyr::pivot_longer(cols = everything()) %>%
+  ) %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
   dplyr::rename(variable = name,
          percentage = value)
 
 
-records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+records_n <- records_n %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
   dplyr::rename(variable = name,
                 count = value)
 

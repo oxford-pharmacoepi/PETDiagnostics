@@ -90,7 +90,7 @@ DT::datatable(unknownSummaryMother)
 ###  "end after start" counts the occasions in which the pregnancy end date happened after the start date plus the minimum of pre-defined gestational age
   
 ```{r}
-gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$mothertable,minGestAge_Days = 21)
+gestationalAgeMatch <- PETDiagnostics::summariseGestationalAge(cdm$mothertable,minGestAge_Days = 21) %>% dplyr::collect()
 DT::datatable(gestationalAgeMatch)
 ```
 

@@ -51,7 +51,7 @@ getValueWeightDist <- function(
         0.95, na.rm = T
       ),
       max_birth_weight_in_gram = max(.data$birth_weight, na.rm = T)
-    ) %>% tidyr::pivot_longer(cols = everything()) %>%
+    ) %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   value = value)
 

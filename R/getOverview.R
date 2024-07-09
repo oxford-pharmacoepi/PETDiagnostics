@@ -33,7 +33,7 @@ getOverview <- function(
         dplyr::summarise(
           pregnancies = dplyr::n_distinct(.data$pregnancy_id),
           fetuses = dplyr::n_distinct(.data$fetus_id)
-        ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = everything()) %>%
+        ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
         dplyr::rename(variable = name,
                       count = value)
 
@@ -49,7 +49,7 @@ getOverview <- function(
       dplyr::summarise(
         women = dplyr::n_distinct(.data$person_id),
         pregnancies = dplyr::n_distinct(.data$pregnancy_id)
-      ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = everything()) %>%
+      ) %>% dplyr::collect() %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
       dplyr::rename(variable = name,
                     count = value)
 

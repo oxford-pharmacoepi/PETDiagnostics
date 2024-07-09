@@ -39,7 +39,6 @@ executeChecks <- function(#cdm,
   checkLogical(verbose, messageStore = errorMessage)
   checkmate::reportAssertions(collection = errorMessage)
 
-
   PETOverviewMother <- NULL
   PETOverviewBaby <- NULL
   if ("overview" %in% checks) {
@@ -198,7 +197,7 @@ executeChecks <- function(#cdm,
 
       bitSetOverviewAll  <- getBitSet(mothertable,babytable) %>% dplyr::collect()
     }
-    if (!is.null(mothertable)) {
+    if (!is.null(mothertable) && "pregnancy_number_fetuses" %in% colnames(mothertable)) {
 
         bitSetOverviewMother  <- getBitSet(mothertable, babytable = NULL) %>% dplyr::collect()
       }
@@ -279,6 +278,7 @@ executeChecks <- function(#cdm,
 #' @param resultList named list with results
 #' @param databaseId database identifier
 #' @param outputFolder folder to write to
+#' @importFrom here here
 #'
 #' @export
 #'

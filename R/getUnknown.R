@@ -36,10 +36,10 @@ getUnknown <- function(
   }
 
 
-  n_unknown_long <-  n_unknown %>% tidyr::pivot_longer(cols = everything()) %>%
+  n_unknown_long <-  n_unknown %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   count = value)
-  prop_unknown_long <-  prop_unknown %>% tidyr::pivot_longer(cols = everything()) %>%
+  prop_unknown_long <-  prop_unknown %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   percentage = value)
 

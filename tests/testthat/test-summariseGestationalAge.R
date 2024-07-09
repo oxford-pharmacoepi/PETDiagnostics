@@ -1,5 +1,5 @@
 test_that("check working example 1) each count 2) adds up to total", {
- MT<- tibble::tibble(
+ mt <- tibble::tibble(
     pregnancy_id = c("4","5","6","7"),
     person_id = c("1","2","2","3"),
     pregnancy_start_date = c(as.Date("2012-10-15"),as.Date("2013-07-22"),as.Date("2015-07-22"),as.Date("2010-01-12")),
@@ -34,14 +34,9 @@ test_that("check working example 1) each count 2) adds up to total", {
  # into in-memory database
  db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
 
-
- DBI::dbWriteTable(db, "person",
-                   MT,
-                   overwrite = TRUE)
-
  # add other tables required for snapshot
 
- cdmSource <- dplyr::tibble(
+ cdm_source <- dplyr::tibble(
    cdm_source_name = "test_database",
    cdm_source_abbreviation = NA,
    cdm_holder = NA,
@@ -54,38 +49,59 @@ test_that("check working example 1) each count 2) adds up to total", {
    vocabulary_version = NA
  )
 
+ person <- dplyr::tibble(
+   person_id = 1,
+   gender_concept_id = 1,
+   year_of_birth = 1,
+   race_concept_id = 1,
+   ethnicity_concept_id = 1
+ )
+
+ observation_period <- dplyr::tibble(
+   person_id = 1,
+   observation_period_id = 1,
+   observation_period_start_date = as.Date(2002-01-01),
+   observation_period_end_date = as.Date(2002-01-01),
+   period_type_concept_id = 1
+ )
+
+
  DBI::dbWriteTable(db, "cdm_source",
-                   cdmSource,
+                   cdm_source,
                    overwrite = TRUE
  )
 
+ DBI::dbWriteTable(db, "person",
+                   person,
+                   overwrite = TRUE)
+
+ DBI::dbWriteTable(db, "observation_period",
+                   observation_period,
+                   overwrite = TRUE)
+
 
  cdm <- CDMConnector::cdm_from_con(db,
+                                   cdm_schema = "main",
                                    write_schema = "main",
  )
+ write_schema = "main"
 
+ DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+                   mt,
+                   overwrite = TRUE)
 
-  cdm$MT <- cdm$person
+ cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
 
-  testData <- cdm$MT
+ testData <- cdm$mt
 
-  seeGestAge <- summariseGestationalAge(testData,minGestAge_Days = 21)
+   seeGestAge <- summariseGestationalAge(testData,minGestAge_Days = 21) %>% dplyr::collect()
 
   #check all the counts
-  #different_gestationalAge
-  expect_true(seeGestAge[1,2]==1)
-  #match_gestationalAge
-  expect_true(seeGestAge[2,2]==3)
-  #missing_information
-  expect_true(seeGestAge[3,2]==0)
-  #endBeforeStart
-  expect_true(seeGestAge[4,2]==0)
-  #endAfterStart
-  expect_true(seeGestAge[5,2]==4)
-
-  #check that all counts add up to the Total
-  expect_true(seeGestAge[1,2] + seeGestAge[2,2] + seeGestAge[3,2] == seeGestAge[1,4])
-  expect_true(seeGestAge[3,2] + seeGestAge[4,2] + seeGestAge[5,2] == seeGestAge[3,4])
+  expect_equal(seeGestAge$count, c(3,1,0,0,4))
+  #check all the percentages
+  expect_equal(seeGestAge$percentage, c(75,25,0,0,100))
+  # check the totals
+  expect_equal(seeGestAge$total, c(4,4,4,4,4))
 
   DBI::dbDisconnect(attr(cdm, "dbcon"), shutdown = TRUE)
 })

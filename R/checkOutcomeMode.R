@@ -49,12 +49,12 @@ checkOutcomeMode <- function(
       match = round(.data$match / nrow(tibble::as_tibble(worktable)),3)*100,
 
       missingUnknown_information = round(.data$missingUnknown_information /nrow(tibble::as_tibble(worktable)),3)*100) %>%
-    tidyr::pivot_longer(cols = everything()) %>%
+    tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   percentage = value)
 
 
-  records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+  records_n <- records_n %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   count = value)
 

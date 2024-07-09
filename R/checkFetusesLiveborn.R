@@ -74,12 +74,12 @@ checkFetusesLiveborn <- function(
                      missing_relativeNumber = round(.data$missing_relativeNumber / nrow(tibble::as_tibble(worktable)),3)*100
 
 
-    ) %>% tidyr::pivot_longer(cols = everything()) %>%
+    ) %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   percentage = value)
 
 
-records_n <- records_n %>% tidyr::pivot_longer(cols = everything()) %>%
+records_n <- records_n %>% tidyr::pivot_longer(cols = tidyr::everything()) %>%
     dplyr::rename(variable = name,
                   count = value)
 
