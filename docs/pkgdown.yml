@@ -1,0 +1,10 @@
+pandoc: 3.1.1
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  Introduction: Introduction.html
+  Summary: Summary.html
+last_built: 2024-11-26T17:37Z
+urls:
+  reference: https://oxford-pharmacoepi.github.io/PETDiagnostics/reference
+  article: https://oxford-pharmacoepi.github.io/PETDiagnostics/articles
