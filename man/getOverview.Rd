@@ -2,7 +2,7 @@
 % Please edit documentation in R/getOverview.R
 \name{getOverview}
 \alias{getOverview}
-\title{Title}
+\title{Tells us how many women and pregnancies there are when the mother table is assessed and how many pregnancies and infants there are in case the infant table is assessed}
 \usage{
 getOverview(workTable)
 }
@@ -13,7 +13,7 @@ getOverview(workTable)
 returns a table with the overview
 }
 \description{
-Title
+Tells us how many women and pregnancies there are when the mother table is assessed and how many pregnancies and infants there are in case the infant table is assessed
 }
 \examples{
 \donttest{

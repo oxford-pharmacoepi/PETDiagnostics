@@ -2,7 +2,7 @@
 % Please edit documentation in R/executeChecks.R
 \name{executeChecks}
 \alias{executeChecks}
-\title{Title}
+\title{this function executes the desired checks "overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn","fetusid","weightDist","bitSet"}
 \usage{
 executeChecks(
   mothertable = NULL,
@@ -31,7 +31,7 @@ executeChecks(
 all the individual result tables with data obscured if need be
 }
 \description{
-Title
+this function executes the desired checks "overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn","fetusid","weightDist","bitSet"
 }
 \examples{
 \donttest{

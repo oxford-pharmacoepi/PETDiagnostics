@@ -1,11 +1,10 @@
-#' Title
+#' tells us how pregnancy dates and gestational age add up in the mothertable
 #'
 #' @param worktable is the mothertable
 #' @param minGestAge_Days is minimum number of days of gestational age for which we test whether the end was before (start + minGestAge_Days)
 #'
 #' @return returns a table with the dates checks
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

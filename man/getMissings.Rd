@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMissings.R
 \name{getMissings}
 \alias{getMissings}
-\title{Title}
+\title{tells us how many missing values are there in the mother table or infant table (depending on the input)}
 \usage{
 getMissings(worktable)
 }
@@ -13,7 +13,7 @@ getMissings(worktable)
 returns a table with all the missings
 }
 \description{
-Title
+tells us how many missing values are there in the mother table or infant table (depending on the input)
 }
 \examples{
 \donttest{

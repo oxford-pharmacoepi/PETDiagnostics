@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkFetusId.R
 \name{checkFetusId}
 \alias{checkFetusId}
-\title{Title}
+\title{tells us how the number of fetuses and liveborns add up in the mother table and babytable}
 \usage{
 checkFetusId(mothertable, babytable)
 }
@@ -12,10 +12,10 @@ checkFetusId(mothertable, babytable)
 \item{babytable}{is the babytable}
 }
 \value{
-returns a table with the fetuses checks
+returns a table with the checks on fetuses and liveborns
 }
 \description{
-Title
+tells us how the number of fetuses and liveborns add up in the mother table and babytable
 }
 \examples{
 \donttest{

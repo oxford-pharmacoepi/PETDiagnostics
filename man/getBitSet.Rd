@@ -2,7 +2,7 @@
 % Please edit documentation in R/getBitSet.R
 \name{getBitSet}
 \alias{getBitSet}
-\title{Title}
+\title{tells us how the missing/unknown data pattern of both tables, mother or baby table looks like (depending on the input)}
 \usage{
 getBitSet(mothertable = NULL, babytable = NULL)
 }
@@ -15,7 +15,7 @@ getBitSet(mothertable = NULL, babytable = NULL)
 returns a table with the pattern of missing data
 }
 \description{
-Title
+tells us how the missing/unknown data pattern of both tables, mother or baby table looks like (depending on the input)
 }
 \examples{
 \donttest{

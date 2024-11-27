@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAnnualOverview.R
 \name{getAnnualOverview}
 \alias{getAnnualOverview}
-\title{Title}
+\title{tells us how many pregnancies there are per year}
 \usage{
 getAnnualOverview(mothertable)
 }
@@ -13,7 +13,7 @@ getAnnualOverview(mothertable)
 a table which shows the number of pregnancies per year
 }
 \description{
-Title
+tells us how many pregnancies there are per year
 }
 \examples{
 \donttest{

@@ -1,11 +1,10 @@
-#' Title
+#' tells us how the number of fetuses and liveborns add up in the mother table and babytable
 #'
 #' @param mothertable is the mothertable
 #' @param babytable is the babytable
 #'
-#' @return returns a table with the fetuses checks
+#' @return returns a table with the checks on fetuses and liveborns
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

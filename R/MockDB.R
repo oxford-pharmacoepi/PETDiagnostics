@@ -1,5 +1,4 @@
-
-#' Title
+#' This function creates a mock pregnant and fetus population
 #'
 #' @param mothertable creates a table according to the mothertable of the pregnancy extension Table in OHDSI
 #' @param babytable creates a table according to the babytable of the pregnancy extension Table in OHDSI

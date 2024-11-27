@@ -1,10 +1,9 @@
-#' Title
+#' tells us what the distribution of birth weight in the baby table is
 #'
 #' @param babytable is the babytable
 #'
 #' @return returns values of birthweight
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

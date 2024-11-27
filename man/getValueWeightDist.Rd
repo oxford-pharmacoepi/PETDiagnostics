@@ -2,7 +2,7 @@
 % Please edit documentation in R/getValueWeightDist.R
 \name{getValueWeightDist}
 \alias{getValueWeightDist}
-\title{Title}
+\title{tells us what the distribution of birth weight in the baby table is}
 \usage{
 getValueWeightDist(babytable)
 }
@@ -13,7 +13,7 @@ getValueWeightDist(babytable)
 returns values of birthweight
 }
 \description{
-Title
+tells us what the distribution of birth weight in the baby table is
 }
 \examples{
 \donttest{

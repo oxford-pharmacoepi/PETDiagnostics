@@ -2,7 +2,7 @@
 % Please edit documentation in R/getUnknown.R
 \name{getUnknown}
 \alias{getUnknown}
-\title{Title}
+\title{tells us how many unknown values there are in the mother table (no unknown values possible for the infant table)}
 \usage{
 getUnknown(mothertable)
 }
@@ -13,7 +13,7 @@ getUnknown(mothertable)
 returns a table with all the zero counts of required variables in the mothertable
 }
 \description{
-Title
+tells us how many unknown values there are in the mother table (no unknown values possible for the infant table)
 }
 \examples{
 \donttest{

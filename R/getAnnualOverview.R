@@ -1,11 +1,10 @@
 
-#' Title
+#' tells us how many pregnancies there are per year
 #'
 #' @param mothertable is the mothertable
 #'
 #' @return a table which shows the number of pregnancies per year
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkOutcomeMode.R
 \name{checkOutcomeMode}
 \alias{checkOutcomeMode}
-\title{Title}
+\title{tells us how outcome and mode of delivery add up in the mother table}
 \usage{
 checkOutcomeMode(worktable)
 }
@@ -13,7 +13,7 @@ checkOutcomeMode(worktable)
 returns a table with the information of differences in outcome mode and delivery data
 }
 \description{
-Title
+tells us how outcome and mode of delivery add up in the mother table
 }
 \examples{
 \donttest{

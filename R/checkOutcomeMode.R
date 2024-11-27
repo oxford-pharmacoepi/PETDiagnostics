@@ -1,10 +1,9 @@
-#' Title
+#' tells us how outcome and mode of delivery add up in the mother table
 #'
 #' @param worktable is the mothertable
 #'
 #' @return returns a table with the information of differences in outcome mode and delivery data
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

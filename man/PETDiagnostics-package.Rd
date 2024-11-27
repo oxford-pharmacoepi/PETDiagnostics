@@ -4,9 +4,16 @@
 \name{PETDiagnostics-package}
 \alias{PETDiagnostics}
 \alias{PETDiagnostics-package}
-\title{PETDiagnostics: What the Package Does (One Line, Title Case)}
+\title{PETDiagnostics: Diagnostics for the OMOP perinatal expansion (OMOP)}
 \description{
-What the package does (one paragraph).
+This package assesses the feasibility of data sources to implement the perinatal expansion into their OMOP data. The package contains several quality checks to test the feasibility and fitness of the perinatal expansion into the data. The function executeChecks() allows running all checks at once and returns a list containing the results of each check and for each expansion table.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://oxford-pharmacoepi.github.io/PETDiagnostics/}
+}
+
 }
 \author{
 \strong{Maintainer}: Theresa Burkard \email{theresa.burkard@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0003-1313-4473}{ORCID})

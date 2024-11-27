@@ -2,7 +2,7 @@
 % Please edit documentation in R/summariseGestationalAge.R
 \name{summariseGestationalAge}
 \alias{summariseGestationalAge}
-\title{Title}
+\title{tells us how pregnancy dates and gestational age add up in the mothertable}
 \usage{
 summariseGestationalAge(worktable, minGestAge_Days)
 }
@@ -15,7 +15,7 @@ summariseGestationalAge(worktable, minGestAge_Days)
 returns a table with the dates checks
 }
 \description{
-Title
+tells us how pregnancy dates and gestational age add up in the mothertable
 }
 \examples{
 \donttest{

@@ -1,10 +1,9 @@
-#' Title
+#' Tells us how many women and pregnancies there are when the mother table is assessed and how many pregnancies and infants there are in case the infant table is assessed
 #'
 #' @param workTable is the motherTable or babyTable
 #'
 #' @return returns a table with the overview
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

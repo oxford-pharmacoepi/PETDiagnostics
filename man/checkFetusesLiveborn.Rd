@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkFetusesLiveborn.R
 \name{checkFetusesLiveborn}
 \alias{checkFetusesLiveborn}
-\title{Title}
+\title{tells us how number of infants and liveborns add up in the mother table}
 \usage{
 checkFetusesLiveborn(worktable)
 }
@@ -13,7 +13,7 @@ checkFetusesLiveborn(worktable)
 returns a table with the checks on fetuses and liveborns
 }
 \description{
-Title
+tells us how number of infants and liveborns add up in the mother table
 }
 \examples{
 \donttest{

@@ -1,10 +1,9 @@
-#' Title
+#' tells us how many missing values are there in the mother table or infant table (depending on the input)
 #'
 #' @param worktable is the mothertable or babytable
 #'
 #' @return returns a table with all the missings
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

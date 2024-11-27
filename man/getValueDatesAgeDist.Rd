@@ -2,7 +2,7 @@
 % Please edit documentation in R/getValueDatesAgeDist.R
 \name{getValueDatesAgeDist}
 \alias{getValueDatesAgeDist}
-\title{Title}
+\title{tells us what the minimum and maximum of pregnancy start and end dates as well as the distribution of gestational age are}
 \usage{
 getValueDatesAgeDist(mothertable)
 }
@@ -13,7 +13,7 @@ getValueDatesAgeDist(mothertable)
 returns a table with the distrubtion of pregnancy starte date, end date, and gestational Age
 }
 \description{
-Title
+tells us what the minimum and maximum of pregnancy start and end dates as well as the distribution of gestational age are
 }
 \examples{
 \donttest{

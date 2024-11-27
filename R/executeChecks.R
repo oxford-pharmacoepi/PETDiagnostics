@@ -1,4 +1,4 @@
-#' Title
+#' this function executes the desired checks "overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode", "fetusesLiveborn","fetusid","weightDist","bitSet"
 #'
 #' @param mothertable input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL
 #' @param babytable input a table according to the mothertable of the pregnancy extension Table in OHDSI, can be NULL

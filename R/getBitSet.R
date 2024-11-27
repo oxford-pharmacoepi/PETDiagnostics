@@ -1,11 +1,10 @@
-#' Title
+#' tells us how the missing/unknown data pattern of both tables, mother or baby table looks like (depending on the input)
 #'
 #' @param mothertable is the mothertable
 #' @param babytable is the babytable
 #'
 #' @return returns a table with the pattern of missing data
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

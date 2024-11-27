@@ -1,10 +1,9 @@
-#' Title
+#' tells us what the minimum and maximum of pregnancy start and end dates as well as the distribution of gestational age are
 #'
 #' @param mothertable is the mothertable
 #'
 #' @return returns a table with the distrubtion of pregnancy starte date, end date, and gestational Age
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

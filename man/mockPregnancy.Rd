@@ -2,7 +2,7 @@
 % Please edit documentation in R/MockDB.R
 \name{mockPregnancy}
 \alias{mockPregnancy}
-\title{Title}
+\title{This function creates a mock pregnant and fetus population}
 \usage{
 mockPregnancy(
   mothertable = NULL,
@@ -27,7 +27,7 @@ mockPregnancy(
 a mock cdm reference mothertable and babytable
 }
 \description{
-Title
+This function creates a mock pregnant and fetus population
 }
 \examples{
 \donttest{

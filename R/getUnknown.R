@@ -1,10 +1,9 @@
-#' Title
+#' tells us how many unknown values there are in the mother table (no unknown values possible for the infant table)
 #'
 #' @param mothertable is the mothertable
 #'
 #' @return returns a table with all the zero counts of required variables in the mothertable
 #' @export
-#'
 #' @examples
 #' \donttest{
 #' cdm <- mockPregnancy()

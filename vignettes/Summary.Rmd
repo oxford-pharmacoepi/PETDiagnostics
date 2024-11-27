@@ -125,7 +125,7 @@ DT::datatable(outcomeModeMatch)
 fetusesLivebornNumber <- PETDiagnostics::checkFetusesLiveborn(cdm$mothertable)
 DT::datatable(fetusesLivebornNumber)
 ```
-## How do number of fetuses and liveborns add up in the mothertable?
+## How do number of fetuses and liveborns add up in the mothertable and babytable?
   
 ### "single_not_align_with_noOfFetusId"  means the variable pregnancy single does not align with the number of fetuses in the babytable
 ### "single_align_with_noOfFetusId"  means the variable pregnancy single is YES and the number of fetuses in the babytable is 1
@@ -140,7 +140,7 @@ DT::datatable(fetusIdMatch)
 ```
 
 
-## How do number of fetuses and liveborns add up in the mothertable?
+## What is the distribution of birth weight in the baby table?
 
 ```{r}
 valueWeightDist <- PETDiagnostics::getValueWeightDist(cdm$babytable) 
