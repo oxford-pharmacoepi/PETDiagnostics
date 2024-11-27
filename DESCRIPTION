@@ -1,6 +1,6 @@
 Package: PETDiagnostics
 Title: Diagnostics for the OMOP perinatal expansion (OMOP)
-Version: 0.0.0.9000
+Version: v0.4
 Authors@R: 
     person("Theresa", "Burkard", , "theresa.burkard@ndorms.ox.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1313-4473"))
