@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PETDiagnostics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">v0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Checks.html">Checks</a></li>
     <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/Run%20this.html">Run this</a></li>
     <li><a class="dropdown-item" href="../articles/Summary.html">Summary</a></li>
   </ul>
 </li>
@@ -84,7 +85,10 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span></code></pre></div>
 <p>Here we use the mockdata for training purposes. But ideally, you use
 your real data, so just connect to your database (if you are not already
-connected). The idea would be to name these new cdm tables in the future
+connected). The article “Run this” depicts an example code of how to
+connect to the database and add the mothertable and babytable to the
+cdm.</p>
+<p>The idea would be to name these new cdm tables in the future
 mothertable and babytable.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cdm</span> <span class="op">&lt;-</span>  <span class="fu">PETDiagnostics</span><span class="fu">::</span><span class="fu"><a href="../reference/mockPregnancy.html">mockPregnancy</a></span><span class="op">(</span>mothertable <span class="op">=</span> <span class="cn">NULL</span>,</span>

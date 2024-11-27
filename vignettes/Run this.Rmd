@@ -1,0 +1,59 @@
+---
+title: "Run this"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Run this}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "###>"
+)
+```
+
+This file depicts example code on how to set up a "Code to run" file for the database connection to use PETDiagnostics. The mothertable and babytable are not yet part of the official cdm therefore they need to added to the cdm. 
+
+### example for RPostgres
+library(PETDiagnostics)  
+library(CDMConnector)  
+library(dplyr)  
+
+### Database connection details
+server_dbi<-Sys.getenv("SERVER_DBI")  
+port<-Sys.getenv("DB_PORT")  
+host<-Sys.getenv("DB_HOST")  
+user<-Sys.getenv("DB_USER")  
+password<-Sys.getenv("DB_PASSWORD")  
+
+### to add bigint = "integer" or alternatively bigint = "numeric" is very important
+con <- DBI::dbConnect(RPostgres::Postgres(),  
+                dbname = server_dbi,  
+                port = port,  
+                host = host,  
+                user = user,  
+                password = password,  
+                bigint = "integer")  
+
+### The name of the schema that contains the OMOP CDM with patient-level data
+cdm_database_schema<-Sys.getenv("DB_CDM_SCHEMA")
+
+### The name of the schema that contains the vocabularies
+vocabulary_database_schema<-cdm_database_schema
+
+### The name of the schema where results tables will be created
+results_database_schema<-Sys.getenv("DB_WRITE_SCHEMA")
+
+### create cdm reference
+cdm <- CDMConnector::cdm_from_con(con,  
+                                  cdm_schema = cdm_database_schema,  
+                                  write_schema = results_database_schema)  
+
+###### add your table to the cdm and call it mothertable and babytable (if present)
+cdm$mothertable <- dplyr::tbl(con, sql("SELECT * FROM CDM_NAME.TABLE_NAME"))  
+cdm$babytable <- dplyr::tbl(con, sql("SELECT * FROM CDM_NAME.TABLE_NAME"))  
+
+
+

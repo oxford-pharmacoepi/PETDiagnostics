@@ -41,29 +41,29 @@ library(dplyr)
 
 
 # We first need to create a mock database with a cdm reference
-# this function creates a motherTable and a babyTable
-cdm<-mockPregnancy(motherTable = NULL,
-                          babyTable = NULL,
+# this function creates a mothertable and a babytable
+cdm<-mockPregnancy(mothertable = NULL,
+                          babytable = NULL,
                           pregnancy_size = 100,
                           fetus_size = 110,
                           seed = 1)
 
 # this is what the table(s) look like
-# use the motherTable and/or the babyTable depending on your data
-head(cdm$motherTable)
-head(cdm$babyTable)
+# use the mothertable and/or the babytable depending on your data
+head(cdm$mothertable)
+head(cdm$babytable)
 ```
 
 ## Execute the diagnostic checks of your table(s)
 ### if both tables are available, all checks are possible
-### if only the motherTable is available, the "fetusid" and "weightDist" check is not possible, put babyTable = NULL
-### if only the babyTable is available, only the "overview", "missing", "weightDist", and "bitSet" check is possible, put motherTable = NULL
+### if only the mothertable is available, the "fetusid" and "weightDist" check is not possible, put babytable = NULL
+### if only the babytable is available, only the "overview", "missing", "weightDist", and "bitSet" check is possible, put mothertable = NULL
 
 
 ```{r}
 resultList <- executeChecks (
-                          motherTable = cdm$motherTable,               
-                          babyTable = cdm$babyTable,                  
+                          mothertable = cdm$mothertable,               
+                          babytable = cdm$babytable,                  
                           checks = c("overview","annualOverview","missing", "unknown","gestationalAge","datesAgeDist","outcomeMode",
                                      "fetusesLiveborn","fetusid","weightDist","bitSet"),                       
                           minCellCount = 5,
