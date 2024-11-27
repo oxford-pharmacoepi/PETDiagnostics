@@ -70,26 +70,26 @@
 for the database connection to use PETDiagnostics. The mothertable and
 babytable are not yet part of the official cdm therefore they need to
 added to the cdm.</p>
-<div class="section level3">
-<h3 id="example-for-rpostgres">example for RPostgres<a class="anchor" aria-label="anchor" href="#example-for-rpostgres"></a>
-</h3>
+<div class="section level5">
+<h5 id="example-for-rpostgres">example for RPostgres<a class="anchor" aria-label="anchor" href="#example-for-rpostgres"></a>
+</h5>
 <p>library(PETDiagnostics)<br>
 library(CDMConnector)<br>
 library(dplyr)</p>
 </div>
-<div class="section level3">
-<h3 id="database-connection-details">Database connection details<a class="anchor" aria-label="anchor" href="#database-connection-details"></a>
-</h3>
+<div class="section level5">
+<h5 id="database-connection-details">Database connection details<a class="anchor" aria-label="anchor" href="#database-connection-details"></a>
+</h5>
 <p>server_dbi&lt;-Sys.getenv(“SERVER_DBI”)<br>
 port&lt;-Sys.getenv(“DB_PORT”)<br>
 host&lt;-Sys.getenv(“DB_HOST”)<br>
 user&lt;-Sys.getenv(“DB_USER”)<br>
 password&lt;-Sys.getenv(“DB_PASSWORD”)</p>
 </div>
-<div class="section level3">
-<h3 id="to-add-bigint-integer-or-alternatively-bigint-numeric-is-very-important">to add bigint = “integer” or alternatively bigint = “numeric” is
+<div class="section level5">
+<h5 id="to-add-bigint-integer-or-alternatively-bigint-numeric-is-very-important">to add bigint = “integer” or alternatively bigint = “numeric” is
 very important<a class="anchor" aria-label="anchor" href="#to-add-bigint-integer-or-alternatively-bigint-numeric-is-very-important"></a>
-</h3>
+</h5>
 <p>con &lt;- DBI::dbConnect(RPostgres::Postgres(),<br>
 dbname = server_dbi,<br>
 port = port,<br>
@@ -98,36 +98,36 @@ user = user,<br>
 password = password,<br>
 bigint = “integer”)</p>
 </div>
-<div class="section level3">
-<h3 id="the-name-of-the-schema-that-contains-the-omop-cdm-with-patient-level-data">The name of the schema that contains the OMOP CDM with patient-level
+<div class="section level5">
+<h5 id="the-name-of-the-schema-that-contains-the-omop-cdm-with-patient-level-data">The name of the schema that contains the OMOP CDM with patient-level
 data<a class="anchor" aria-label="anchor" href="#the-name-of-the-schema-that-contains-the-omop-cdm-with-patient-level-data"></a>
-</h3>
+</h5>
 <p>cdm_database_schema&lt;-Sys.getenv(“DB_CDM_SCHEMA”)</p>
 </div>
-<div class="section level3">
-<h3 id="the-name-of-the-schema-that-contains-the-vocabularies">The name of the schema that contains the vocabularies<a class="anchor" aria-label="anchor" href="#the-name-of-the-schema-that-contains-the-vocabularies"></a>
-</h3>
+<div class="section level5">
+<h5 id="the-name-of-the-schema-that-contains-the-vocabularies">The name of the schema that contains the vocabularies<a class="anchor" aria-label="anchor" href="#the-name-of-the-schema-that-contains-the-vocabularies"></a>
+</h5>
 <p>vocabulary_database_schema&lt;-cdm_database_schema</p>
 </div>
-<div class="section level3">
-<h3 id="the-name-of-the-schema-where-results-tables-will-be-created">The name of the schema where results tables will be created<a class="anchor" aria-label="anchor" href="#the-name-of-the-schema-where-results-tables-will-be-created"></a>
-</h3>
+<div class="section level5">
+<h5 id="the-name-of-the-schema-where-results-tables-will-be-created">The name of the schema where results tables will be created<a class="anchor" aria-label="anchor" href="#the-name-of-the-schema-where-results-tables-will-be-created"></a>
+</h5>
 <p>results_database_schema&lt;-Sys.getenv(“DB_WRITE_SCHEMA”)</p>
 </div>
-<div class="section level3">
-<h3 id="create-cdm-reference">create cdm reference<a class="anchor" aria-label="anchor" href="#create-cdm-reference"></a>
-</h3>
+<div class="section level5">
+<h5 id="create-cdm-reference">create cdm reference<a class="anchor" aria-label="anchor" href="#create-cdm-reference"></a>
+</h5>
 <p>cdm &lt;- CDMConnector::cdm_from_con(con,<br>
 cdm_schema = cdm_database_schema,<br>
 write_schema = results_database_schema)</p>
-<div class="section level6">
-<h6 id="add-your-table-to-the-cdm-and-call-it-mothertable-and-babytable-if-present">add your table to the cdm and call it mothertable and babytable (if
+</div>
+<div class="section level5">
+<h5 id="add-your-table-to-the-cdm-and-call-it-mothertable-and-babytable-if-present">add your table to the cdm and call it mothertable and babytable (if
 present)<a class="anchor" aria-label="anchor" href="#add-your-table-to-the-cdm-and-call-it-mothertable-and-babytable-if-present"></a>
-</h6>
+</h5>
 <p>cdm<span class="math inline">$mothertable &lt;- dplyr::tbl(con,
 sql("SELECT * FROM CDM_NAME.TABLE_NAME")) cdm$</span>babytable &lt;-
 dplyr::tbl(con, sql(“SELECT * FROM CDM_NAME.TABLE_NAME”))</p>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
