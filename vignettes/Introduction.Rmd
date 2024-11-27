@@ -33,8 +33,8 @@ cdm <-  PETDiagnostics::mockPregnancy(mothertable = NULL,
                           seed = 1)
 ```
 
-We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check.
-You can also chose only individual checks to run.
+We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check (information on each check available in the Checks article)
+You can also chose only individual checks to run (see Summary article)
 
 ```{r eval=FALSE}
 PETDiagnostics::executeChecks (

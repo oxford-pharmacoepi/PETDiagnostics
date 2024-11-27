@@ -1,0 +1,36 @@
+---
+title: "Checks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Checks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+We can run all available checks at the same time using the ´executeChecks()´ function. This will return a list which contains the results of each check.
+You can also chose only individual checks to run. Here is a table of what the function name is in case you want to run it individually (see Summary article) or use the executeChecks function and put the check name as arguments. 
+
+
+| function name  | executeCheck check name | mother table | baby table |      
+:--------- | :---------- | :------------- |:------------- |
+getOverview | overview	| Number of pregnancies and pregnant individuals |	Number of pregnancies and fetuses |
+getAnnualOverview | annualOverview |	Number of pregnancies per year | not applicable | 	
+getMissings | missing |	Number of missing values for each variable |	Number of missing values for each variable |
+getUnknown | unknown	| Number of unknown values (i.e., concept ids mapped to 0) for each variable	| Number of unknown values (i.e., concept ids mapped to 0) for each variable |
+summariseGestationalAge | gestationalAge	| Correspondence of pregnancy start and end dates with gestational length with a margin of +/- 7 days. Provides information on the following cases: match gestational age, different gestational age, end before start dates, end after start dates, and missing/unknown information | not applicable |	
+getValueDatesAgeDist | datesAgeDist	| Minimum and maximum values of pregnancy start and end dates. Distribution of gestational age	| not applicable |	
+checkOutcomeMode | outcomeMode	| Correspondence of pregnancy outcome and mode of delivery: match, no match, missing/unknown information | not applicable |
+checkFetusesLiveborn | fetusesLiveborn	| Correspondence of number of fetuses and liveborns from the pregnancy table data. Provides information on the following cases: relative number right (n fetus ≥ n liveborn), relative number wrong (n fetus ≤ n liveborn), multiple right (n fetus corresponds with single/multiple pregnancy), multiple wrong (n fetus does not correspond with single/multiple pregnancy), missing multiple (missing information on either n fetus or single/multiple pregnancy) | not applicable |	
+getValueWeightDist | weightDist	| not applicable |	Birth weight distribution |
+getBitSet | bitSet	| Missing and unknown data patterns	| Missing and unknown data patterns
+
+| function name  | executeCheck check name | mother table and baby table |  
+:--- | :--- | :------------- |
+checkFetusId | Infantsid | Correspondence of number of fetuses and liveborns from *both tables* data. Provides information on the following cases: aligned single and fetus: match between single/multiple pregnancy in the pregnancy table with the n fetuses in the fetus table; not aligned single and fetus: no match between single/multiple pregnancy in the pregnancy table with the n fetuses in the fetus table; missing or unknown data in single/multiple pregnancy; n fetus in pregnancy table and n fetus id in fetus table aligned; n fetus in pregnancy table and n fetus id in fetus table not aligned; missing data in n fetus | 
