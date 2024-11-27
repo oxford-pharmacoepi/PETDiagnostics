@@ -1,4 +1,4 @@
 url: https://oxford-pharmacoepi.github.io/PETDiagnostics/
 template:
   bootstrap: 5
-
+output_dir: docs
