@@ -269,9 +269,9 @@ DBI::dbWriteTable(con, "babytable",
                   babytable,
                   overwrite = TRUE)
 
-cdm <- CDMConnector::cdm_from_con(con,
-                                  cdm_schema = "main",
-                                  write_schema = "main")
+cdm <- CDMConnector::cdmFromCon(con,
+                                  cdmSchema = "main",
+                                  writeSchema = "main")
 
 cdm$babytable <- dplyr::tbl(con, "babytable")
 cdm$mothertable <- dplyr::tbl(con, "mothertable")

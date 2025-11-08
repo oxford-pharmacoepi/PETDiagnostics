@@ -324,23 +324,23 @@ mockPregnancy <- function(mothertable = NULL,
                     overwrite = TRUE)
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
-  write_schema = "main"
+  writeSchema = "main"
 
-    DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mothertable"),
+    DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "mothertable"),
                       mothertable,
                       overwrite = TRUE)
 
 
-    DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "babytable"),
+    DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "babytable"),
                       babytable,
                       overwrite = TRUE)
 
-    cdm$babytable <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "babytable"))
-    cdm$mothertable <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mothertable"))
+    cdm$babytable <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "babytable"))
+    cdm$mothertable <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "mothertable"))
 
   return(cdm)
 }

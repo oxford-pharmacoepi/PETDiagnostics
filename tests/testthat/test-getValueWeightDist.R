@@ -60,17 +60,17 @@ test_that("check working example birth weight distribution", {
                     overwrite = TRUE)
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
-  write_schema = "main"
+  writeSchema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "bt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "bt"),
                     bt,
                     overwrite = TRUE)
 
-  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "bt"))
+  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "bt"))
 
   seeWeightDist <- getValueWeightDist(cdm$bt)
 
