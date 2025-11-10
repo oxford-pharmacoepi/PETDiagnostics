@@ -81,18 +81,18 @@ test_that("check working example 1) each count 2) adds up to total", {
 
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
 
-  write_schema = "main"
+  writeSchema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "mt"),
                     mt,
                     overwrite = TRUE)
 
-  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
+  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "mt"))
 
   testData <- cdm$mt
 

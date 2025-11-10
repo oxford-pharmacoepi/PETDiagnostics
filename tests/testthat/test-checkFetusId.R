@@ -94,24 +94,24 @@ test_that("check working example 1) each count 2) counts add up to total", {
 
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
 
-  write_schema = "main"
+  writeSchema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "mt"),
                     mt,
                     overwrite = TRUE)
 
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "bt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "bt"),
                     bt,
                     overwrite = TRUE)
 
-  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "bt"))
-  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
+  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "bt"))
+  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "mt"))
 
 
   seeFetId <- checkFetusId(cdm$mt,cdm$bt)

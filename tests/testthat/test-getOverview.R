@@ -81,17 +81,17 @@ test_that("check working example number or rows equal number of pregnancies", {
                     overwrite = TRUE)
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
-  write_schema = "main"
+  writeSchema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "mt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "mt"),
                     mt,
                     overwrite = TRUE)
 
-  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "mt"))
+  cdm$mt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "mt"))
 
   testData <- cdm$mt
 
@@ -165,17 +165,17 @@ test_that("check working example number or rows equal number of fetuses", {
                     overwrite = TRUE)
 
 
-  cdm <- CDMConnector::cdm_from_con(db,
-                                    cdm_schema = "main",
-                                    write_schema = "main",
+  cdm <- CDMConnector::cdmFromCon(db,
+                                    cdmSchema = "main",
+                                    writeSchema = "main",
   )
-  write_schema = "main"
+  writeSchema = "main"
 
-  DBI::dbWriteTable(db, CDMConnector::inSchema(write_schema, "bt"),
+  DBI::dbWriteTable(db, CDMConnector::inSchema(writeSchema, "bt"),
                     bt,
                     overwrite = TRUE)
 
-  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(write_schema, "bt"))
+  cdm$bt <- dplyr::tbl(db, CDMConnector::inSchema(writeSchema, "bt"))
 
   testData <- cdm$bt
 

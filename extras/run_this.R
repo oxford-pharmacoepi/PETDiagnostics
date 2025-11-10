@@ -23,18 +23,18 @@ con <- DBI::dbConnect(RPostgres::Postgres(),
 
 
 # The name of the schema that contains the OMOP CDM with patient-level data
-cdm_database_schema<-Sys.getenv("DB_CDM_SCHEMA")
+cdm_database_schema<-Sys.getenv("DB_cdmSchema")
 
 # The name of the schema that contains the vocabularies
 vocabulary_database_schema<-cdm_database_schema
 
 # The name of the schema where results tables will be created
-results_database_schema<-Sys.getenv("DB_WRITE_SCHEMA")
+results_database_schema<-Sys.getenv("DB_writeSchema")
 
 # create cdm reference ----
-cdm <- CDMConnector::cdm_from_con(con ,
-                                  cdm_schema = cdm_database_schema,
-                                  write_schema = results_database_schema)
+cdm <- CDMConnector::cdmFromCon(con ,
+                                  cdmSchema = cdm_database_schema,
+                                  writeSchema = results_database_schema)
 
 ## add your table to the cdm and call it motherTable and babyTable (if present)
 cdm$motherTable <- dplyr::tbl(con, sql("SELECT * FROM CDM_NAME.TABLE_NAME"))
